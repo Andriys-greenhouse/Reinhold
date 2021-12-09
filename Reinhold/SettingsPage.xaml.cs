@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Xamarin.Forms;
-using Xamarin.Essentials;
+using Xamarin.Forms.Xaml;
 
 namespace Reinhold
 {
-    public partial class MainPage : Shell
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class SettingsPage : ContentPage
     {
-        public MainPage()
+        public SettingsPage()
         {
-            BindingContext = (App.Current as App).DataOfApplication;
             InitializeComponent();
         }
     }

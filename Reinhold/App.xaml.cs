@@ -2,11 +2,15 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using System.Threading.Tasks;
+using Xamarin.Essentials;
+using Newtonsoft.Json;
+
 namespace Reinhold
 {
     public partial class App : Application
     {
-        public 
+        public Data DataOfApplication { get; set; }
 
         public App()
         {
@@ -15,8 +19,10 @@ namespace Reinhold
             MainPage = new MainPage();
         }
 
-        protected override void OnStart()
+        protected async override void OnStart()
         {
+            //here shall be first-load and load sequences
+            DataOfApplication.SetTestValues();
         }
 
         protected override void OnSleep()

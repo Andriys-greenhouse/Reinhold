@@ -18,6 +18,10 @@ namespace Reinhold
 
     public class Data
     {
+        public DateTime FirstStart { get; set; }
+        public DateTime LastStart { get; set; }
+        public bool ResetOrdered { get; set; }
+
         public ColorWord ColorScheme { get; set; }
         int searchDept;
         public int SearchDept
@@ -35,8 +39,9 @@ namespace Reinhold
         public ObservableCollection<Book> Books { get; set; }
         public ObservableCollection<Story> Stories { get; set; }
 
-        [JsonIgnore]
         public MessageManager Messages { get; set; }
+        public string Version { get; set; }
+        public string CoreVersion { get; set; }
 
         public string ChatIcon { get { return $"{ColorScheme.ToString().ToLower()}Chat.png"; } }
         public string UserIcon { get { return $"{ColorScheme.ToString().ToLower()}User.png"; } }
@@ -50,7 +55,83 @@ namespace Reinhold
         public string MicIcon { get { return $"{ColorScheme.ToString().ToLower()}Mic.png"; } }
 
 
-        public Color ColorSchemeInColor { get; set; }
+        public Color ColorSchemeInColor 
+        { 
+            get
+            {
+                switch (ColorScheme)
+                {
+                    case ColorWord.Red:
+                        return new Color(99.1, 3.3, 3.3);
+                    case ColorWord.Green:
+                        return new Color(29.8, 62.4, 23.9);
+                    case ColorWord.Blue:
+                        return new Color(24.9, 8.9, 82.5);
+                }
+                return new Color();
+            }
+        }
+
+        public void SetDefaultValues()
+        {
+            ColorScheme = ColorWord.Green;
+            SearchDept = 3;
+            DisplayNotifications = true;
+            Version = "Version: 0.1";
+            CoreVersion = "Core vrsion: 0.0";
+            Books = new ObservableCollection<Book>();
+            Stories = new ObservableCollection<Story>();
+            Acquaintances = new ObservableCollection<Acquaintance>();
+            User = new Person();
+            User.SetDefaultValues();
+            Messages = new MessageManager();
+        }
+
+        public void SetTestValues()
+        {
+            Acquaintance friend = new Acquaintance();
+            friend.SetDefaultValues();
+            friend.FullName = "Reginald Roald Hamundson";
+            friend.FirstName = "Roald";
+            friend.FullName = "Hamundson";
+            friend.BirthDate = new DateTime(2002, 3, 16);
+            friend.DateIsAcurate = true;
+            friend.PlaceOfResidence = new Place("České Budějovice");
+            friend.Appearance = "Tall and haves gray hare.";
+            friend.Hobbys.Add("Sailing");
+
+            ColorScheme = ColorWord.Green;
+            SearchDept = 3;
+            DisplayNotifications = true;
+            Version = "Version: 0.1";
+            CoreVersion = "Core vrsion: 0.0";
+
+            Books = new ObservableCollection<Book>();
+            Books.Add(new Book()
+            {
+                Title = "Farenheit 451",
+                AuthorsCompleteName = "Raymond Douglas Bradbury"
+            });
+
+            Stories = new ObservableCollection<Story>();
+            Stories.Add(new Story()
+            {
+                Text = "It all happend yesterday...",
+                Date = DateTime.Now,
+                People = new ObservableCollection<Acquaintance>() { friend }
+            });
+
+            Acquaintances = new ObservableCollection<Acquaintance>() { friend };
+
+            User = friend;
+            User.FullName = "Gregorg Janík";
+            User.FirstName = "Gregorg";
+            User.LastName = "Janík";
+
+            Messages = new MessageManager();
+            Messages.Add(new Message("Hello", true));
+            Messages.Add(new Message("Hello, how can I halp you?", false));
+        }
     }
 
     public class Person
@@ -70,6 +151,7 @@ namespace Reinhold
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public bool DateIsAcurate { get; set; }
+        public Place LastLocation { get; set; }
         public Place PlaceOfResidence { get; set; }
         public string Appearance { get; set; }
         public bool IsMan { get; set; }
@@ -102,6 +184,21 @@ namespace Reinhold
                 else { throw new ArgumentException("Invallid email!"); }
             }
         }
+        public void SetDefaultValues()
+        {
+            FullName = "";
+            LastName = "";
+            FirstName = "";
+            BirthDate = new DateTime();
+            DateIsAcurate = false;
+            PlaceOfResidence = new Place("");
+            LastLocation = new Place("");
+            Appearance = "";
+            IsMan = true;
+            Hobbys = new ObservableCollection<string>();
+            PhoneNumber = "";
+            Email = "";
+        }
     }
 
     public class Acquaintance : Person
@@ -122,7 +219,7 @@ namespace Reinhold
     public class Story
     {
         public DateTime Date { get; set; }
-        public List<Acquaintance> People { get; set; }
+        public ObservableCollection<Acquaintance> People { get; set; }
         bool TextFetched = false;
         public string TextID;
         [JsonIgnore]
