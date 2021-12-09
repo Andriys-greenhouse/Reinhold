@@ -6,6 +6,8 @@ namespace Reinhold
 {
     public partial class App : Application
     {
+        public 
+
         public App()
         {
             InitializeComponent();
