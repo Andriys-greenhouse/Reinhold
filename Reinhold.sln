@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reinhold.Android", "Reinhold.Android\Reinhold.Android.csproj", "{D534C1FF-C532-44DF-A05D-44A82C5A9F09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reinhold", "Reinhold\Reinhold.csproj", "{D61642E5-7024-48B1-9B9E-877BD215CB4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D534C1FF-C532-44DF-A05D-44A82C5A9F09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D534C1FF-C532-44DF-A05D-44A82C5A9F09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D534C1FF-C532-44DF-A05D-44A82C5A9F09}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D534C1FF-C532-44DF-A05D-44A82C5A9F09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D534C1FF-C532-44DF-A05D-44A82C5A9F09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D534C1FF-C532-44DF-A05D-44A82C5A9F09}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D61642E5-7024-48B1-9B9E-877BD215CB4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D61642E5-7024-48B1-9B9E-877BD215CB4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D61642E5-7024-48B1-9B9E-877BD215CB4F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D61642E5-7024-48B1-9B9E-877BD215CB4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D61642E5-7024-48B1-9B9E-877BD215CB4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D61642E5-7024-48B1-9B9E-877BD215CB4F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F987F612-ED1B-4676-82C2-5EB5D3684E9C}
+	EndGlobalSection
+EndGlobal
