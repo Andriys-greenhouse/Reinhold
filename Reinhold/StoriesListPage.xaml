@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Reinhold.StoriesListPage"
+             BackgroundColor="#1c1c1c">
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame BackgroundColor="{Binding ColorSchemeInColor}" CornerRadius="0">
+                <Label Text="Stories" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
+            </Frame>
+            <ScrollView>
+                <ListView x:Name="StoriesListView" ItemTapped="StoriesListView_ItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding RepresentingText}" Style="{StaticResource Note}"/>
+                                        <Button ImageSource="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked"/>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

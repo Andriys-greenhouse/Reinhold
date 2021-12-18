@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Reinhold.DataManagementPage"
+             BackgroundColor="#1c1c1c">
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame BackgroundColor="{Binding ColorSchemeInColor}" CornerRadius="0">
+                <Label Text="Manage existing data" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
+            </Frame>
+            <Frame BackgroundColor="#3f3f3f" CornerRadius="5" Margin="2">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Personal_TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" />
+                </Frame.GestureRecognizers>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Personal" Style="{StaticResource HeadlineWithoutMargin}"/>
+                    <Image Source="{Binding UserIcon}" Style="{StaticResource IconImage}"/>
+                </StackLayout>
+            </Frame>
+            <Frame BackgroundColor="#3f3f3f" CornerRadius="5" Margin="2">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Acquaintances_TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" />
+                </Frame.GestureRecognizers>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Acquaintances" Style="{StaticResource HeadlineWithoutMargin}"/>
+                    <Image Source="{Binding FriendIcon}" Style="{StaticResource IconImage}"/>
+                </StackLayout>
+            </Frame>
+            <Frame BackgroundColor="#3f3f3f" CornerRadius="5" Margin="2">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Books_TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" />
+                </Frame.GestureRecognizers>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Books" Style="{StaticResource HeadlineWithoutMargin}"/>
+                    <Image Source="{Binding BookIcon}" Style="{StaticResource IconImage}"/>
+                </StackLayout>
+            </Frame>
+            <Frame BackgroundColor="#3f3f3f" CornerRadius="5" Margin="2">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Stories_TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" />
+                </Frame.GestureRecognizers>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Stories" Style="{StaticResource HeadlineWithoutMargin}"/>
+                    <Image Source="{Binding StoryIcon}" Style="{StaticResource IconImage}"/>
+                </StackLayout>
+            </Frame>
+            <Frame BackgroundColor="{Binding ColorSchemeInColor}" Margin="0,25" CornerRadius="0">
+                <Label Text="Add data" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
+            </Frame>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Button Text="Story" Clicked="StoryButton_Clicked"/>
+                <Button Text="Person" Clicked="PersonButton_Clicked"/>
+                <Button Text="Book" Clicked="BookButton_Clicked"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

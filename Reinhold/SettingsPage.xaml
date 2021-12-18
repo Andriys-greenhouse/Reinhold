@@ -1,12 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Reinhold.SettingsPage">
+             x:Class="Reinhold.SettingsPage"
+             Background="#1c1c1c">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal" Margin="0,30,0,0">
+                    <Label Text="Color scheme" Style="{StaticResource HeadlineWithoutMargin}"/>
+                    <Picker x:Name="ColorSchemePicker" ItemsSource="{Binding .}" ItemDisplayBinding="{Binding .}" SelectedIndexChanged="ColorSchemePicker_SelectedIndexChanged"
+                            VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="10,0"/>
+                </StackLayout>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="0,30,0,0">
+                        <Label Text="Search dept" Style="{StaticResource HeadlineWithoutMargin}"/>
+                        <Slider x:Name="SearchDeptSlider" Maximum="10" Value="{Binding SearchDept}" ValueChanged="SearchDeptSlider_ValueChanged" 
+                                VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Info for web-searching module." Style="{StaticResource Note}"/>
+                        <Label x:Name="SearchDeptNumberLabel" Text="{Binding SearchDept,UpdateSourceEventName=PropertyChanged}" Style="{StaticResource HeadlineWithoutMargin}"/>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="0,30,0,0">
+                        <Label Text="Display notifications" Style="{StaticResource HeadlineWithoutMargin}"/>
+                        <CheckBox x:Name="NotifCheckbox" IsChecked="{Binding DisplayNotifications}"/>
+                    </StackLayout>
+                    <Label Text="(notif. with Reinholds questions for you while you are away)" Style="{StaticResource Note}"/>
+                </StackLayout>
+                <Label Text="Reset application to default" Style="{StaticResource Headline}"/>
+                <Label Text="Resets settings and deletes all the data." Style="{StaticResource Note}"/>
+                <Button x:Name="ResetButton" Text="Reset" Clicked="ResetButton_Clicked" HorizontalOptions="Center" Margin="0,30,0,0"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

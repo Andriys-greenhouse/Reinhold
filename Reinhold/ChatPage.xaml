@@ -1,12 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Reinhold.ChatPage">
+             x:Class="Reinhold.ChatPage"
+             BackgroundColor="#1c1c1c">
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical">
+        <StackLayout>
+            <ScrollView VerticalOptions="FillAndExpand">
+                <ListView x:Name="MessageListView" RowHeight="60">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <Frame HorizontalOptions="{Binding Side}" BackgroundColor="{Binding Color}" CornerRadius="15" Padding="10,3">
+                                        <Frame.Content>
+                                            <StackLayout>
+                                                <Label Text="{Binding Text}"/>
+                                                <Label Text="{Binding DateToDisplay}" HorizontalOptions="End" VerticalOptions="End" FontSize="Small"/>
+                                            </StackLayout>
+                                        </Frame.Content>
+                                    </Frame>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
             <StackLayout Orientation="Horizontal">
-                <Entry x:Name="MessageBox"/>
-                <ImageButton Source="{Binding MicOrSaveButtonIcon}" x:Name="MicOrSendButton"/>
+                <Entry x:Name="MessageBox" HorizontalOptions="FillAndExpand"/>
+                <ImageButton Source="{Binding MicOrSendButtonIcon}" Aspect="AspectFit" x:Name="MicOrSendButton" Clicked="MicOrSendButton_Clicked" WidthRequest="70" HeightRequest="80"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

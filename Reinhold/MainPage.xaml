@@ -22,8 +22,8 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -31,14 +31,17 @@
                 </Grid.RowDefinitions>
                 <Image Source="whiteKnowledge.png" Aspect="Fill" HeightRequest="30" WidthRequest="65" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"/>
                 <Label Text="Reinhold" TextColor="White" FontSize="Large" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"/>
-                <Label x:Name="VersionLabel" Text="Version: " TextColor="White" FontSize="Body" Grid.Column="1" Grid.Row="1" Margin="5,0,0,0"/>
-                <Label x:Name="CoreVersionLabel" Text="Core version: " TextColor="White" FontSize="Body" Grid.Column="2" Grid.Row="1" HorizontalOptions="EndAndExpand"/>
+                <Label x:Name="VersionLabel" Text="{Binding Version}" TextColor="White" FontSize="Body" Grid.Column="1" Grid.Row="1" Margin="5,0,0,0"/>
+                <Label x:Name="CoreVersionLabel" Text="{Binding CoreVersion}" TextColor="White" FontSize="Body" Grid.Column="2" Grid.Row="1" HorizontalOptions="End"/>
             </Grid>
         </Frame>
     </Shell.FlyoutHeader>
     <FlyoutItem Title="Menu" FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent x:Name="ChatPageShellContent" Title="Chat" Icon="{Binding ChatIcon}">
             <views:ChatPage/>
+        </ShellContent>
+        <ShellContent x:Name="DataManagementShellContent" Title="Data management" Icon="{Binding UserIcon}">
+            <views:DataManagementPage/>
         </ShellContent>
         <ShellContent x:Name="SettingsShellContent" Title="Settings" Icon="{Binding SettingsIcon}">
             <views:SettingsPage/>

@@ -22,14 +22,18 @@ namespace Reinhold
         public DateTime LastStart { get; set; }
         public bool ResetOrdered { get; set; }
 
+        public static int nextID { get; set; }
+
         public ColorWord ColorScheme { get; set; }
+        [JsonIgnore]
         int searchDept;
         public int SearchDept
         {
             get { return searchDept; }
             set
             {
-                if(value > 10 || value < 1) { throw new ArgumentException("Search dept must be between 1 and 10!"); }
+                if(value > 10 || value < 0) { throw new ArgumentException("Search dept must be between 0 and 10!"); }
+                searchDept = value;
             }
         }
         public bool DisplayNotifications { get; set; }
@@ -40,21 +44,33 @@ namespace Reinhold
         public ObservableCollection<Story> Stories { get; set; }
 
         public MessageManager Messages { get; set; }
-        public string Version { get; set; }
-        public string CoreVersion { get; set; }
+        [JsonIgnore]
+        public string Version { get { return "Version: 0.1"; } }
+        [JsonIgnore]
+        public string CoreVersion { get { return "Core vrsion: 0.0"; } }
 
+        [JsonIgnore]
         public string ChatIcon { get { return $"{ColorScheme.ToString().ToLower()}Chat.png"; } }
+        [JsonIgnore]
         public string UserIcon { get { return $"{ColorScheme.ToString().ToLower()}User.png"; } }
+        [JsonIgnore]
         public string SettingsIcon { get { return $"{ColorScheme.ToString().ToLower()}Control.png"; } }
+        [JsonIgnore]
         public string ArrowIcon { get { return $"{ColorScheme.ToString().ToLower()}Arrow.png"; } }
+        [JsonIgnore]
         public string BookIcon { get { return $"{ColorScheme.ToString().ToLower()}Book.png"; } }
+        [JsonIgnore]
         public string DeleteIcon { get { return $"{ColorScheme.ToString().ToLower()}Delete.png"; } }
+        [JsonIgnore]
         public string FriendIcon { get { return $"{ColorScheme.ToString().ToLower()}Friend.png"; } }
+        [JsonIgnore]
         public string StoryIcon { get { return $"{ColorScheme.ToString().ToLower()}Labyrinth.png"; } }
+        [JsonIgnore]
         public string MenuIcon { get { return $"{ColorScheme.ToString().ToLower()}Menu.png"; } }
+        [JsonIgnore]
         public string MicIcon { get { return $"{ColorScheme.ToString().ToLower()}Mic.png"; } }
 
-
+        [JsonIgnore]
         public Color ColorSchemeInColor 
         { 
             get
@@ -62,13 +78,14 @@ namespace Reinhold
                 switch (ColorScheme)
                 {
                     case ColorWord.Red:
-                        return new Color(99.1, 3.3, 3.3);
+                        return Color.FromRgb(99, 3, 3);
                     case ColorWord.Green:
-                        return new Color(29.8, 62.4, 23.9);
+                        return Color.FromRgb(29, 62, 23);
                     case ColorWord.Blue:
-                        return new Color(24.9, 8.9, 82.5);
+                        return Color.FromRgb(24, 8, 82);
+                    default:
+                        return Color.FromRgb(0, 0, 0);
                 }
-                return new Color();
             }
         }
 
@@ -77,14 +94,13 @@ namespace Reinhold
             ColorScheme = ColorWord.Green;
             SearchDept = 3;
             DisplayNotifications = true;
-            Version = "Version: 0.1";
-            CoreVersion = "Core vrsion: 0.0";
             Books = new ObservableCollection<Book>();
             Stories = new ObservableCollection<Story>();
             Acquaintances = new ObservableCollection<Acquaintance>();
             User = new Person();
             User.SetDefaultValues();
             Messages = new MessageManager();
+            nextID = 0;
         }
 
         public void SetTestValues()
@@ -103,8 +119,6 @@ namespace Reinhold
             ColorScheme = ColorWord.Green;
             SearchDept = 3;
             DisplayNotifications = true;
-            Version = "Version: 0.1";
-            CoreVersion = "Core vrsion: 0.0";
 
             Books = new ObservableCollection<Book>();
             Books.Add(new Book()
@@ -136,6 +150,7 @@ namespace Reinhold
 
     public class Person
     {
+        [JsonIgnore]
         string id = "";
         public string ID
         {
@@ -157,6 +172,7 @@ namespace Reinhold
         public bool IsMan { get; set; }
         public ObservableCollection<string> Hobbys { get; set; }
 
+        [JsonIgnore]
         string phoneNumber;
         public string PhoneNumber
         {
@@ -170,6 +186,7 @@ namespace Reinhold
                 else { throw new ArgumentException("Invallid phone number!"); }
             }
         }
+        [JsonIgnore]
         string email;
         public string Email
         {
@@ -205,13 +222,15 @@ namespace Reinhold
     {
         public Relation Relation { get; set; }
         public LevelOfLiking LevelOfRelarion { get; set; }
+        [JsonIgnore]
         int levelOfAcquaintance;
         public int LevelOfAcquaintance 
         {
             get { return levelOfAcquaintance; }
             set
             {
-                if(value > 100 || value < 1) { throw new ArgumentException("Level of acquaintance must be between 1 and 100!"); }
+                if(value > 100 || value < 0) { throw new ArgumentException("Level of acquaintance must be between 0 and 100!"); }
+                levelOfAcquaintance = value;
             }
         }
     }
@@ -241,6 +260,15 @@ namespace Reinhold
                 text = value;
                 SaveText();
             }
+        }
+        [JsonIgnore]
+        public string RepresentingText { get { return Text.Substring(0, 40); } }
+        [JsonIgnore]
+        public string BinImagePointer { get { return (App.Current as App).DataOfApplication.DeleteIcon; } }
+
+        public Story()
+        {
+            TextID = (Data.nextID++).ToString();
         }
 
         async Task<string> FetchText()
@@ -275,6 +303,7 @@ namespace Reinhold
         public LevelOfLiking Score { get; set; }
         bool QuoteFetched = false;
         public string QuotesID;
+        [JsonIgnore]
         string favouriteQuote;
         public string FavouriteQuote
         {
@@ -291,8 +320,13 @@ namespace Reinhold
             set
             {
                 favouriteQuote = value;
-                SaveQuote();
+                if (value != null) { SaveQuote(); }
             }
+        }
+
+        public Book()
+        {
+            QuotesID = (Data.nextID++).ToString();
         }
 
         async Task<string> FetchQuote()
@@ -336,7 +370,13 @@ namespace Reinhold
     public class Message
     {
         public string Text { get; set; }
-        public DateTime Date { get; set; }
+        public string DateToDisplay
+        {
+            get { return Date.ToString("yyyy/MM/dd HH:mm"); }
+        }
+        public LayoutOptions Side { get { return SendByUser ? LayoutOptions.End : LayoutOptions.Start; } }
+        public Color Color { get { return SendByUser ? (App.Current as App).DataOfApplication.ColorSchemeInColor : Color.FromRgb(56, 54, 49); } }
+        public DateTime Date;
         public bool SendByUser { get; set; }
 
         public Message(string aText, bool aSendByUser)
@@ -374,15 +414,23 @@ namespace Reinhold
 
     public class MessageManager
     {
-        public ObservableCollection<DayOfMessages> IndividualDays { get; set; }
+        //public ObservableCollection<DayOfMessages> IndividualDays { get; set; }
+        public ObservableCollection<Message> Messages {get; set;}
+        public MessageManager()
+        {
+            Messages = new ObservableCollection<Message>();
+        }
         public void Add(Message aMessage)
         {
+            /*
             DateTime Date = IndividualDays.Count == 0 ? new DateTime() : IndividualDays[IndividualDays.Count - 1].Date;
             if (Date.Year != aMessage.Date.Year || Date.Month != aMessage.Date.Month || Date.Day != aMessage.Date.Day)
             {
                 IndividualDays.Add(new DayOfMessages(new Message[] { aMessage }));
             }
             else { IndividualDays[IndividualDays.Count - 1].Messages.Add(aMessage); }
+            */
+            Messages.Add(aMessage);
         }
     }
 }
