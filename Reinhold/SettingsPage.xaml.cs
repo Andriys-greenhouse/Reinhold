@@ -5,7 +5,6 @@ using System.ComponentModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Collections.Generic;
 
 namespace Reinhold
 {
@@ -13,18 +12,17 @@ namespace Reinhold
     public partial class SettingsPage : ContentPage, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public Data DataOfApplicationConnector
-        {
-            get { return (App.Current as App).DataOfApplication; }
-            set { (App.Current as App).DataOfApplication = value; }
-        }
-        public double SearchDept { get { return SearchDeptSlider.Value; } }
+        public Data DataOfApplicationCopy { get; set; }
+        public double SearchDept { get { return Math.Round(SearchDeptSlider.Value); } }
         public SettingsPage()
         {
-            BindingContext = DataOfApplicationConnector;
+            DataOfApplicationCopy = (App.Current as App).DataOfApplication;
+            BindingContext = DataOfApplicationCopy;
             InitializeComponent();
             ColorSchemePicker.BindingContext = new ObservableCollection<string>(Enum.GetNames(typeof(ColorWord)));
             SearchDeptNumberLabel.BindingContext = this;
+            ColorSchemePicker.SelectedIndex = (int)DataOfApplicationCopy.ColorScheme;
+            SearchDeptSlider.Value = DataOfApplicationCopy.SearchDept;
         }
 
         private async void ResetButton_Clicked(object sender, EventArgs e)
@@ -42,18 +40,39 @@ namespace Reinhold
                 }
                 (App.Current as App).DataOfApplication.SetDefaultValues();
                 await SecureStorage.SetAsync("Data", JsonConvert.SerializeObject((App.Current as App).DataOfApplication));
-
+                (App.Current as App).Properties.Clear();
+                App.Current.MainPage = new MainPage();
             }
         }
 
         private void SearchDeptSlider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SearchDept"));
+            DataOfApplicationCopy.SearchDept = (int)Math.Round(SearchDeptSlider.Value);
         }
 
-        private void ColorSchemePicker_SelectedIndexChanged(object sender, EventArgs e)
+        private async void ColorSchemePicker_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if ((int)DataOfApplicationCopy.ColorScheme != ColorSchemePicker.SelectedIndex)
+            {
+                if (!await DisplayAlert("Confirmation", "Change of color scheme requires restart of application, change color scheme?", "No", "Yes"))
+                {
+                    DataOfApplicationCopy.ColorScheme = (ColorWord)ColorSchemePicker.SelectedIndex;
+                    SettingsPage_Disappearing(this, new EventArgs());
+                    App.Current.MainPage = new MainPage();
+                }
+                else
+                {
+                    ColorSchemePicker.SelectedIndex = (int)DataOfApplicationCopy.ColorScheme;
+                }
+            }
+        }
 
+        private void SettingsPage_Disappearing(object sender, EventArgs e)
+        {
+            (App.Current as App).DataOfApplication.ColorScheme = DataOfApplicationCopy.ColorScheme;
+            (App.Current as App).DataOfApplication.SearchDept = (int)SearchDept;
+            (App.Current as App).DataOfApplication.DisplayNotifications = DataOfApplicationCopy.DisplayNotifications;
         }
     }
 }

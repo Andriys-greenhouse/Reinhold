@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Reinhold.SettingsPage"
-             Background="#1c1c1c">
+             Background="#1c1c1c"
+             Title="Settings"
+             Disappearing="SettingsPage_Disappearing">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>

@@ -10,7 +10,8 @@ namespace Reinhold
 {
     public partial class App : Application
     {
-        public Data DataOfApplication { get; set; }
+        public Data DataOfApplication { get; 
+            set; }
 
         public App()
         {

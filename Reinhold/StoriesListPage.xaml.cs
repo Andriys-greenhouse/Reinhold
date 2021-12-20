@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,29 +8,51 @@ namespace Reinhold
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StoriesListPage : ContentPage
     {
-        public Data DataOfApplicationConnector
-        {
-            get { return (App.Current as App).DataOfApplication; }
-            set { (App.Current as App).DataOfApplication = value; }
-        }
+        public ObservableCollection<Story> StoriesCopy { get; set; }
+        public Color ColorSchemeInColor { get { return (App.Current as App).DataOfApplication.ColorSchemeInColor; } }
         public StoriesListPage()
         {
-            BindingContext = DataOfApplicationConnector;
+            StoriesCopy = (App.Current as App).DataOfApplication.Stories;
+            BindingContext = this;
             InitializeComponent();
-            StoriesListView.ItemsSource = DataOfApplicationConnector.Stories;
         }
 
         private async void DeleteButton_Clicked(object sender, EventArgs e)
         {
-            if (!await DisplayAlert("Confirmation", $"Are you shure that you want to delete this story?\n({((sender as Button).CommandParameter as Story).RepresentingText})", "No", "Yes"))
+            Story ClickedContent = (sender as ImageButton).CommandParameter as Story;
+            if (!await DisplayAlert("Confirmation", $"Are you shure that you want to delete this story?\n({ClickedContent.RepresentingText})", "No", "Yes"))
             {
-                DataOfApplicationConnector.Stories.Remove((sender as Button).CommandParameter as Story);
+                StoriesCopy.Remove(ClickedContent);
             }
         }
 
-        private void StoriesListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        private async void StoriesListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
+            StoryPage current = new StoryPage((Story)StoriesListView.SelectedItem);
+            await Navigation.PushAsync(current);
+            if (current.HandedIn)
+            {
+                StoriesCopy.Remove((Story)StoriesListView.SelectedItem);
+                StoriesCopy.Add(current.Displayed);
+                StoriesListView.ItemsSource = StoriesCopy;
+            }
+        }
 
+        private async void AddButton_Clicked(object sender, EventArgs e)
+        {
+            StoryPage current = new StoryPage(new Story());
+            await Navigation.PushAsync(current);
+            if (current.HandedIn)
+            {
+                StoriesCopy.Remove((Story)StoriesListView.SelectedItem);
+                StoriesCopy.Add(current.Displayed);
+                StoriesListView.ItemsSource = StoriesCopy;
+            }
+        }
+
+        private void StoriesListPage_Disappearing(object sender, EventArgs e)
+        {
+            (App.Current as App).DataOfApplication.Stories = StoriesCopy;
         }
     }
 }

@@ -2,28 +2,30 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Reinhold.StoriesListPage"
-             BackgroundColor="#1c1c1c">
+             BackgroundColor="#1c1c1c"
+             Title="Data management"
+             Disappearing="StoriesListPage_Disappearing">
     <ContentPage.Content>
         <StackLayout>
             <Frame BackgroundColor="{Binding ColorSchemeInColor}" CornerRadius="0">
                 <Label Text="Stories" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
             </Frame>
-            <ScrollView>
-                <ListView x:Name="StoriesListView" ItemTapped="StoriesListView_ItemTapped">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <ViewCell.View>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding RepresentingText}" Style="{StaticResource Note}"/>
-                                        <Button ImageSource="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked"/>
-                                    </StackLayout>
-                                </ViewCell.View>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </ScrollView>
+            <ListView x:Name="StoriesListView" ItemsSource="{Binding StoriesCopy}" ItemTapped="StoriesListView_ItemTapped" RowHeight="58">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding RepresentingText}" Style="{StaticResource Note}"/>
+                                    <ImageButton Source="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked" 
+                                            WidthRequest="50" HeightRequest="58" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button x:Name="AddButton" Text="Add" Clicked="AddButton_Clicked" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand" Margin="0,0,0,30"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

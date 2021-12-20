@@ -23,9 +23,10 @@ namespace Reinhold
             InitializeComponent();
         }
 
-        private void Personal_TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        private async void Personal_TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            DisplayAlert("test", "hello :-)", "OK");
+            PersonalDataPage curent = new PersonalDataPage(DataOfApplicationConnector.User);
+            await Navigation.PushAsync(curent);
         }
 
         private void Acquaintances_TapGestureRecognizer_Tapped(object sender, EventArgs e)

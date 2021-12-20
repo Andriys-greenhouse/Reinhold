@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Reinhold.StoryPage"
+             BackgroundColor="#1c1c1c">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame x:Name="HeadingFrame" BackgroundColor="{Binding ColorSchmeInColor}" CornerRadius="0">
+                    <Label Text="Personal" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
+                </Frame>
+
+                <Label Text="Setting" Style="{StaticResource HeadlineWithoutMargin}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Place" Style="{StaticResource Note}"/>
+                    <Entry x:Name="PlaceEntry" Style="{StaticResource EntryOnTheSameLine}"/>
+                </StackLayout>
+                <DatePicker Date="{Binding Date}" Margin="5,0">
+                    <DatePicker.Format>yyyy/MM/dd</DatePicker.Format>
+                </DatePicker>
+                <ListView x:Name="PeopleListView" Header="Related people" VerticalOptions="FillAndExpand">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding FullName}" Style="{StaticResource Note}"/>
+                                        <ImageButton Source="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked" 
+                                            WidthRequest="50" HeightRequest="58" HorizontalOptions="EndAndExpand"/>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button x:Name="AddPeopleButton" Text="+" WidthRequest="50" HeightRequest="58" Clicked="AddPeopleButton_Clicked" HorizontalOptions="Center"/>
+                <Label Text="Text" Style="{StaticResource Headline}"/>
+                <Editor x:Name="TextEditor" Text="{Binding Text}"/>
+                <Button x:Name="DoneButton" Text="Done" Clicked="DoneButton_Clicked"  HorizontalOptions="CenterAndExpand" Margin="0,40,0,20"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

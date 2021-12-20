@@ -36,7 +36,8 @@ namespace Reinhold
                 searchDept = value;
             }
         }
-        public bool DisplayNotifications { get; set; }
+        public bool DisplayNotifications { get; 
+            set; }
 
         public Person User { get; set; }
         public ObservableCollection<Acquaintance> Acquaintances { get; set; }
@@ -78,11 +79,14 @@ namespace Reinhold
                 switch (ColorScheme)
                 {
                     case ColorWord.Red:
-                        return Color.FromRgb(99, 3, 3);
+                        return Color.FromHex("#fd0808");
+                        //return Color.FromRgb(99, 3, 3);
                     case ColorWord.Green:
-                        return Color.FromRgb(29, 62, 23);
+                        return Color.FromHex("#4c9f3d");
+                        //return Color.FromRgb(29, 62, 23);
                     case ColorWord.Blue:
-                        return Color.FromRgb(24, 8, 82);
+                        return Color.FromHex("#3f17d3");
+                        //return Color.FromRgb(24, 8, 82);
                     default:
                         return Color.FromRgb(0, 0, 0);
                 }
@@ -105,6 +109,7 @@ namespace Reinhold
 
         public void SetTestValues()
         {
+            SetDefaultValues();
             Acquaintance friend = new Acquaintance();
             friend.SetDefaultValues();
             friend.FullName = "Reginald Roald Hamundson";
@@ -120,20 +125,21 @@ namespace Reinhold
             SearchDept = 3;
             DisplayNotifications = true;
 
-            Books = new ObservableCollection<Book>();
             Books.Add(new Book()
             {
                 Title = "Farenheit 451",
                 AuthorsCompleteName = "Raymond Douglas Bradbury"
             });
 
-            Stories = new ObservableCollection<Story>();
-            Stories.Add(new Story()
+            for(int i = 0; i < 21; i++)
             {
-                Text = "It all happend yesterday...",
-                Date = DateTime.Now,
-                People = new ObservableCollection<Acquaintance>() { friend }
-            });
+                Stories.Add(new Story()
+                {
+                    Text = "It all happend yesterday...",
+                    Date = DateTime.Now,
+                    People = new ObservableCollection<Acquaintance>() { friend }
+                });
+            }
 
             Acquaintances = new ObservableCollection<Acquaintance>() { friend };
 
@@ -233,6 +239,8 @@ namespace Reinhold
                 levelOfAcquaintance = value;
             }
         }
+        [JsonIgnore]
+        public string BinImagePointer { get { return (App.Current as App).DataOfApplication.DeleteIcon; } }
     }
 
     public class Story
@@ -258,11 +266,11 @@ namespace Reinhold
             set
             {
                 text = value;
-                SaveText();
+                if (value != null) { SaveText(); }
             }
         }
         [JsonIgnore]
-        public string RepresentingText { get { return Text.Substring(0, 40); } }
+        public string RepresentingText { get { return Text.Substring(0, Text.Length > 37 ? 37 : Text.Length) + (Text.Length > 37 ? "..." : ""); } }
         [JsonIgnore]
         public string BinImagePointer { get { return (App.Current as App).DataOfApplication.DeleteIcon; } }
 

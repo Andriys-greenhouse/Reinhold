@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Reinhold.PersonalDataPage"
+             BackgroundColor="#1c1c1c"
+             Title="Data management">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame x:Name="HeadingFrame" BackgroundColor="{Binding ColorSchmeInColor}" CornerRadius="0">
+                    <Label Text="Personal" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
+                </Frame>
+
+                <Label Text="Name" Style="{StaticResource HeadlineWithoutMargin}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Text="Full name" Style="{StaticResource Note}" Grid.Column="0" Grid.Row="0"/>
+                    <Entry x:Name="FullNameEntry" Text="{Binding FullName}" Grid.Column="1" Grid.Row="0" Style="{StaticResource EntryOnTheSameLine}"/>
+                    <Label Text="First name" Style="{StaticResource Note}" Grid.Column="0" Grid.Row="1"/>
+                    <Entry x:Name="FirstNameEntry" Text="{Binding FirstName}" Grid.Column="1" Grid.Row="1" Style="{StaticResource EntryOnTheSameLine}"/>
+                    <Label Text="Last name" Style="{StaticResource Note}" Grid.Column="0" Grid.Row="2"/>
+                    <Entry x:Name="LastNameEntry" Text="{Binding LastName}" Grid.Column="1" Grid.Row="2" Style="{StaticResource EntryOnTheSameLine}"/>
+                </Grid>
+
+                <Label Text="Birth date" Style="{StaticResource Headline}"/>
+                <Label Text="Birth date" Style="{StaticResource Note}"/>
+                <DatePicker Date="{Binding BirthDate}" Margin="5,0">
+                    <DatePicker.Format>yyyy/MM/dd</DatePicker.Format>
+                </DatePicker>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="This is an acurate date &#x0a;(acurate date is not required)" Style="{StaticResource Note}"/>
+                    <CheckBox x:Name="AcurateDateCheckBox" IsChecked="{Binding DateIsAcurate}"/>
+                </StackLayout>
+
+                <Label Text="Personal info" Style="{StaticResource Headline}"/>
+                <Label Text="Place of residence" Style="{StaticResource Note}"/>
+                <Entry x:Name="PlaceOfResidenceEntry" Text="{Binding PlaceOfResidence.InWords}"/>
+                <Label Text="Appearance" Style="{StaticResource Note}"/>
+                <Entry x:Name="AppearanceEntry" Text="{Binding Appearance}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Man &#x0a;(leave unchecked if woman)" Style="{StaticResource Note}"/>
+                    <CheckBox x:Name="IsManBox" IsChecked="{Binding IsMan}"/>
+                </StackLayout>
+
+                <ListView x:Name="HobbyListView" Header="Hobbys" ItemsSource="{Binding Hobbys}" VerticalOptions="Fill" Margin="0,20,0,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding .}" Style="{StaticResource Note}"/>
+                                        <ImageButton x:Name="DeleteButton" Source="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked" 
+                                            WidthRequest="50" HeightRequest="58" HorizontalOptions="EndAndExpand"/>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button x:Name="AddHobbyButton" Text="+" WidthRequest="50" HeightRequest="58" Clicked="AddHobbyButton_Clicked" HorizontalOptions="Center"/>
+
+                <Label Text="Contacts" Style="{StaticResource Headline}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Text="Phone" Style="{StaticResource Note}" Grid.Column="0" Grid.Row="0"/>
+                    <Entry x:Name="PhoneEntry" Grid.Column="1" Grid.Row="0" Style="{StaticResource EntryOnTheSameLine}"/>
+                    <Label Text="Email" Style="{StaticResource Note}" Grid.Column="0" Grid.Row="1"/>
+                    <Entry x:Name="EmailEntry" Grid.Column="1" Grid.Row="1" Style="{StaticResource EntryOnTheSameLine}"/>
+                </Grid>
+
+                <Button x:Name="DoneButton" Text="Done" Clicked="DoneButton_Clicked"  HorizontalOptions="CenterAndExpand" Margin="0,40,0,20"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -2,16 +2,18 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Reinhold.ChatPage"
-             BackgroundColor="#1c1c1c">
+             BackgroundColor="#1c1c1c"
+             Title="Chat"
+             Appearing="ContentPage_Appearing">
     <ContentPage.Content>
         <StackLayout>
             <ScrollView VerticalOptions="FillAndExpand">
-                <ListView x:Name="MessageListView" RowHeight="60">
+                <ListView x:Name="MessageListView" HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <ViewCell.View>
-                                    <Frame HorizontalOptions="{Binding Side}" BackgroundColor="{Binding Color}" CornerRadius="15" Padding="10,3">
+                                    <Frame HorizontalOptions="{Binding Side}" BackgroundColor="{Binding Color}" CornerRadius="15" Padding="10,3" Margin="0,0,0,5">
                                         <Frame.Content>
                                             <StackLayout>
                                                 <Label Text="{Binding Text}"/>
@@ -26,8 +28,8 @@
                 </ListView>
             </ScrollView>
             <StackLayout Orientation="Horizontal">
-                <Entry x:Name="MessageBox" HorizontalOptions="FillAndExpand"/>
-                <ImageButton Source="{Binding MicOrSendButtonIcon}" Aspect="AspectFit" x:Name="MicOrSendButton" Clicked="MicOrSendButton_Clicked" WidthRequest="70" HeightRequest="80"/>
+                <Entry x:Name="MessageBox" HorizontalOptions="FillAndExpand" Focused="MessageBox_Focus" Unfocused="MessageBox_Focus"/>
+                <ImageButton BackgroundColor="Transparent" Source="{Binding MicOrSendButtonIcon}" Aspect="AspectFill" x:Name="MicOrSendButton" Clicked="MicOrSendButton_Clicked" WidthRequest="80" HeightRequest="80"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

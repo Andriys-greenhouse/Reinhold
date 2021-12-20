@@ -7,7 +7,7 @@
             <Style x:Key="Headline" TargetType="Label">
                 <Setter Property="FontSize" Value="Large"/>
                 <Setter Property="TextColor" Value="White"/>
-                <Setter Property="Margin" Value="0,30,0,0"/>
+                <Setter Property="Margin" Value="5,30,0,0"/>
             </Style>
             <Style x:Key="HeadlineWithoutMargin" TargetType="Label" BasedOn="{StaticResource Headline}">
                 <Setter Property="Margin" Value="0"/>
@@ -15,11 +15,16 @@
             <Style x:Key="Note" TargetType="Label">
                 <Setter Property="FontSize" Value="Medium"/>
                 <Setter Property="TextColor" Value="#999999"/>
+                <Setter Property="Margin" Value="5,0,0,0"/>
             </Style>
             <Style x:Key="IconImage" TargetType="Image">
                 <Setter Property="Aspect" Value="Fill"/>
                 <Setter Property="HeightRequest" Value="40"/>
                 <Setter Property="WidthRequest" Value="40"/>
+            </Style>
+            <Style x:Key="EntryOnTheSameLine" TargetType="Entry">
+                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+                <Setter Property="Margin" Value="10,0"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>
