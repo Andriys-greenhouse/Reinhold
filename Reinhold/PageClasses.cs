@@ -119,7 +119,7 @@ namespace Reinhold
             friend.DateIsAcurate = true;
             friend.PlaceOfResidence = new Place("České Budějovice");
             friend.Appearance = "Tall and haves gray hare.";
-            friend.Hobbys.Add("Sailing");
+            friend.Hobbys.Add(new Hobby("Sailing"));
 
             ColorScheme = ColorWord.Green;
             SearchDept = 3;
@@ -135,6 +135,7 @@ namespace Reinhold
             {
                 Stories.Add(new Story()
                 {
+                    Place = new Place("Paris"),
                     Text = "It all happend yesterday...",
                     Date = DateTime.Now,
                     People = new ObservableCollection<Acquaintance>() { friend }
@@ -163,7 +164,7 @@ namespace Reinhold
             get { return id; }
             set
             {
-                if(id == "") { id = DateTime.Now.Ticks.ToString(); }
+                if (id == "") { id = DateTime.Now.Ticks.ToString(); }
                 else { throw new ArgumentException("ID can be set only once!"); }
             }
         }
@@ -176,7 +177,7 @@ namespace Reinhold
         public Place PlaceOfResidence { get; set; }
         public string Appearance { get; set; }
         public bool IsMan { get; set; }
-        public ObservableCollection<string> Hobbys { get; set; }
+        public ObservableCollection<Hobby> Hobbys { get; set; }
 
         [JsonIgnore]
         string phoneNumber;
@@ -207,6 +208,10 @@ namespace Reinhold
                 else { throw new ArgumentException("Invallid email!"); }
             }
         }
+        public Person()
+        {
+            SetDefaultValues();
+        }
         public void SetDefaultValues()
         {
             FullName = "";
@@ -218,7 +223,7 @@ namespace Reinhold
             LastLocation = new Place("");
             Appearance = "";
             IsMan = true;
-            Hobbys = new ObservableCollection<string>();
+            Hobbys = new ObservableCollection<Hobby>();
             PhoneNumber = "";
             Email = "";
         }
@@ -241,10 +246,19 @@ namespace Reinhold
         }
         [JsonIgnore]
         public string BinImagePointer { get { return (App.Current as App).DataOfApplication.DeleteIcon; } }
+        [JsonIgnore]
+        public string RepresentingName { get { return FullName == null ? (LastName == null ? FirstName : LastName) : FullName; } }
+        public Acquaintance() : base()
+        {
+            Relation = Relation.BrawderFamily;
+            LevelOfRelarion = LevelOfLiking.Neutral;
+            LevelOfAcquaintance = 50;
+        }
     }
 
     public class Story
     {
+        public Place Place { get; set; }
         public DateTime Date { get; set; }
         public ObservableCollection<Acquaintance> People { get; set; }
         bool TextFetched = false;
@@ -277,6 +291,10 @@ namespace Reinhold
         public Story()
         {
             TextID = (Data.nextID++).ToString();
+            Place = new Place("");
+            Date = DateTime.Now;
+            People = new ObservableCollection<Acquaintance>();
+            Text = "";
         }
 
         async Task<string> FetchText()
@@ -308,9 +326,13 @@ namespace Reinhold
     {
         public string AuthorsCompleteName { get; set; }
         public string Title { get; set; }
-        public LevelOfLiking Score { get; set; }
+        public int LevelOfLiking { get; set; }
         bool QuoteFetched = false;
         public string QuotesID;
+        [JsonIgnore]
+        public string BinImagePointer { get { return (App.Current as App).DataOfApplication.DeleteIcon; } }
+        [JsonIgnore]
+        public string RepresentingText { get { return FavouriteQuote.Substring(0, FavouriteQuote.Length > 37 ? 37 : FavouriteQuote.Length) + (FavouriteQuote.Length > 37 ? "..." : ""); } }
         [JsonIgnore]
         string favouriteQuote;
         public string FavouriteQuote
@@ -335,6 +357,10 @@ namespace Reinhold
         public Book()
         {
             QuotesID = (Data.nextID++).ToString();
+            AuthorsCompleteName = "";
+            Title = "";
+            LevelOfLiking = 50;
+            favouriteQuote = "";
         }
 
         async Task<string> FetchQuote()
@@ -439,6 +465,18 @@ namespace Reinhold
             else { IndividualDays[IndividualDays.Count - 1].Messages.Add(aMessage); }
             */
             Messages.Add(aMessage);
+        }
+    }
+
+    public class Hobby
+    {
+        public string Text { get; set; }
+        [JsonIgnore]
+        public string BinImagePointer { get { return (App.Current as App).DataOfApplication.DeleteIcon; } }
+
+        public Hobby(string aText)
+        {
+            Text = aText;
         }
     }
 }

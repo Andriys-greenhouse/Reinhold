@@ -8,7 +8,7 @@
         <ScrollView>
             <StackLayout>
                 <Frame x:Name="HeadingFrame" BackgroundColor="{Binding ColorSchmeInColor}" CornerRadius="0">
-                    <Label Text="Personal" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
+                    <Label Text="Acquaintance" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
                 </Frame>
 
                 <Label Text="Name" Style="{StaticResource HeadlineWithoutMargin}"/>

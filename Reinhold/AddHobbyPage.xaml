@@ -9,7 +9,7 @@
             <Label Text="New hobby" Style="{StaticResource HeadlineWithoutMargin}"/>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Hobby" Style="{StaticResource Note}" HorizontalOptions="Start"/>
-                <Entry x:Name="HobbyEntry" Text="{Binding .}" Style="{StaticResource EntryOnTheSameLine}" HorizontalOptions="FillAndExpand"/>
+                <Entry x:Name="HobbyEntry" Text="{Binding Hobby}" Style="{StaticResource EntryOnTheSameLine}" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
             <Button x:Name="AddButton" Text="Add" Clicked="AddButton_Clicked" HorizontalOptions="CenterAndExpand"/>
         </StackLayout>

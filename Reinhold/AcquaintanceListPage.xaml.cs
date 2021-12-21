@@ -8,31 +8,29 @@ using System.Threading;
 namespace Reinhold
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class StoriesListPage : ContentPage
+    public partial class AcquaintanceListPage : ContentPage
     {
-        public ObservableCollection<Story> StoriesCopy { get; set; }
+        public ObservableCollection<Acquaintance> AcquaintancesCopy { get; set; }
         public Color ColorSchemeInColor { get { return (App.Current as App).DataOfApplication.ColorSchemeInColor; } }
-        public StoriesListPage()
+        public AcquaintanceListPage()
         {
-            StoriesCopy = (App.Current as App).DataOfApplication.Stories;
+            AcquaintancesCopy = (App.Current as App).DataOfApplication.Acquaintances;
             BindingContext = this;
             InitializeComponent();
         }
 
         private async void DeleteButton_Clicked(object sender, EventArgs e)
         {
-            Story ClickedContent = (sender as ImageButton).CommandParameter as Story;
-            if (!await DisplayAlert("Confirmation", $"Are you shure that you want to delete this story?\n({ClickedContent.RepresentingText})", "No", "Yes"))
+            Acquaintance ClickedContent = (sender as ImageButton).CommandParameter as Acquaintance;
+            if (!await DisplayAlert("Confirmation", $"Are you shure that you want to delete this acquaintance?\n({ClickedContent.FullName})", "No", "Yes"))
             {
-                StoriesCopy.Remove(ClickedContent);
+                AcquaintancesCopy.Remove(ClickedContent);
             }
         }
 
-        private async void StoriesListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        private async void AcquaintancesListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            StoryPage current = new StoryPage((Story)StoriesListView.SelectedItem);
-
-            //from https://stackoverflow.com/questions/39652909/await-for-a-pushmodalasync-form-to-closed-in-xamarin-forms
+            AcquaintanceDataPage current = new AcquaintanceDataPage((Acquaintance)AcquaintancesListView.SelectedItem);
             var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             current.Disappearing += (sender2, e2) =>
             {
@@ -42,16 +40,16 @@ namespace Reinhold
             await Task.Run(() => waitHandle.WaitOne());
             if (current.HandedIn)
             {
-                StoriesCopy.Remove((Story)StoriesListView.SelectedItem);
-                StoriesCopy.Add(current.Displayed);
-                StoriesListView.ItemsSource = StoriesCopy;
+                AcquaintancesCopy.Remove((Acquaintance)AcquaintancesListView.SelectedItem);
+                AcquaintancesCopy.Add(current.Displayed);
+                AcquaintancesListView.ItemsSource = AcquaintancesCopy;
             }
             BindingContext = this;
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            StoryPage current = new StoryPage(new Story());
+            AcquaintanceDataPage current = new AcquaintanceDataPage(new Acquaintance());
             var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             current.Disappearing += (sender2, e2) =>
             {
@@ -61,16 +59,15 @@ namespace Reinhold
             await Task.Run(() => waitHandle.WaitOne());
             if (current.HandedIn)
             {
-                StoriesCopy.Add(current.Displayed);
-                StoriesListView.ItemsSource = StoriesCopy;
+                AcquaintancesCopy.Add(current.Displayed);
+                AcquaintancesListView.ItemsSource = AcquaintancesCopy;
             }
-            //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
             BindingContext = this;
         }
 
-        private void StoriesListPage_Disappearing(object sender, EventArgs e)
+        private void AcquaintanceListPage_Disappearing(object sender, EventArgs e)
         {
-            (App.Current as App).DataOfApplication.Stories = StoriesCopy;
+            (App.Current as App).DataOfApplication.Acquaintances = AcquaintancesCopy;
         }
     }
 }

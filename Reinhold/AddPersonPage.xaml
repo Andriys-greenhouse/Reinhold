@@ -5,7 +5,7 @@
              BackgroundColor="#1c1c1c">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="New hobby" Style="{StaticResource HeadlineWithoutMargin}"/>
+            <Label Text="Add person" Style="{StaticResource HeadlineWithoutMargin}"/>
             <ListView x:Name="PersonListView" ItemsSource="{Binding people}" ItemTapped="PersonListView_ItemTapped">
                 <ListView.ItemTemplate>
                     <DataTemplate>

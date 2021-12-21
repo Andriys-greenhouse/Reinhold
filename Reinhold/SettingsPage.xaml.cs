@@ -59,6 +59,7 @@ namespace Reinhold
                 {
                     DataOfApplicationCopy.ColorScheme = (ColorWord)ColorSchemePicker.SelectedIndex;
                     SettingsPage_Disappearing(this, new EventArgs());
+                    (App.Current as App).Save();
                     App.Current.MainPage = new MainPage();
                 }
                 else

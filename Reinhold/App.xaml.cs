@@ -40,12 +40,17 @@ namespace Reinhold
 
         protected async override void OnSleep()
         {
-            Properties["LastSession"] = DateTime.Now;
-            await SecureStorage.SetAsync("Data", JsonConvert.SerializeObject(DataOfApplication));
+            Save();
         }
 
         protected override void OnResume()
         {
+        }
+
+        public async void Save()
+        {
+            Properties["LastSession"] = DateTime.Now;
+            await SecureStorage.SetAsync("Data", JsonConvert.SerializeObject(DataOfApplication));
         }
     }
 }

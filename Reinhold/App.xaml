@@ -23,7 +23,7 @@
                 <Setter Property="WidthRequest" Value="40"/>
             </Style>
             <Style x:Key="EntryOnTheSameLine" TargetType="Entry">
-                <Setter Property="VerticalOptions" Value="EndAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
                 <Setter Property="Margin" Value="10,0"/>
             </Style>
         </ResourceDictionary>

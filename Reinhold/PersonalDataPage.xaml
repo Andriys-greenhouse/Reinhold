@@ -50,7 +50,7 @@
                     <CheckBox x:Name="IsManBox" IsChecked="{Binding IsMan}"/>
                 </StackLayout>
 
-                <ListView x:Name="HobbyListView" Header="Hobbys" ItemsSource="{Binding Hobbys}" VerticalOptions="Fill" Margin="0,20,0,0">
+                <!--<ListView x:Name="HobbyListView" Header="Hobbys" ItemsSource="{Binding Hobbys}" VerticalOptions="Fill" Margin="0,20,0,0">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -64,7 +64,22 @@
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                </ListView>
+                </ListView>-->
+
+                <Label Text="Hobbys" Style="{StaticResource Note}" Margin="0,20,0,0"/>
+                <StackLayout x:Name="HobbyStackLayout" BindableLayout.ItemsSource="{Binding Hobbys}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Frame MinimumHeightRequest="60" CornerRadius="5" BackgroundColor="#2c2c2c">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Text}" Style="{StaticResource Note}"/>
+                                    <ImageButton x:Name="DeleteButton" Source="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked" 
+                                            WidthRequest="50" HeightRequest="58" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
                 <Button x:Name="AddHobbyButton" Text="+" WidthRequest="50" HeightRequest="58" Clicked="AddHobbyButton_Clicked" HorizontalOptions="Center"/>
 
                 <Label Text="Contacts" Style="{StaticResource Headline}"/>

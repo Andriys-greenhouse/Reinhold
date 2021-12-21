@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Reinhold.BookPage"
+             BackgroundColor="#1c1c1c">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame x:Name="HeadingFrame" BackgroundColor="{Binding ColorSchmeInColor}" CornerRadius="0">
+                    <Label Text="Book" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
+                </Frame>
+
+                <Label Text="About book" Style="{StaticResource HeadlineWithoutMargin}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Title" Style="{StaticResource Note}"/>
+                    <Entry x:Name="TitleEntry" Text="{Binding Title}" Style="{StaticResource EntryOnTheSameLine}" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Author's name" Style="{StaticResource Note}"/>
+                    <Entry x:Name="AuthorEntry" Text="{Binding AuthorsCompleteName}" Style="{StaticResource EntryOnTheSameLine}" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+
+                <Label Text="Opinion" Style="{StaticResource Headline}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="&quot;Level of liking&quot;" Style="{StaticResource Note}"/>
+                    <Label x:Name="LevelOfLikingNumberLabel" Text="{Binding LevelOfLiking,UpdateSourceEventName=PropertyChanged}" Style="{StaticResource HeadlineWithoutMargin}"
+                           HorizontalOptions="EndAndExpand" Margin="0,0,15,0"/>
+                </StackLayout>
+                <Slider x:Name="LevelOfLikingSlider" Maximum="100" Value="{Binding LevelOfLiking}" ValueChanged="LevelOfLikingSlider_ValueChanged" HorizontalOptions="FillAndExpand"/>
+                <Label Text="Favourite quote" Style="{StaticResource Note}"/>
+                <Editor x:Name="QuoteEditor" Text="{Binding FavouriteQuote}" AutoSize="TextChanges" VerticalOptions="StartAndExpand"/>
+                <Button x:Name="DoneButton" Text="Done" Clicked="DoneButton_Clicked" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand" Margin="0,40,0,20"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

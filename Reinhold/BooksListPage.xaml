@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Reinhold.BooksListPage"
+             BackgroundColor="#1c1c1c"
+             Title="Data management"
+             Disappearing="BooksListPage_Disappearing">
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame BackgroundColor="{Binding ColorSchemeInColor}" CornerRadius="0">
+                <Label Text="Books" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
+            </Frame>
+            <ListView x:Name="BooksListView" ItemsSource="{Binding BooksCopy}" ItemTapped="BooksListView_ItemTapped" RowHeight="58">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Title}" Style="{StaticResource Note}"/>
+                                    <ImageButton Source="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked" 
+                                            WidthRequest="50" HeightRequest="58" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button x:Name="AddButton" Text="Add" Clicked="AddButton_Clicked" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand" Margin="0,0,0,30"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

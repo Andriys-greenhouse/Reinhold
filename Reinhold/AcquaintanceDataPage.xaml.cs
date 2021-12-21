@@ -35,7 +35,7 @@ namespace Reinhold
 
         private void DeleteButton_Clicked(object sender, EventArgs e)
         {
-            Displayed.Hobbys.Remove((sender as ImageButton).CommandParameter as string);
+            Displayed.Hobbys.Remove((sender as ImageButton).CommandParameter as Hobby);
             //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
         }
 
@@ -43,7 +43,7 @@ namespace Reinhold
         {
             AddHobbyPage curent = new AddHobbyPage();
             await Navigation.PushAsync(curent);
-            if(curent.Submitted && curent.Hobby.Length > 0) { Displayed.Hobbys.Add(curent.Hobby); }
+            if(curent.Submitted && curent.Hobby.Length > 0) { Displayed.Hobbys.Add(new Hobby(curent.Hobby)); }
             //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
         }
 

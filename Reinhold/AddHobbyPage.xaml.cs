@@ -17,13 +17,14 @@ namespace Reinhold
         public AddHobbyPage()
         {
             Submitted = false;
-            BindingContext = Hobby;
+            BindingContext = this;
             InitializeComponent();
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
             Submitted = true;
+            Hobby = HobbyEntry.Text;
             await Navigation.PopAsync();
         }
     }

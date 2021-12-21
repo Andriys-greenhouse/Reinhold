@@ -20,6 +20,12 @@
     <Compile Update="AcquaintanceDataPage.xaml.cs">
       <DependentUpon>AcquaintanceDataPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="BooksListPage.xaml.cs">
+      <DependentUpon>BooksListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="AcquaintanceListPage.xaml.cs">
+      <DependentUpon>AcquaintanceListPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +33,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="AddPersonPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="BookPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="ChatPage.xaml">
