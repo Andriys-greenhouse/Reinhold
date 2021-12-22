@@ -17,6 +17,7 @@ namespace Reinhold
         public bool HandedIn = false;
         public double LevelOfLiking { get { return Math.Round(LevelOfLikingSlider.Value); } }
         public Book Displayed { get; set; }
+        public Color ColorSchemeInColor { get { return (App.Current as App).DataOfApplication.ColorSchemeInColor; } }
         public BookPage(Book aBook)
         {
             Displayed = aBook;

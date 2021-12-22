@@ -1,14 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
-using System.IO;
-using Newtonsoft.Json;
-using System.Reflection;
-using Xamarin.Essentials;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace Reinhold
 {
@@ -24,7 +21,11 @@ namespace Reinhold
 
         public static int nextID { get; set; }
 
-        public ColorWord ColorScheme { get; set; }
+        public ColorWord ColorScheme
+        {
+            get;
+            set;
+        }
         [JsonIgnore]
         int searchDept;
         public int SearchDept
@@ -32,12 +33,15 @@ namespace Reinhold
             get { return searchDept; }
             set
             {
-                if(value > 10 || value < 0) { throw new ArgumentException("Search dept must be between 0 and 10!"); }
+                if (value > 10 || value < 0) { throw new ArgumentException("Search dept must be between 0 and 10!"); }
                 searchDept = value;
             }
         }
-        public bool DisplayNotifications { get; 
-            set; }
+        public bool DisplayNotifications
+        {
+            get;
+            set;
+        }
 
         public Person User { get; set; }
         public ObservableCollection<Acquaintance> Acquaintances { get; set; }
@@ -72,25 +76,30 @@ namespace Reinhold
         public string MicIcon { get { return $"{ColorScheme.ToString().ToLower()}Mic.png"; } }
 
         [JsonIgnore]
-        public Color ColorSchemeInColor 
-        { 
+        public Color ColorSchemeInColor
+        {
             get
             {
                 switch (ColorScheme)
                 {
                     case ColorWord.Red:
                         return Color.FromHex("#fd0808");
-                        //return Color.FromRgb(99, 3, 3);
+                    //return Color.FromRgb(99, 3, 3);
                     case ColorWord.Green:
                         return Color.FromHex("#4c9f3d");
-                        //return Color.FromRgb(29, 62, 23);
+                    //return Color.FromRgb(29, 62, 23);
                     case ColorWord.Blue:
                         return Color.FromHex("#3f17d3");
-                        //return Color.FromRgb(24, 8, 82);
+                    //return Color.FromRgb(24, 8, 82);
                     default:
                         return Color.FromRgb(0, 0, 0);
                 }
             }
+        }
+
+        public Data()
+        {
+            SetDefaultValues();
         }
 
         public void SetDefaultValues()
@@ -121,17 +130,13 @@ namespace Reinhold
             friend.Appearance = "Tall and haves gray hare.";
             friend.Hobbys.Add(new Hobby("Sailing"));
 
-            ColorScheme = ColorWord.Green;
-            SearchDept = 3;
-            DisplayNotifications = true;
-
             Books.Add(new Book()
             {
                 Title = "Farenheit 451",
                 AuthorsCompleteName = "Raymond Douglas Bradbury"
             });
 
-            for(int i = 0; i < 21; i++)
+            for (int i = 0; i < 21; i++)
             {
                 Stories.Add(new Story()
                 {
@@ -203,7 +208,8 @@ namespace Reinhold
                 Regex rx = new Regex(@"^(?<address>.*)\@(?<provider>.*)\.(?<domain>.{2,3})$");
                 if (rx.IsMatch(value) || value == "")
                 {
-                    email = rx.Match(value).Groups[1].Value;
+                    //email = rx.Match(value).Groups[1].Value;
+                    email = rx.Match(value).Value;
                 }
                 else { throw new ArgumentException("Invallid email!"); }
             }
@@ -235,12 +241,12 @@ namespace Reinhold
         public LevelOfLiking LevelOfRelarion { get; set; }
         [JsonIgnore]
         int levelOfAcquaintance;
-        public int LevelOfAcquaintance 
+        public int LevelOfAcquaintance
         {
             get { return levelOfAcquaintance; }
             set
             {
-                if(value > 100 || value < 0) { throw new ArgumentException("Level of acquaintance must be between 0 and 100!"); }
+                if (value > 100 || value < 0) { throw new ArgumentException("Level of acquaintance must be between 0 and 100!"); }
                 levelOfAcquaintance = value;
             }
         }
@@ -284,7 +290,7 @@ namespace Reinhold
             }
         }
         [JsonIgnore]
-        public string RepresentingText { get { return Text.Substring(0, Text.Length > 37 ? 37 : Text.Length) + (Text.Length > 37 ? "..." : ""); } }
+        public string RepresentingText { get { return Text.Replace('\n', ' ').Substring(0, Text.Length > 17 ? 17 : Text.Length) + (Text.Length > 17 ? "..." : ""); } }
         [JsonIgnore]
         public string BinImagePointer { get { return (App.Current as App).DataOfApplication.DeleteIcon; } }
 
@@ -332,7 +338,7 @@ namespace Reinhold
         [JsonIgnore]
         public string BinImagePointer { get { return (App.Current as App).DataOfApplication.DeleteIcon; } }
         [JsonIgnore]
-        public string RepresentingText { get { return FavouriteQuote.Substring(0, FavouriteQuote.Length > 37 ? 37 : FavouriteQuote.Length) + (FavouriteQuote.Length > 37 ? "..." : ""); } }
+        public string RepresentingText { get { return FavouriteQuote.Replace('\n', ' ').Substring(0, FavouriteQuote.Length > 17 ? 17 : FavouriteQuote.Length) + (FavouriteQuote.Length > 17 ? "..." : ""); } }
         [JsonIgnore]
         string favouriteQuote;
         public string FavouriteQuote
@@ -436,9 +442,9 @@ namespace Reinhold
                     Date = item.Date;
                 }
 
-                if(Date.Year != item.Date.Year || Date.Month != item.Date.Month || Date.Day != item.Date.Day) 
-                { 
-                    throw new ArgumentException("Not all messages are from the same day!"); 
+                if (Date.Year != item.Date.Year || Date.Month != item.Date.Month || Date.Day != item.Date.Day)
+                {
+                    throw new ArgumentException("Not all messages are from the same day!");
                 }
 
                 Messages.Add(item);
@@ -449,7 +455,7 @@ namespace Reinhold
     public class MessageManager
     {
         //public ObservableCollection<DayOfMessages> IndividualDays { get; set; }
-        public ObservableCollection<Message> Messages {get; set;}
+        public ObservableCollection<Message> Messages { get; set; }
         public MessageManager()
         {
             Messages = new ObservableCollection<Message>();

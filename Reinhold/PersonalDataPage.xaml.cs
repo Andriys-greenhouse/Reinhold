@@ -22,7 +22,7 @@ namespace Reinhold
             InitializeComponent();
             HeadingFrame.BindingContext = this;
             PhoneEntry.Text = Displayed.PhoneNumber;
-            EmailEntry.Text = Displayed.PhoneNumber;
+            EmailEntry.Text = Displayed.Email;
         }
 
         private void DeleteButton_Clicked(object sender, EventArgs e)
@@ -35,14 +35,14 @@ namespace Reinhold
         private async void AddHobbyButton_Clicked(object sender, EventArgs e)
         {
             var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            AddHobbyPage curent = new AddHobbyPage();
-            curent.Disappearing += (sender2, e2) =>
+            AddHobbyPage current = new AddHobbyPage();
+            current.Disappearing += (sender2, e2) =>
             {
                 waitHandle.Set();
             };
-            await Navigation.PushAsync(curent);
+            await Navigation.PushAsync(current);
             await Task.Run(() => waitHandle.WaitOne());
-            if(curent.Submitted && curent.Hobby.Length > 0) { Displayed.Hobbys.Add(new Hobby(curent.Hobby)); }
+            if(current.Submitted && current.Hobby.Length > 0) { Displayed.Hobbys.Add(new Hobby(current.Hobby == null ? "" : current.Hobby)); }
             //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
             BindingContext = Displayed;
         }
@@ -54,7 +54,7 @@ namespace Reinhold
             {
                 Displayed.PhoneNumber = PhoneEntry.Text;
             }
-            catch (Exception)
+            catch (Exception f)
             {
                 promt += "\nInvallid phone number.";
             }
@@ -62,7 +62,7 @@ namespace Reinhold
             {
                 Displayed.Email = EmailEntry.Text;
             }
-            catch (Exception)
+            catch (Exception g)
             {
                 promt += "\nInvallid email.";
             }

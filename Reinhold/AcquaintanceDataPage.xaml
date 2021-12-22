@@ -50,21 +50,20 @@
                     <CheckBox x:Name="IsManBox" IsChecked="{Binding IsMan}"/>
                 </StackLayout>
 
-                <ListView x:Name="HobbyListView" Header="Hobbys" ItemsSource="{Binding Hobbys}" VerticalOptions="Fill" Margin="0,20,0,0">
-                    <ListView.ItemTemplate>
+                <Label Text="Hobbys" Style="{StaticResource Note}" Margin="0,20,0,0"/>
+                <StackLayout x:Name="HobbyStackLayout" BindableLayout.ItemsSource="{Binding Hobbys}">
+                    <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <ViewCell.View>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding .}" Style="{StaticResource Note}"/>
-                                        <ImageButton x:Name="DeleteButton" Source="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked" 
+                            <Frame MinimumHeightRequest="40" CornerRadius="5" BackgroundColor="#2c2c2c">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Text}" Style="{StaticResource Note}"/>
+                                    <ImageButton x:Name="DeleteButton" Source="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked" 
                                             WidthRequest="50" HeightRequest="58" HorizontalOptions="EndAndExpand"/>
-                                    </StackLayout>
-                                </ViewCell.View>
-                            </ViewCell>
+                                </StackLayout>
+                            </Frame>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
                 <Button x:Name="AddHobbyButton" Text="+" WidthRequest="50" HeightRequest="58" Clicked="AddHobbyButton_Clicked" HorizontalOptions="Center"/>
 
                 <Label Text="Contacts" Style="{StaticResource Headline}"/>
@@ -96,11 +95,13 @@
                     </Grid.RowDefinitions>
                     <Label Text="Relation" Style="{StaticResource Note}" Grid.Column="0" Grid.Row="0"/>
                     <Picker x:Name="RelationPicker" ItemsSource="{Binding .}" ItemDisplayBinding="{Binding .}" SelectedIndexChanged="RelationPicker_SelectedIndexChanged"
-                            VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="10,0"/>
+                            VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="10,0"
+                            Grid.Column="1" Grid.Row="0"/>
                     <Label Text="Level of relation" Style="{StaticResource Note}" Grid.Column="0" Grid.Row="1"/>
                     <Picker x:Name="LevelOfRelationPicker" ItemsSource="{Binding .}" ItemDisplayBinding="{Binding .}" SelectedIndexChanged="LevelOfRelationPicker_SelectedIndexChanged"
-                            VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="10,0"/>
-                    <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+                            VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="10,0"
+                            Grid.Column="1" Grid.Row="1"/>
+                    <StackLayout Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
                         <StackLayout Orientation="Horizontal">
                             <Label Text="Level of acquaintence" Style="{StaticResource Note}"/>
                             <Label x:Name="LevelOfAcqLabel" Text="{Binding LevelOfAcq,UpdateSourceEventName=PropertyChanged}" Style="{StaticResource HeadlineWithoutMargin}"/>

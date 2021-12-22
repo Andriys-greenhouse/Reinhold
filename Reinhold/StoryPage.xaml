@@ -47,7 +47,7 @@
                 </StackLayout>
                 <Button x:Name="AddPeopleButton" Text="+" WidthRequest="50" HeightRequest="58" Clicked="AddPeopleButton_Clicked" HorizontalOptions="Center"/>
                 <Label Text="Text" Style="{StaticResource Headline}"/>
-                <Editor x:Name="TextEditor" Text="{Binding Text}"/>
+                <Editor x:Name="TextEditor" AutoSize="TextChanges" Text="{Binding Text}"/>
                 <Button x:Name="DoneButton" Text="Done" Clicked="DoneButton_Clicked"  HorizontalOptions="CenterAndExpand" Margin="0,40,0,20"/>
             </StackLayout>
         </ScrollView>

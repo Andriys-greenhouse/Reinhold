@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Reinhold
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AcquaintanceDataPage : ContentPage
+    public partial class AcquaintanceDataPage : ContentPage, INotifyPropertyChanged
     {
         public Color ColorSchmeInColor { get { return (App.Current as App).DataOfApplication.ColorSchemeInColor; } }
         public Acquaintance Displayed { get; set; }
         public bool HandedIn = false;
         public double LevelOfAcq { get { return Math.Round(LevelOfAcqSlider.Value); } }
+        public event PropertyChangedEventHandler PropertyChanged;
         public AcquaintanceDataPage(Acquaintance aAcquaintence)
         {
             Displayed = aAcquaintence;
@@ -24,27 +28,31 @@ namespace Reinhold
             InitializeComponent();
             HeadingFrame.BindingContext = this;
             PhoneEntry.Text = Displayed.PhoneNumber;
-            EmailEntry.Text = Displayed.PhoneNumber;
+            EmailEntry.Text = Displayed.Email;
             RelationPicker.BindingContext = new ObservableCollection<string>(Enum.GetNames(typeof(Relation)));
             RelationPicker.SelectedIndex = (int)Displayed.Relation;
             LevelOfRelationPicker.BindingContext = new ObservableCollection<string>(Enum.GetNames(typeof(LevelOfLiking)));
             LevelOfRelationPicker.SelectedIndex = (int)Displayed.LevelOfRelarion;
             LevelOfAcqLabel.BindingContext = this;
-            LevelOfAcqSlider.Value = Displayed.LevelOfAcquaintance;
         }
 
         private void DeleteButton_Clicked(object sender, EventArgs e)
         {
             Displayed.Hobbys.Remove((sender as ImageButton).CommandParameter as Hobby);
-            //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
         }
 
         private async void AddHobbyButton_Clicked(object sender, EventArgs e)
         {
-            AddHobbyPage curent = new AddHobbyPage();
-            await Navigation.PushAsync(curent);
-            if(curent.Submitted && curent.Hobby.Length > 0) { Displayed.Hobbys.Add(new Hobby(curent.Hobby)); }
-            //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
+            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            AddHobbyPage current = new AddHobbyPage();
+            current.Disappearing += (sender2, e2) =>
+            {
+                waitHandle.Set();
+            };
+            await Navigation.PushAsync(current);
+            await Task.Run(() => waitHandle.WaitOne());
+            if (current.Submitted && current.Hobby.Length > 0) { Displayed.Hobbys.Add(new Hobby(current.Hobby == null ? "" : current.Hobby)); }
+            BindingContext = Displayed;
         }
 
         private async void DoneButton_Clicked(object sender, EventArgs e)
@@ -78,19 +86,20 @@ namespace Reinhold
             }
         }
 
-        private void RelationPicker_SelectedIndexChanged(object sender, EventArgs e)
+        private async void RelationPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            Displayed.Relation = (Relation)RelationPicker.SelectedIndex;
         }
 
         private void LevelOfRelationPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            Displayed.LevelOfRelarion = (LevelOfLiking)LevelOfRelationPicker.SelectedIndex;
         }
 
         private void LevelOfAcqSlider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
-
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("LevelOfAcq"));
+            Displayed.LevelOfAcquaintance = (int)Math.Round(LevelOfAcqSlider.Value);
         }
     }
 }

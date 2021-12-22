@@ -16,7 +16,6 @@ namespace Reinhold
         public App()
         {
             DataOfApplication = new Data();
-            DataOfApplication.SetTestValues();
             InitializeComponent();
 
             MainPage = new MainPage();

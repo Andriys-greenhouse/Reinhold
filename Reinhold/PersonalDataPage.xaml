@@ -70,7 +70,7 @@
                 <StackLayout x:Name="HobbyStackLayout" BindableLayout.ItemsSource="{Binding Hobbys}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <Frame MinimumHeightRequest="60" CornerRadius="5" BackgroundColor="#2c2c2c">
+                            <Frame MinimumHeightRequest="50" CornerRadius="5" BackgroundColor="#2c2c2c">
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="{Binding Text}" Style="{StaticResource Note}"/>
                                     <ImageButton x:Name="DeleteButton" Source="{Binding BinImagePointer}" CommandParameter="{Binding .}" Clicked="DeleteButton_Clicked" 

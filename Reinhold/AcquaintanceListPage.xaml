@@ -10,7 +10,7 @@
             <Frame BackgroundColor="{Binding ColorSchemeInColor}" CornerRadius="0">
                 <Label Text="Acquaintances" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
             </Frame>
-            <ListView x:Name="AcquaintancesListView" ItemsSource="{Binding StoriesCopy}" ItemTapped="AcquaintancesListView_ItemTapped" RowHeight="58">
+            <ListView x:Name="AcquaintancesListView" ItemsSource="{Binding AcquaintancesCopy}" ItemTapped="AcquaintancesListView_ItemTapped" RowHeight="58">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
