@@ -6,7 +6,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Frame x:Name="HeadingFrame" BackgroundColor="{Binding ColorSchmeInColor}" CornerRadius="0">
+                <Frame x:Name="HeadingFrame" BackgroundColor="{Binding ColorSchemeInColor}" CornerRadius="0">
                     <Label Text="Book" Style="{StaticResource HeadlineWithoutMargin}" HorizontalOptions="CenterAndExpand"/>
                 </Frame>
 

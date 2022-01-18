@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BA90516B-E67E-4385-AD87-F59B33021B4A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MethodTestSite</RootNamespace>
+    <AssemblyName>MethodTestSite</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleRandomModul.cs" />
+    <Compile Include="TicTacToe.cs" />
+    <Compile Include="WebModule.cs" />
+    <Compile Include="WordSoccer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="dictionary\DA.json" />
+    <None Include="dictionary\DB.json" />
+    <None Include="dictionary\DC.json" />
+    <None Include="dictionary\DD.json" />
+    <None Include="dictionary\DE.json" />
+    <None Include="dictionary\DF.json" />
+    <None Include="dictionary\DG.json" />
+    <None Include="dictionary\DH.json" />
+    <None Include="dictionary\DI.json" />
+    <None Include="dictionary\DJ.json" />
+    <None Include="dictionary\DK.json" />
+    <None Include="dictionary\DL.json" />
+    <None Include="dictionary\DM.json" />
+    <None Include="dictionary\DN.json" />
+    <None Include="dictionary\DO.json" />
+    <None Include="dictionary\DP.json" />
+    <None Include="dictionary\DQ.json" />
+    <None Include="dictionary\DR.json" />
+    <None Include="dictionary\DS.json" />
+    <None Include="dictionary\DT.json" />
+    <None Include="dictionary\DU.json" />
+    <None Include="dictionary\DV.json" />
+    <None Include="dictionary\DW.json" />
+    <None Include="dictionary\DX.json" />
+    <None Include="dictionary\DY.json" />
+    <None Include="dictionary\DZ.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dictionary\wordList.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
