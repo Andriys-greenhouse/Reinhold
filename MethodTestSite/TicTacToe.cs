@@ -47,6 +47,8 @@ namespace MethodTestSite
                     Field[a, b] = defaultChar;
                 }
             }
+
+            Outputing += OutputMethod;
         }
         public override string ToString()
         {

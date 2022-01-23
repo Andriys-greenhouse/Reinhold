@@ -57,32 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="dictionary\DA.json" />
-    <None Include="dictionary\DB.json" />
-    <None Include="dictionary\DC.json" />
-    <None Include="dictionary\DD.json" />
-    <None Include="dictionary\DE.json" />
-    <None Include="dictionary\DF.json" />
-    <None Include="dictionary\DG.json" />
-    <None Include="dictionary\DH.json" />
-    <None Include="dictionary\DI.json" />
-    <None Include="dictionary\DJ.json" />
-    <None Include="dictionary\DK.json" />
-    <None Include="dictionary\DL.json" />
-    <None Include="dictionary\DM.json" />
-    <None Include="dictionary\DN.json" />
-    <None Include="dictionary\DO.json" />
-    <None Include="dictionary\DP.json" />
-    <None Include="dictionary\DQ.json" />
-    <None Include="dictionary\DR.json" />
-    <None Include="dictionary\DS.json" />
-    <None Include="dictionary\DT.json" />
-    <None Include="dictionary\DU.json" />
-    <None Include="dictionary\DV.json" />
-    <None Include="dictionary\DW.json" />
-    <None Include="dictionary\DX.json" />
-    <None Include="dictionary\DY.json" />
-    <None Include="dictionary\DZ.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
