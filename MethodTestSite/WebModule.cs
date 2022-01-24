@@ -193,6 +193,3 @@ namespace MethodTestSite
         }
     }
 }
-//<a.*href\=(\"|\')(?<ImgLink>.[^"']*).*alt\=(\"|\')(?<ImgDescr>.[^'"]*).*>(?<ImgContent>.*)<\/a>|<a.*href\=(\"|\')(?<TextLink>.[^"']*).*>(?<TextContent>.*)<\/a>|<button.*onclick\=(\"|\')(.*(\"|\')(?<ButtLocation>.[^"']*)(\"|\')).*>(?<ButtContent>.*)<\/button>
-//63b3a441735f47609eb041ac16104b8b
-//https://newsapi.org/v2/everything?apiKey=63b3a441735f47609eb041ac16104b8b&language=en&sortBy-popularity&q=bitcoin

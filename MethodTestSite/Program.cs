@@ -12,7 +12,6 @@ namespace MethodTestSite
     {
         static void Main(string[] args)
         {
-            /*
             //random number
             double max = 10.9;
             bool whole = false;
@@ -55,10 +54,11 @@ namespace MethodTestSite
             List<MyWebSearchResult> res = WebModule.GoogleWebSearchResultConvert(WebModule.WebSearch(keyWord).Result);
             for (int i = 0; i < res.Count; i++)
             {
-                Console.WriteLine(res[i].ToText(i+1) + "\n");
+                Console.WriteLine(res[i].OutputText(i+1) + "\n");
             }
             Console.WriteLine("\n\n\n");
 
+            /*
             //format words
             Dictionary<char, List<string>> data = new Dictionary<char, List<string>>();
             string[] lines;
@@ -91,8 +91,9 @@ namespace MethodTestSite
                 }
 
                 Console.WriteLine($"{last} written");
-            }
+            }*/
 
+            //Word soccer
             WordSoccer wscrGame = WordSoccer.SingleInstance;
             string input;
             Console.WriteLine("computer: {0}", "Before we start, I would like to point out, that I can't recognize, weather what you input are real english words or just set of characters but I will beleave you, that you won't play unfair...");
@@ -102,13 +103,12 @@ namespace MethodTestSite
                 Console.WriteLine("computer: {0}", wscrGame.MakeMove(input));
             } while (wscrGame.GameRuning);
             Console.WriteLine("I don't know any other word...\nYOU WIN");
-            */
 
             //Website search
             Console.WriteLine(WebModule.WebsiteSearch("https://www.ssps.cz/", "suplovani", 1).Result);
 
             //News
-            //Console.WriteLine(WebModule.News("Czech").Result);
+            Console.WriteLine(WebModule.News("Czech").Result);
 
             Console.ReadLine();
         }
