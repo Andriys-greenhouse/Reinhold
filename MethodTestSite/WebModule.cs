@@ -54,69 +54,7 @@ namespace MethodTestSite
             return sb.ToString();
         }
 
-        /*
-        public static async Task<List<WebsiteSearchResult>> WebsiteSublinkSearch(string StartUrl, int Dept)//dept from 1 to 10
-        {
-            if (Dept < 1 || Dept > 10) { throw new ArgumentException("Search dept must be between 1 and 10."); }
-            Regex rx = new Regex(@"<a.*href\=(\{0}|\')(?<ImgLink>.[^{0}']*).*alt\=(\{0}|\')(?<ImgDescr>.[^'{0}]*).*><\/a>|<a.*href\=(\{0}|\')(?<TextLink>.[^{0}']*).*>(?<TextContent>.*)<\/a>|<button.*onclick\=(\{0}|\')(.*(\{0}|\')(?<ButtLocation>.[^{0}']*)(\{0}|\')).*>(?<ButtContent>.*)<\/button>".Replace("{0}", "\""));
-            List<WebsiteSearchResult> final = new List<WebsiteSearchResult>();
-            List<WebsiteSearchResult> operational = new List<WebsiteSearchResult>() { };
-            List<WebsiteSearchResult> last = new List<WebsiteSearchResult>() { new WebsiteSearchResult("", StartUrl, WebsiteSearchResultType.Text) };
-            try
-            {
-                WebsiteSearchResult found = new WebsiteSearchResult();
-                using (HttpClient client = new HttpClient())
-                {
-                    for (int i = 0; i < Dept + 1; i++)
-                    {
-                        foreach (WebsiteSearchResult result in last)
-                        {
-                            HttpResponseMessage response = await client.GetAsync(StartUrl);
-                            foreach (Match match in rx.Matches(await response.Content.ReadAsStringAsync()))
-                            {
-                                found.Update(match.Groups["ImgDescr"].Value, match.Groups["ImgLink"].Value, WebsiteSearchResultType.Image);
-                                found.Update(match.Groups["TextContent"].Value, match.Groups["TextLink"].Value, WebsiteSearchResultType.Text);
-                                found.Update(match.Groups["ButtContent"].Value, match.Groups["ButtLocation"].Value, WebsiteSearchResultType.Button);
-                                operational.Add(found);
-                            }
-                        }
-                        last.Clear();
-                        foreach (WebsiteSearchResult res in operational)
-                        {
-                            final.Add(res);
-                            last.Add(res);
-                        }
-                        operational.Clear();
-                    }
-                }
-                return final.Distinct().ToList();
-            }
-            catch (Exception)
-            {
-                throw new ArgumentException("Invalid URL.");
-            }
-        }
-
-        public static async Task<string> WebsiteSearch(string StartUrl, string RegexToSearch, int Dept)
-        {
-            List<WebsiteSearchResult> sublinks = await WebsiteSublinkSearch(StartUrl, Dept);
-            sublinks.Add(new WebsiteSearchResult("User inputed start URL", StartUrl, WebsiteSearchResultType.Text));
-            Regex rx = new Regex(RegexToSearch);
-            StringBuilder sb = new StringBuilder("Results from web:");
-            int count;
-
-            using (HttpClient client = new HttpClient())
-            {
-                foreach (WebsiteSearchResult result in sublinks)
-                {
-                    count = rx.Matches(await client.GetAsync(result.Link).Result.Content.ReadAsStringAsync()).Count;
-                    if (count > 0) { sb.Append($"\n({count}) {result.Link}"); }
-                }
-            }
-            return sb.ToString();
-        }
-        */
-
+        //method untested and unusable due to time required for completing of a given task
         public static async Task<string> WebsiteSearch(string StartUrl, string RegexToSearch, int Dept)//dept from 1 to 10
         {
             if (Dept < 1 || Dept > 10) { throw new ArgumentException("Search dept must be between 1 and 10."); }
