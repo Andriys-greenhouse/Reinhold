@@ -14,11 +14,7 @@ namespace Reinhold
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ChatPage : ContentPage, INotifyPropertyChanged
     {
-        public Data DataOfApplicationConnector
-        {
-            get { return (App.Current as App).DataOfApplication; }
-            set { (App.Current as App).DataOfApplication = value; }
-        }
+        public Data DataOfApplicationConnector { get; set; }
         public string MicOrSendButtonIcon 
         { 
             get
@@ -35,6 +31,7 @@ namespace Reinhold
         }
         public ChatPage()
         {
+            DataOfApplicationConnector = (App.Current as App).DataOfApplication;
             BindingContext = DataOfApplicationConnector;
             InitializeComponent();
             MicOrSendButton.BindingContext = this;
@@ -59,8 +56,12 @@ namespace Reinhold
             MessageListView.ItemsSource = DataOfApplicationConnector.Messages.Messages;
         }
 
-        private void ContentPage_Appearing(object sender, EventArgs e)
+        private void ChatPage_Appearing(object sender, EventArgs e)
         {
+            DataOfApplicationConnector = (App.Current as App).DataOfApplication;
+            BindingContext = DataOfApplicationConnector;
+            MicOrSendButton.BindingContext = this;
+            MicOrSendButton.Source = MicOrSendButtonIcon;
             MessageListView.ItemsSource = DataOfApplicationConnector.Messages.Messages;
         }
     }

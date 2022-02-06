@@ -11,11 +11,7 @@ namespace Reinhold
 {
     public partial class MainPage : Shell
     {
-        public Data DataOfApplicationConnector
-        {
-            get { return (App.Current as App).DataOfApplication; }
-            set { (App.Current as App).DataOfApplication = value; }
-        }
+        public Data DataOfApplicationConnector { get; set; } = (App.Current as App).DataOfApplication;
         public MainPage()
         {
             BindingContext = DataOfApplicationConnector;

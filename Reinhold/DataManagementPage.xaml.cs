@@ -14,13 +14,10 @@ namespace Reinhold
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DataManagementPage : ContentPage
     {
-        public Data DataOfApplicationConnector
-        {
-            get { return (App.Current as App).DataOfApplication; }
-            set { (App.Current as App).DataOfApplication = value; }
-        }
+        public Data DataOfApplicationConnector { get; set; }
         public DataManagementPage()
         {
+            DataOfApplicationConnector = (App.Current as App).DataOfApplication;
             BindingContext = DataOfApplicationConnector;
             InitializeComponent();
         }
@@ -95,6 +92,12 @@ namespace Reinhold
             {
                 (App.Current as App).DataOfApplication.Books.Add(current.Displayed);
             }
+        }
+
+        private void DataManagementPage_Appearing(object sender, EventArgs e)
+        {
+            DataOfApplicationConnector = (App.Current as App).DataOfApplication;
+            BindingContext = DataOfApplicationConnector;
         }
     }
 }

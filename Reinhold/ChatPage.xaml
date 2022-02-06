@@ -4,7 +4,7 @@
              x:Class="Reinhold.ChatPage"
              BackgroundColor="#1c1c1c"
              Title="Chat"
-             Appearing="ContentPage_Appearing">
+             Appearing="ChatPage_Appearing">
     <ContentPage.Content>
         <StackLayout>
             <ScrollView VerticalOptions="FillAndExpand">

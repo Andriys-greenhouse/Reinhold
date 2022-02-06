@@ -37,11 +37,7 @@ namespace Reinhold
                 searchDept = value;
             }
         }
-        public bool DisplayNotifications
-        {
-            get;
-            set;
-        }
+        public bool DisplayNotifications { get; set; }
 
         public Person User { get; set; }
         public ObservableCollection<Acquaintance> Acquaintances { get; set; }
@@ -89,8 +85,7 @@ namespace Reinhold
                         return Color.FromHex("#4c9f3d");
                     //return Color.FromRgb(29, 62, 23);
                     case ColorWord.Blue:
-                        return Color.FromHex("#3f17d3");
-                    //return Color.FromRgb(24, 8, 82);
+                        return Color.FromHex("#008ae6");
                     default:
                         return Color.FromRgb(0, 0, 0);
                 }
@@ -157,6 +152,21 @@ namespace Reinhold
             Messages = new MessageManager();
             Messages.Add(new Message("Hello", true));
             Messages.Add(new Message("Hello, how can I halp you?", false));
+        }
+
+        public void CopyTo(ref Data CopyInto)
+        {
+            CopyInto.FirstStart = FirstStart;
+            CopyInto.LastStart = LastStart;
+            CopyInto.ResetOrdered = ResetOrdered;
+            CopyInto.ColorScheme = ColorScheme;
+            CopyInto.SearchDept = SearchDept;
+            CopyInto.DisplayNotifications = DisplayNotifications;
+            CopyInto.User = User;
+            CopyInto.Acquaintances = Acquaintances;
+            CopyInto.Books = Books;
+            CopyInto.Stories = Stories;
+            CopyInto.Messages = Messages;
         }
     }
 

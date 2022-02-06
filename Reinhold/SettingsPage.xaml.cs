@@ -14,6 +14,7 @@ namespace Reinhold
         public event PropertyChangedEventHandler PropertyChanged;
         public Data DataOfApplicationCopy { get; set; }
         public double SearchDept { get { return Math.Round(SearchDeptSlider.Value); } }
+        bool initialSetting = true;
         public SettingsPage()
         {
             DataOfApplicationCopy = (App.Current as App).DataOfApplication;
@@ -53,7 +54,7 @@ namespace Reinhold
 
         private async void ColorSchemePicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((int)DataOfApplicationCopy.ColorScheme != ColorSchemePicker.SelectedIndex)
+            if ((int)DataOfApplicationCopy.ColorScheme != ColorSchemePicker.SelectedIndex && !initialSetting)
             {
                 if (!await DisplayAlert("Confirmation", "Change of color scheme requires restart of application, change color scheme?", "No", "Yes"))
                 {
@@ -74,6 +75,18 @@ namespace Reinhold
             (App.Current as App).DataOfApplication.ColorScheme = DataOfApplicationCopy.ColorScheme;
             (App.Current as App).DataOfApplication.SearchDept = (int)SearchDept;
             (App.Current as App).DataOfApplication.DisplayNotifications = DataOfApplicationCopy.DisplayNotifications;
+        }
+
+        private void SettingsPage_Appearing(object sender, EventArgs e) //basicly updates the values
+        {
+            initialSetting = true;
+            DataOfApplicationCopy = (App.Current as App).DataOfApplication;
+            BindingContext = DataOfApplicationCopy;
+            ColorSchemePicker.BindingContext = new ObservableCollection<string>(Enum.GetNames(typeof(ColorWord)));
+            SearchDeptNumberLabel.BindingContext = this;
+            ColorSchemePicker.SelectedIndex = (int)DataOfApplicationCopy.ColorScheme;
+            SearchDeptSlider.Value = DataOfApplicationCopy.SearchDept;
+            initialSetting = false;
         }
     }
 }

@@ -10,14 +10,19 @@ namespace Reinhold
 {
     public partial class App : Application
     {
-        public Data DataOfApplication { get; 
-            set; }
+        Data dataOfApplication;
+        public Data DataOfApplication 
+        {
+            get { return dataOfApplication; }
+            set { dataOfApplication = value; }
+        }
 
         public App()
         {
             DataOfApplication = new Data();
             InitializeComponent();
 
+            OnStart();
             MainPage = new MainPage();
         }
 
@@ -33,7 +38,7 @@ namespace Reinhold
             else
             {
                 string sth = await SecureStorage.GetAsync("Data");
-                DataOfApplication = JsonConvert.DeserializeObject<Data>(sth);
+                JsonConvert.DeserializeObject<Data>(sth).CopyTo(ref dataOfApplication);
             }
         }
 
@@ -49,6 +54,10 @@ namespace Reinhold
         public async void Save()
         {
             Properties["LastSession"] = DateTime.Now;
+            if (!Properties.ContainsKey("FirstStarted"))
+            {
+                Properties.Add("FirstStarted", DateTime.Now);
+            }
             await SecureStorage.SetAsync("Data", JsonConvert.SerializeObject(DataOfApplication));
         }
     }

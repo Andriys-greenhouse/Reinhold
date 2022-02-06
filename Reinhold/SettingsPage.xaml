@@ -4,7 +4,8 @@
              x:Class="Reinhold.SettingsPage"
              Background="#1c1c1c"
              Title="Settings"
-             Disappearing="SettingsPage_Disappearing">
+             Disappearing="SettingsPage_Disappearing"
+             Appearing="SettingsPage_Appearing">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
