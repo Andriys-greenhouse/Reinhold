@@ -8,16 +8,22 @@ namespace CoreLab
 {
     class VavKavNetwork
     {
-        static float stepFactor = 0.001f;
+        static float LearningRate = 0.001f;
 
         float[] InputNeurons { get; set; }
-        float[][] Values { get; set; }
+        float[][] Activations { get; set; }
         float[][] Biases { get; set; }
         float[][][] Weights { get; set; }
         float[][] BiasChanges { get; set; }
         float[][][] WeightChanges { get; set; }
+        float[][] Deltas { get; set; }
+        float[][] Values { get; set; }
+        int[] Layers { get; set; }
+
         static Random rnd = new Random();
-        public float Cost { get; private set; }
+        public float Cost { get; private set; } = 1f;
+
+        float lowestCost { get; set; } = 1f;
 
         public VavKavNetwork(int[] Layers)
         {
@@ -30,34 +36,43 @@ namespace CoreLab
 
             //initialize arrays
             InputNeurons = new float[Layers[0]];
+            Activations = new float[Layers.Length - 1][];
             Values = new float[Layers.Length - 1][];
             Biases = new float[Layers.Length - 1][];
+            Deltas = new float[Layers.Length - 1][];
             Weights = new float[Layers.Length - 1][][];
             WeightChanges = new float[Layers.Length - 1][][];
             BiasChanges = new float[Layers.Length - 1][];
 
-            for (int i = 1; i < Layers.Length; i++)
+            for (int i = 0; i < Layers.Length - 1; i++)
             {
-                Values[i] = new float[Layers[i]];
-                Biases[i] = new float[Layers[i]];
-                BiasChanges[i] = new float[Layers[i]];
-                Weights[i] = new float[Layers[i]][];
-                WeightChanges[i] = new float[Layers[i]][];
-                for (int j = 0; j < Layers[i]; j++)
+                Activations[i] = new float[Layers[i + 1]];
+                Values[i] = new float[Layers[i + 1]];
+                Biases[i] = new float[Layers[i + 1]];
+                Deltas[i] = new float[Layers[i + 1]];
+                BiasChanges[i] = new float[Layers[i + 1]];
+                Weights[i] = new float[Layers[i + 1]][];
+                WeightChanges[i] = new float[Layers[i + 1]][];
+                for (int j = 0; j < Layers[i + 1]; j++)
                 {
-                    Weights[i][j] = new float[Layers[i - 1]];
-                    WeightChanges[i][j] = new float[Layers[i - 1]];
+                    Weights[i][j] = new float[Layers[i]];
+                    WeightChanges[i][j] = new float[Layers[i]];
                     Biases[i][j] = 0f;
                     BiasChanges[i][j] = 0f;
                 }
             }
 
-            //initialize weights
+            this.Layers = Layers;
+            InitWeights();
+        }
+
+        void InitWeights()
+        {
             for (int i = 0; i < Weights[Weights.Length - 1].Length; i++)//last layer
             {
                 for (int j = 0; j < Weights[Weights.Length - 1][i].Length; j++)
                 {
-                    Weights[Weights.Length - 1][i][j] = SampleGaussian(0, (float)Math.Sqrt(2 / (Layers[Layers.Length - 2] + Layers[Layers.Length - 1])));
+                    Weights[Weights.Length - 1][i][j] = SampleGaussian(0, (float)Math.Sqrt(2 / (float)(Layers[Layers.Length - 2] + Layers[Layers.Length - 1])));
                 }
             }
 
@@ -73,11 +88,22 @@ namespace CoreLab
             }
         }
 
+        void InitBiases()
+        {
+            for (int i = 0; i < Biases.Length; i++)
+            {
+                for (int j = 0; j < Biases[i].Length; j++)
+                {
+                    Biases[i][j] = 0f;
+                }
+            }
+        }
+
         public float[] Result(float[] Inputs)
         {
             if (InputNeurons.Length != Inputs.Length) { throw new ArgumentException($"Invalid number of inputs. ({InputNeurons.Length} neurons in input layer)"); }
 
-            float[] final = new float[Values[Values.Length - 1].Length];
+            float[] final = new float[Activations[Activations.Length - 1].Length];
 
             for (int i = 0; i < Inputs.Length; i++)
             {
@@ -85,34 +111,36 @@ namespace CoreLab
             }
 
             float value;
-            for (int i = 0; i < Values.Length - 1; i++) //all but the last
+            for (int i = 0; i < Activations.Length - 1; i++) //all but the last
             {
-                for (int j = 0; j < Values[i].Length; j++)
+                for (int j = 0; j < Activations[i].Length; j++)
                 {
                     value = 0;
                     for (int k = 0; k < Weights[i][j].Length; k++)//adding 
                     {
-                        value += Weights[i][j][k] * (i == 0 ? InputNeurons[k] : Values[i - 1][k]);
+                        value += Weights[i][j][k] * (i == 0 ? InputNeurons[k] : Activations[i - 1][k]);
                     }
                     value += Biases[i][j];
-                    Values[i][j] = ReLU(value);
+                    Activations[i][j] = ReLU(value);
+                    Values[i][j] = value;
                 }
             }
 
-            for (int i = 0; i < Values[Values.Length - 1].Length; i++)
+            for (int i = 0; i < Activations[Activations.Length - 1].Length; i++)
             {
                 value = 0;
-                for (int j = 0; j < Values[Values.Length - 2].Length; j++)
+                for (int j = 0; j < Activations[Activations.Length - 2].Length; j++)
                 {
-                    value += Values[Values.Length - 1][j] * Weights[Weights.Length - 1][i][j];
+                    value += Activations[Activations.Length - 2][j] * Weights[Weights.Length - 1][i][j];
                 }
                 value += Biases[Biases.Length - 1][i];
-                Values[Values.Length - 1][i] = Sigmoid(value);
+                Activations[Activations.Length - 1][i] = Sigmoid(value);
+                Values[Values.Length - 1][i] = value;
             }
 
             for (int i = 0; i < final.Length; i++)
             {
-                final[i] = Values[Values.Length - 1][i];
+                final[i] = Activations[Activations.Length - 1][i];
             }
             return final;
         }
@@ -122,7 +150,7 @@ namespace CoreLab
             //check inputs
             foreach (KeyValuePair<float[], float[]> pair in Inputs)
             {
-                if (pair.Key.Length != InputNeurons.Length || pair.Value.Length != Values[Values.Length - 1].Length) { throw new ArgumentException("Invalid input or output elements of an input-output pair!"); }
+                if (pair.Key.Length != InputNeurons.Length || pair.Value.Length != Activations[Activations.Length - 1].Length) { throw new ArgumentException("Invalid input or output elements of an input-output pair!"); }
                 foreach (float result in pair.Value)
                 {
                     if (result < 0 || result > 1) { throw new ArgumentException("Some result is greater than 1 or smaller than 0!"); }
@@ -154,124 +182,104 @@ namespace CoreLab
             float lastDif = 0;
             int suspectCount = 0;
 
+            float costOfCurentRun;
+
             for (int Iter = 0; Iter < Iterations; Iter++)
             {
                 lastCheck++;
                 lastDisplay++;
 
                 //display progress
-                currentString = $"progress: {Iter * 100 / Iterations}%";
+                currentString = $"progress: {Iter * 100 / Iterations}%    Cost: {Math.Round(Cost,6)}";
                 if (DisplayProgress && lastDisplay % 500 == 0 && currentString != lastDisplayedString) //display after x iterations
                 {
                     lastDisplay = 0;
-                    Console.Clear();
+                    //Console.Clear();
                     Console.WriteLine(currentString);
                     lastDisplayedString = currentString;
                 }
 
-                //check stagnation
-                if (lastCheck % 1000 == 0 && lastCheck > 1)
-                {
-                    lastCheck = 0;
-
-                    int countHere = 0;
-                    float[] lastOutput = null, curent, lastExpected = null;
-                    foreach (KeyValuePair<float[], float[]> pair in batches[0])
-                    {
-                        curent = Result(pair.Key);
-                        if (lastExpected != null && !EqualContents(pair.Value, lastExpected) && EqualContents(lastOutput, curent))
-                        {
-                            countHere++;
-
-                        }
-                        lastOutput = curent;
-                        lastExpected = pair.Value;
-                    }
-                    if (countHere > 0) { suspectCount++; }
-                    if (suspectCount >= 1 + Iterations / 9000)
-                    {
-                        //Training stagnates!
-                        Iter = Iterations; //finish this iteration and end training
-                    }
-                }
-
-
                 foreach (Dictionary<float[], float[]> batch in batches)
                 {
+                    //set changes to zeros
+                    for (int i = 0; i < Activations.Length; i++)
+                    {
+                        for (int j = 0; j < Activations[i].Length; j++)
+                        {
+                            BiasChanges[i][j] = 0;
+                            for (int k = 0; k < WeightChanges[i][j].Length; k++)
+                            {
+                                WeightChanges[i][j][k] = 0;
+                            }
+                        }
+                    }
+
                     foreach (KeyValuePair<float[], float[]> pair in batch)
                     {
-
-                        float[] changesToPrevious = new float[] { };
-                        float[] presentChanges = new float[] { };
-                        float changeWanted;
-                        float[] output = Result(pair.Key);
-                        for (int layer = Neurons.Count - 1; layer >= 0; layer--)
+                        //set Deltas to zeros
+                        for (int i = 0; i < Activations.Length; i++)
                         {
-
-                            bool notLastLayer = layer > 0;
-
-                            if (notLastLayer)
+                            for (int j = 0; j < Activations[i].Length; j++)
                             {
-                                changesToPrevious = new float[Neurons[layer - 1].Length];
-                                for (int i = 0; i < changesToPrevious.Length; i++)
-                                {
-                                    changesToPrevious[i] = 0;
-                                }
-                                if (layer == Neurons.Count - 1) { presentChanges = new float[Neurons[layer - 1].Length]; }
+                                Deltas[i][j] = 0;
                             }
-                            else { changesToPrevious = new float[] { }; } //on the last layer you don't have to note any changes
+                        }
 
+                        Result(pair.Key); //update values
 
-                            float cost = 0;
-                            for (int i = 0; i < Neurons[Neurons.Count - 1].Length; i++)
+                        costOfCurentRun = 0;
+                        for (int i = 0; i < Activations[Activations.Length - 1].Length; i++) //for neurons in last layer
+                        {
+                            costOfCurentRun += (Activations[Activations.Length - 1][i] - pair.Value[i]) * (Activations[Activations.Length - 1][i] - pair.Value[i]);
+                            Deltas[Deltas.Length - 1][i] = 2 * (Activations[Activations.Length - 1][i] - pair.Value[i]) * DerivativeSigmoid(Values[Values.Length - 1][i]);
+                        }
+                        Cost = (costOfCurentRun + Cost) / 2; //average laast and curent cost
+
+                        for (int i = Activations.Length - 2; i >= 0; i--) //starting from pre-last layer and going backwards
+                        {
+                            float newDelta;
+                            for (int j = 0; j < Activations[i].Length; j++) //neuron in layer
                             {
-                                cost += Math.Pow(pair.Value[i] - Neurons[Neurons.Count - 1][i].Value, 2);
+                                newDelta = 0;
+
+                                for (int k = 0; k < Activations[i + 1].Length; k++)//neurons from last layer
+                                {
+                                    newDelta += Deltas[i + 1][k] * Weights[i + 1][k][j];
+                                }
+                                Deltas[i][j] = newDelta * DerivativeReLU(Values[i][j]);
                             }
+                        }
 
-                            for (int index = 0; index < Neurons[layer].Length; index++)
+                        for (int i = 0; i < Biases.Length; i++)//layer
+                        {
+                            for (int j = 0; j < Biases[i].Length; j++)//neuron
                             {
-                                changeWanted = (layer == Neurons.Count - 1 ? pair.Value[index] - Neurons[layer][index].Value : presentChanges[index]);
-
-                                //bias
-                                Neurons[layer][index].BiasChange += changeWanted * cost;
-                                //synapses
-                                for (int i = 0; i < Neurons[layer][index].InputSynapseValuesChange.Count; i++)
+                                BiasChanges[i][j] -= LearningRate * Deltas[i][j];
+                                for (int k = 0; k < Weights[i][j].Length; k++)//weight
                                 {
-                                    Neurons[layer][index].InputSynapseValuesChange[i] += changeWanted * (notLastLayer ? Neurons[layer - 1][i].Value : Perceptrons[i].Value) * cost;
-                                }
-                                //previous layer
-                                if (notLastLayer)
-                                {
-                                    for (int i = 0; i < changesToPrevious.Length; i++)
-                                    {
-                                        changesToPrevious[i] += changeWanted * (Neurons[layer][index].InputSynapseValues[i]) * cost;// / (Neurons.Count - layer);
-                                    }
-                                }
-                            } //favourite chackpoint place ;-)
-
-                            //copy changesToPrevious to presentChanges
-                            if (notLastLayer)
-                            {
-                                presentChanges = new float[changesToPrevious.Length];
-                                for (int i = 0; i < presentChanges.Length; i++)
-                                {
-                                    presentChanges[i] = changesToPrevious[i];
+                                    WeightChanges[i][j][k] -= LearningRate * Deltas[i][j] * (i == 0 ? InputNeurons[k] : Activations[i - 1][k]);
                                 }
                             }
                         }
                     }
 
-                    foreach (Neuron[] nrnArr in Neurons)
+                    //apply changes
+                    for (int i = 0; i < Biases.Length; i++)
                     {
-                        foreach (Neuron nrn in nrnArr)
+                        for (int j = 0; j < Biases[i].Length; j++)
                         {
-                            nrn.ApplyChanges();
+                            Biases[i][j] += BiasChanges[i][j]; //averaging it
+                            for (int k = 0; k < Weights[i][j].Length; k++)
+                            {
+                                Weights[i][j][k] += WeightChanges[i][j][k];
+                            }
                         }
                     }
+
+                    //check for treshhold
+                    if(Cost < 0.00009) { Iter = Iterations; }
                 }
             }
-
-            UpdateCost(batches[0]); //automatic cost update with the first batch
         }
 
         public void UpdateCost(Dictionary<float[], float[]> TestSamples)

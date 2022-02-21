@@ -31,10 +31,30 @@
                 </Grid>
 
                 <Label Text="Birth date" Style="{StaticResource Headline}"/>
-                <Label Text="Birth date" Style="{StaticResource Note}"/>
+                <!--<Label Text="Birth date" Style="{StaticResource Note}"/>
                 <DatePicker Date="{Binding BirthDate}" Margin="5,0">
                     <DatePicker.Format>yyyy/MM/dd</DatePicker.Format>
-                </DatePicker>
+                </DatePicker>-->
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Spacing="50" Margin="0,20">
+                    <StackLayout Style="{StaticResource DateStack}">
+                        <Label Text="Year" Style="{StaticResource Note}" HorizontalOptions="Center"/>
+                        <ImageButton x:Name="UpYearButt" Source="ArrowUp.png" Clicked="UpYearButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                        <Entry x:Name="YearEntry" Keyboard="Numeric" Unfocused="YearEntry_Unfocused" Style="{StaticResource DateEntry}"/>
+                        <ImageButton x:Name="DownYearButt" Source="ArrowDown.png" Clicked="DownYearButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                    </StackLayout>
+                    <StackLayout Style="{StaticResource DateStack}">
+                        <Label Text="Month" Style="{StaticResource Note}" HorizontalOptions="Center"/>
+                        <ImageButton x:Name="UpMonthButt" Source="ArrowUp.png" Clicked="UpMonthButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                        <Entry x:Name="MonthEntry" Keyboard="Numeric" Unfocused="MonthEntry_Unfocused" Style="{StaticResource DateEntry}"/>
+                        <ImageButton x:Name="DownMonthButt" Source="ArrowDown.png" Clicked="DownMonthButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                    </StackLayout>
+                    <StackLayout Style="{StaticResource DateStack}">
+                        <Label Text="Day" Style="{StaticResource Note}" HorizontalOptions="Center"/>
+                        <ImageButton x:Name="UpDayButt" Source="ArrowUp.png" Clicked="UpDayButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                        <Entry x:Name="DayEntry" Keyboard="Numeric" Unfocused="DayEntry_Unfocused" Style="{StaticResource DateEntry}"/>
+                        <ImageButton x:Name="DownDayButt" Source="ArrowDown.png" Clicked="DownDayButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                    </StackLayout>
+                </StackLayout>
                 <StackLayout Orientation="Horizontal">
                     <Label Text="This is an acurate date &#x0a;(acurate date is not required)" Style="{StaticResource Note}"/>
                     <CheckBox x:Name="AcurateDateCheckBox" IsChecked="{Binding DateIsAcurate}"/>

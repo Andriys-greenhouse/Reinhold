@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetFromWeb.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="Neuron.cs" />
     <Compile Include="Program.cs" />

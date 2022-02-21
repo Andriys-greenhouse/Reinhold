@@ -16,9 +16,26 @@
                     <Label Text="Place" Style="{StaticResource Note}"/>
                     <Entry x:Name="PlaceEntry" Text="{Binding InWords}" Style="{StaticResource EntryOnTheSameLine}" HorizontalOptions="FillAndExpand"/>
                 </StackLayout>
-                <DatePicker Date="{Binding Date}" Margin="5,0">
-                    <DatePicker.Format>yyyy/MM/dd</DatePicker.Format>
-                </DatePicker>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Spacing="50" Margin="0,20">
+                    <StackLayout Style="{StaticResource DateStack}">
+                        <Label Text="Year" Style="{StaticResource Note}" HorizontalOptions="Center"/>
+                        <ImageButton x:Name="UpYearButt" Source="ArrowUp.png" Clicked="UpYearButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                        <Entry x:Name="YearEntry" Keyboard="Numeric" Unfocused="YearEntry_Unfocused" Style="{StaticResource DateEntry}"/>
+                        <ImageButton x:Name="DownYearButt" Source="ArrowDown.png" Clicked="DownYearButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                    </StackLayout>
+                    <StackLayout Style="{StaticResource DateStack}">
+                        <Label Text="Month" Style="{StaticResource Note}" HorizontalOptions="Center"/>
+                        <ImageButton x:Name="UpMonthButt" Source="ArrowUp.png" Clicked="UpMonthButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                        <Entry x:Name="MonthEntry" Keyboard="Numeric" Unfocused="MonthEntry_Unfocused" Style="{StaticResource DateEntry}"/>
+                        <ImageButton x:Name="DownMonthButt" Source="ArrowDown.png" Clicked="DownMonthButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                    </StackLayout>
+                    <StackLayout Style="{StaticResource DateStack}">
+                        <Label Text="Day" Style="{StaticResource Note}" HorizontalOptions="Center"/>
+                        <ImageButton x:Name="UpDayButt" Source="ArrowUp.png" Clicked="UpDayButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                        <Entry x:Name="DayEntry" Keyboard="Numeric" Unfocused="DayEntry_Unfocused" Style="{StaticResource DateEntry}"/>
+                        <ImageButton x:Name="DownDayButt" Source="ArrowDown.png" Clicked="DownDayButt_Clicked" Style="{StaticResource ArrowButton}"/>
+                    </StackLayout>
+                </StackLayout>
                 <!--<ListView x:Name="PeopleListView" Header="Related people" VerticalOptions="FillAndExpand">
                     <ListView.ItemTemplate>
                         <DataTemplate>
