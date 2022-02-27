@@ -8,7 +8,7 @@ namespace CoreLab
 {
     class VavKavNetwork
     {
-        static float LearningRate = 0.001f;
+        static float LearningRate = 0.01f;
 
         float[] InputNeurons { get; set; }
         float[][] Activations { get; set; }
@@ -277,7 +277,7 @@ namespace CoreLab
                     }
 
                     //check for treshhold
-                    if(Cost < 0.00009) { Iter = Iterations; }
+                    if(Cost < 0.000009) { Iter = Iterations; }
                 }
             }
         }

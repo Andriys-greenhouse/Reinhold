@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace CoreLab
 {
@@ -10,7 +11,18 @@ namespace CoreLab
     {
         static void Main(string[] args)
         {
-            int[] layers = new int[] { 9, 16, 16, 2 };
+            Core cr = new Core();
+            string insides;
+            using (StreamReader sr = new StreamReader("input.txt"))
+            {
+                insides = sr.ReadToEnd();
+            }
+            cr.Train(insides, new int[] { 16, 16, 8 }, 50000);
+            cr.Process("Hi, who are you?");
+        }
+        static void VavKavTest()
+        {
+            int[] layers = new int[] { 9, 16, 8, 8, 2 };
             float[] outputs;
             Dictionary<float[], float[]> inputs = new Dictionary<float[], float[]>();
 
@@ -223,7 +235,7 @@ namespace CoreLab
             inputs.Add(new float[] { 0, 1, 0,
                                       0, 1, 1,
                                       1, 0, 0 }, new float[] { 0, 1 });
-
+            ////
             inputs.Add(new float[] { 0, 1, 0,
                                       1, 1, 0,
                                       0, 1, 0 }, new float[] { 1, 0 });
@@ -235,6 +247,18 @@ namespace CoreLab
             inputs.Add(new float[] { 0, 0, 1,
                                       1, 1, 0,
                                       1, 0, 0 }, new float[] { 1, 0 });
+
+            inputs.Add(new float[] { 0, 0, 1,
+                                      1, 1, 0,
+                                      1, 0, 0 }, new float[] { 1, 0 });
+
+            inputs.Add(new float[] { 1, 0, 0,
+                                      0, 1, 0,
+                                      1, 0, 1 }, new float[] { 1, 0 });
+
+            inputs.Add(new float[] { 0, 0, 1,
+                                      1, 0, 1,
+                                      0, 0, 1 }, new float[] { 1, 0 });
 
 
             VavKavNetwork subject = new VavKavNetwork(layers);
@@ -261,7 +285,7 @@ namespace CoreLab
             Console.WriteLine(subject.PrintableResult(new float[] { 1, 1, 1, 0 }));
             Console.WriteLine(subject.PrintableResult(new float[] { 1, 0, 1, 1 }));
             */
-
+            
             Console.WriteLine(subject.PrintableResult(
                 new float[] { 1, 0, 0,
                                0, 1, 0,
