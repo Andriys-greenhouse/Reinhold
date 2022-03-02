@@ -5,7 +5,7 @@ namespace MethodTestSite
     public enum RockPaperScissors { Rock, Paper, Scissors }
     public enum GameResult { Win, Draw, Lose }
 
-    class RPSModule
+    public class RPSModule
     {
         static Random rnd = new Random();
 
@@ -22,7 +22,7 @@ namespace MethodTestSite
         }
     }
 
-    class RandomModule
+    public class RandomModule
     {
         static Random rnd = new Random();
         public static GameResult GuessToTen(int Guess)

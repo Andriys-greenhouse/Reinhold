@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace CoreLab
 {
     class VavKavNetwork
     {
-        static float LearningRate = 0.01f;
+        static float LearningRate = 0.005f; //0.001f best sofar
 
         float[] InputNeurons { get; set; }
         float[][] Activations { get; set; }
@@ -160,7 +161,7 @@ namespace CoreLab
 
             //devide into batches
             List<Dictionary<float[], float[]>> batches = new List<Dictionary<float[], float[]>>();
-            int num = 0;
+            /*int num = 0;
             batches.Add(new Dictionary<float[], float[]>());
             foreach (KeyValuePair<float[], float[]> pair in Inputs)
             {
@@ -172,6 +173,8 @@ namespace CoreLab
                 batches[batches.Count - 1].Add(pair.Key, pair.Value);
                 num++;
             }
+            */
+            batches.Add(Inputs);
 
             //training itself
             int lastDisplay = 0;
@@ -191,13 +194,25 @@ namespace CoreLab
 
                 //display progress
                 currentString = $"progress: {Iter * 100 / Iterations}%    Cost: {Math.Round(Cost,6)}";
-                if (DisplayProgress && lastDisplay % 500 == 0 && currentString != lastDisplayedString) //display after x iterations
+                if (DisplayProgress && lastDisplay % 100 == 0 && currentString != lastDisplayedString) //display after x iterations (500 is best sofar)
                 {
                     lastDisplay = 0;
                     //Console.Clear();
                     Console.WriteLine(currentString);
                     lastDisplayedString = currentString;
                 }
+
+                //check for stagnation
+                if (Cost > 0.999999 && suspectCount != -1)
+                {
+                    suspectCount++;
+                    if (suspectCount > 500)
+                    {
+                        Console.WriteLine($"Stagnation detected    cost: {Cost}");
+                        throw new Exception("VavKavNetwork stagnates.");
+                    }
+                }
+                else { suspectCount = -1; }
 
                 foreach (Dictionary<float[], float[]> batch in batches)
                 {
@@ -233,7 +248,7 @@ namespace CoreLab
                             costOfCurentRun += (Activations[Activations.Length - 1][i] - pair.Value[i]) * (Activations[Activations.Length - 1][i] - pair.Value[i]);
                             Deltas[Deltas.Length - 1][i] = 2 * (Activations[Activations.Length - 1][i] - pair.Value[i]) * DerivativeSigmoid(Values[Values.Length - 1][i]);
                         }
-                        Cost = (costOfCurentRun + Cost) / 2; //average laast and curent cost
+                        Cost = (costOfCurentRun + Cost) / 2; //average last and curent cost
 
                         for (int i = Activations.Length - 2; i >= 0; i--) //starting from pre-last layer and going backwards
                         {
@@ -277,7 +292,8 @@ namespace CoreLab
                     }
 
                     //check for treshhold
-                    if(Cost < 0.000009) { Iter = Iterations; }
+                    if(Cost < 0.0000005 && Iter > 300) 
+                    { Iter = Iterations; }
                 }
             }
         }

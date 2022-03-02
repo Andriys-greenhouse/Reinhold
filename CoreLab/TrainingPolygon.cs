@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 
 namespace CoreLab
 {
-    class Core
+    public class Core
     {
         List<string> Contexts;
         int curentContextIndex;
@@ -14,7 +15,8 @@ namespace CoreLab
         List<string> BOW = new List<string>();
         static Porter2 stemer = new Porter2();
         object Context = new object();
-        VavKavNetwork Network;
+        VavKavNetwork ContextNetwork;
+        VavKavNetwork IntentNetwork;
         void InitConIntAndBOW(string textForBOWInit)
         {
             Contexts = new List<string>();
@@ -28,40 +30,76 @@ namespace CoreLab
             Contexts.Add("user");
             Contexts.Add("person");
             Contexts.Add("story");
-            Contexts.Add("book");
-            //Contexts.Add("function");
+            Contexts.Add("book"); 
+            Contexts.Add("call");
+            Contexts.Add("calendar");
+            Contexts.Add("calendarAdd");
+            Contexts.Add("wordSoccer");
+            Contexts.Add("ticTacToe");
+            Contexts.Add("RPS");
+            Contexts.Add("guessToTen");
+            Contexts.Add("rndNum");
+            Contexts.Add("quote");
+            Contexts.Add("search");
+            Contexts.Add("news");
+            //Intents.Add("EEGG"); //Andriy + hidden + get -> eegg
             Intents.Add("indefinite"); //I can't understand
-            Intents.Add("aboutBot");
-            Intents.Add("preferences"); //of Reinhold (what do you like) + esteg bib
+            Intents.Add("about");
+            Intents.Add("preferences"); //of Reinhold (what do you like -> I don't have an opinion on that) + esteg bib
             Intents.Add("greet");
             Intents.Add("mood"); //how are you
             Intents.Add("weather");
             Intents.Add("residence"); //where do you live
             Intents.Add("sugestSearch");
             Intents.Add("interjection"); //uh, oh, wow, really?, hm and similar
+            Intents.Add("approval"); //OK, allright, yes
+            Intents.Add("call");
+            Intents.Add("calendar");
+            Intents.Add("calendarAdd");
+            Intents.Add("wordSoccer");
+            Intents.Add("ticTacToe");
+            Intents.Add("RPS");
+            Intents.Add("guessToTen");
+            Intents.Add("rndNum");
+            Intents.Add("quote");
+            Intents.Add("rndStory");
+            Intents.Add("battery");
+            Intents.Add("time");
+            Intents.Add("search");
+            Intents.Add("news");
+            Intents.Add("TTS");
+            Intents.Add("rndQuestion");
             //Intents.Add("function");
             textForBOWInit = Regex.Replace(textForBOWInit, @"[^0-9a-zA-Z\ ]+", " ");
             words = textForBOWInit.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in words)
             {
-                word = stemer.stem(item);
-                if (BOW.IndexOf(word) == -1)
+                if(item != "XXX") //symbol for anything
                 {
-                    BOW.Add(word);
+                    word = stemer.stem(item);
+                    if (BOW.IndexOf(word) == -1)
+                    {
+                        BOW.Add(word);
+                    }
                 }
             }
             BOW.Add("ř"); //for unknown words
         }
-        void InitNetwork(int[] hiddenLayers)
+        void InitNetworks(int[] contextualHiddenLayers, int[] intentialHiddenLayers)
         {
-            int[] NNLayers = new int[hiddenLayers.Length + 2];
-            hiddenLayers.CopyTo(NNLayers, 1);
-            NNLayers[0] = Contexts.Count + BOW.Count;
-            NNLayers[NNLayers.Length - 1] = Contexts.Count + Intents.Count;
-            Network = new VavKavNetwork(NNLayers);
+            int[] cntNNLayers = new int[contextualHiddenLayers.Length + 2];
+            int[] intNNLayers = new int[intentialHiddenLayers.Length + 2];
+            contextualHiddenLayers.CopyTo(cntNNLayers, 1);
+            intentialHiddenLayers.CopyTo(intNNLayers, 1);
+            cntNNLayers[0] = Contexts.Count + BOW.Count;
+            intNNLayers[0] = Contexts.Count + BOW.Count;
+            cntNNLayers[cntNNLayers.Length - 1] = Contexts.Count;
+            intNNLayers[intNNLayers.Length - 1] = Intents.Count;
+            ContextNetwork = new VavKavNetwork(cntNNLayers);
+            IntentNetwork = new VavKavNetwork(intNNLayers);
         }
 
-        Dictionary<float[], float[]> LoadTrainingDataFromText(string text)
+        TrainingDataSet LoadTrainingDataFromText(string text)
         {
             string[] lines = text.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -75,8 +113,10 @@ namespace CoreLab
             string[] parts;
             List<string> words = new List<string>();
             float[] inputs = new float[Contexts.Count + BOW.Count];
-            float[] outputs = new float[Contexts.Count + Intents.Count];
-            Dictionary<float[], float[]> final = new Dictionary<float[], float[]>();
+            float[] contextsOutputs = new float[Contexts.Count];
+            float[] intentsOutputs = new float[Intents.Count];
+            Dictionary<float[], float[]> finalContexts = new Dictionary<float[], float[]>();
+            Dictionary<float[], float[]> finalIntents = new Dictionary<float[], float[]>();
 
             foreach (string line in lines)
             {
@@ -84,13 +124,17 @@ namespace CoreLab
                 {
                     inputs[i] = 0;
                 }
-                for (int i = 0; i < outputs.Length; i++)
+                for (int i = 0; i < contextsOutputs.Length; i++)
                 {
-                    outputs[i] = 0;
+                    contextsOutputs[i] = 0;
+                }
+                for (int i = 0; i < intentsOutputs.Length; i++)
+                {
+                    intentsOutputs[i] = 0;
                 }
                 parts = line.Split('ř');
                 inputs[Contexts.IndexOf(parts[0])] = 1;
-                outputs[Contexts.IndexOf(parts[2])] = 1;
+                contextsOutputs[Contexts.IndexOf(parts[2])] = 1;
                 //from https://stackoverflow.com/questions/49868766/get-the-first-word-from-the-string
                 parts[1] = Regex.Replace(parts[1], @"[^0-9a-zA-Z\ ]+", "");
                 words = new List<string>(parts[1].Split(' '));
@@ -98,7 +142,7 @@ namespace CoreLab
                 index = Intents.IndexOf(parts[3]);
                 if (index != -1)
                 {
-                    outputs[Contexts.Count + index] = 1;
+                    intentsOutputs[index] = 1;
                 }
                 else { throw new ArgumentException("Error, wrong intent."); }
                 for (int i = 0; i < words.Count; i++)
@@ -106,16 +150,18 @@ namespace CoreLab
                     index = BOW.IndexOf(stemer.stem(words[i]));
                     inputs[Contexts.Count + (index == -1 ? BOW.Count - 1 : index)] = 1f; //last index for unknown words
                 }
-                final.Add((float[])inputs.Clone(), (float[])outputs.Clone());
+                finalContexts.Add((float[])inputs.Clone(), (float[])contextsOutputs.Clone());
+                finalIntents.Add((float[])inputs.Clone(), (float[])intentsOutputs.Clone());
             }
 
             curentContextIndex = 0;
-            return final;
+            return new TrainingDataSet(finalContexts, finalIntents);
         }
-        public void Process(string input)
+        public AnalysisResult Process(string input)
         {
+            AnalysisResult final = new AnalysisResult();
             float[] NNinputs = new float[Contexts.Count + BOW.Count];
-            float[] outputs;
+            float[] intOutputs, cntOutputs;
             for (int i = 0; i < NNinputs.Length; i++)
             {
                 NNinputs[i] = 0f;
@@ -132,43 +178,68 @@ namespace CoreLab
                 NNinputs[Contexts.Count + (index == -1 ? BOW.Count - 1 : index)] = 1f;
             }
 
-            outputs = Network.Result(NNinputs);
+            cntOutputs = ContextNetwork.Result(NNinputs);
+            intOutputs = IntentNetwork.Result(NNinputs);
 
             float highest = 0;
             int highestIndex = 0;
             for (int i = 0; i < Contexts.Count; i++)
             {
-                if (highest < outputs[i])
+                if (highest < cntOutputs[i])
                 {
-                    highest = outputs[i];
+                    highest = cntOutputs[i];
                     highestIndex = i;
                 }
             }
-            if (highestIndex != curentContextIndex)
-            {
-                curentContextIndex = highestIndex;
-                //analyze text for new context object based on index
-            }
+            final.Context = Contexts[highestIndex];
+            final.PastContext = Contexts[curentContextIndex];
+            curentContextIndex = highestIndex;
 
             highest = 0;
             highestIndex = 0;
             for (int i = 0; i < Intents.Count; i++)
             {
-                if (highest < outputs[Contexts.Count + i])
+                if (highest < intOutputs[i])
                 {
-                    highest = outputs[i];
+                    highest = intOutputs[i];
                     highestIndex = i;
                 }
             }
+            final.Intent = Intents[highestIndex];
 
-            //analyze text for data or Context object change
-            //take action on highestIndex which corresponds to index in Intents
+            return final;
         }
-        public void Train(string trainingDataText, int[] hiddenLayers, int iterations) //first of two methods to init network
+        public void Train(string trainingDataText, int[] contextualHiddenLayers, int[] intentialHiddenLayers, int iterations) //first of two methods to init network
         {
-            Dictionary<float[], float[]> trainingData = LoadTrainingDataFromText(trainingDataText);
-            InitNetwork(hiddenLayers);
-            Network.Train(trainingData, iterations);
+            TrainingDataSet trainingData = LoadTrainingDataFromText(trainingDataText);
+            InitNetworks(contextualHiddenLayers, intentialHiddenLayers);
+            Console.WriteLine("context");
+            ContextNetwork.Train(trainingData.ContextNNData, iterations);
+            Console.WriteLine("intent");
+            IntentNetwork.Train(trainingData.IntentNNData, iterations);
+        }
+    }
+
+    public struct AnalysisResult
+    {
+        public string PastContext;
+        public string Context;
+        public string Intent;
+        public AnalysisResult(string aPastContext, string aContext, string aIntent)
+        {
+            PastContext = aPastContext;
+            Context = aContext;
+            Intent = aIntent;
+        }
+    }
+    public struct TrainingDataSet
+    {
+        public Dictionary<float[], float[]> ContextNNData;
+        public Dictionary<float[], float[]> IntentNNData;
+        public TrainingDataSet(Dictionary<float[], float[]> aContextNNData, Dictionary<float[], float[]> aIntentNNData)
+        {
+            ContextNNData = aContextNNData;
+            IntentNNData = aIntentNNData;
         }
     }
 }

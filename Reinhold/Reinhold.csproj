@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoreLab\CoreLab.csproj" />
+    <ProjectReference Include="..\MethodTestSite\MethodTestSite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="AcquaintanceDataPage.xaml.cs">
       <DependentUpon>AcquaintanceDataPage.xaml</DependentUpon>
     </Compile>

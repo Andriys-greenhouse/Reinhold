@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using CoreLab;
 
 namespace Reinhold
 {
@@ -15,6 +16,8 @@ namespace Reinhold
 
     public class Data
     {
+        public Core Core { get; set; }
+
         public DateTime FirstStart { get; set; }
         public DateTime LastStart { get; set; }
         public bool ResetOrdered { get; set; }

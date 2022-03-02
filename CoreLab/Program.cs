@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace CoreLab
 {
@@ -11,14 +12,43 @@ namespace CoreLab
     {
         static void Main(string[] args)
         {
-            Core cr = new Core();
             string insides;
             using (StreamReader sr = new StreamReader("input.txt"))
             {
                 insides = sr.ReadToEnd();
             }
-            cr.Train(insides, new int[] { 16, 16, 8 }, 50000);
-            cr.Process("Hi, who are you?");
+        
+            Core cr = new Core();
+            bool needTraining = true;
+            while (needTraining)
+            {
+                try
+                {
+                    cr.Train(insides, new int[] { 16, 16 }, new int[] { 48, 48 }, 50000);
+                    needTraining = false;
+                }
+                catch (Exception e)
+                {
+                    cr = new Core();
+                    needTraining = true;
+                }
+            }
+
+            using (StreamWriter sw = new StreamWriter("output.json"))
+            {
+                sw.Write(JsonConvert.SerializeObject(cr));
+            }
+
+            Console.WriteLine("Training complete");
+            AnalysisResult response;
+            while (true)
+            {
+                Console.Write("You: ");
+                response = cr.Process(Console.ReadLine());
+                Console.WriteLine($"Bot:    Past context: {response.PastContext}    Intent: {response.Intent}    Context: {response.Context}");
+            }
+
+
         }
         static void VavKavTest()
         {

@@ -31,6 +31,7 @@ namespace Reinhold
             //here shall be first-load and load sequences
             if (!Properties.ContainsKey("FirstStarted"))
             {
+                //LOAD CORE from file
                 Properties.Add("FirstStarted", DateTime.Now);
                 Properties.Add("LastSession", DateTime.Now);
                 DataOfApplication.SetDefaultValues();
