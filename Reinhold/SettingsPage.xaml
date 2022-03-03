@@ -14,6 +14,7 @@
                     <Picker x:Name="ColorSchemePicker" ItemsSource="{Binding .}" ItemDisplayBinding="{Binding .}" SelectedIndexChanged="ColorSchemePicker_SelectedIndexChanged"
                             VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="10,0"/>
                 </StackLayout>
+                <!--
                 <StackLayout>
                     <StackLayout Orientation="Horizontal" Margin="0,30,0,0">
                         <Label Text="Search dept" Style="{StaticResource HeadlineWithoutMargin}"/>
@@ -25,6 +26,7 @@
                         <Label x:Name="SearchDeptNumberLabel" Text="{Binding SearchDept,UpdateSourceEventName=PropertyChanged}" Style="{StaticResource HeadlineWithoutMargin}"/>
                     </StackLayout>
                 </StackLayout>
+                -->
                 <StackLayout>
                     <StackLayout Orientation="Horizontal" Margin="0,30,0,0">
                         <Label Text="Display notifications" Style="{StaticResource HeadlineWithoutMargin}"/>

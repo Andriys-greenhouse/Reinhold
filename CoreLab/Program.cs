@@ -24,7 +24,7 @@ namespace CoreLab
             {
                 try
                 {
-                    cr.Train(insides, new int[] { 16, 16 }, new int[] { 48, 48 }, 50000);
+                    cr.Train(insides, new int[] { 32, 32 }, new int[] { 64, 64 }, 50000);
                     needTraining = false;
                 }
                 catch (Exception e)
@@ -36,7 +36,8 @@ namespace CoreLab
 
             using (StreamWriter sw = new StreamWriter("output.json"))
             {
-                sw.Write(JsonConvert.SerializeObject(cr));
+                string json = JsonConvert.SerializeObject(cr);
+                sw.Write(json);
             }
 
             Console.WriteLine("Training complete");

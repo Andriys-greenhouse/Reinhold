@@ -31,7 +31,7 @@ namespace MethodTestSite
 
             Console.WriteLine($"Max: {highest}\nMin: {lowest}");
             Console.WriteLine("\n\n\n");
-
+            
             //Tic tac toe
             TicTacToe tct = new TicTacToe(4, 5, 3, Console.WriteLine);
 
@@ -58,7 +58,7 @@ namespace MethodTestSite
             }
             Console.WriteLine("\n\n\n");
 
-            /*
+            
             //format words
             Dictionary<char, List<string>> data = new Dictionary<char, List<string>>();
             string[] lines;
@@ -91,7 +91,7 @@ namespace MethodTestSite
                 }
 
                 Console.WriteLine($"{last} written");
-            }*/
+            }
 
             //Word soccer
             WordSoccer wscrGame = WordSoccer.SingleInstance;

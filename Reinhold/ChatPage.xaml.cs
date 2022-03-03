@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using CoreLab;
 using MethodTestSite;
 using Xamarin.Essentials;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Reinhold
 {
@@ -13,6 +16,11 @@ namespace Reinhold
     {
         public Data DataOfApplicationConnector { get; set; }
         Random rnd = new Random();
+        Regex nameSearchRx = new Regex(@"[A-Z][a-z]+");
+        Regex phoneNumberRx = new Regex(@"\+\d{12}|\d{9}");
+        Regex dateRx = new Regex(@"\d{4}\/\d{2}\/\d{2}");
+        string dateForamt = "yyyy/MM/dd";
+
         public string MicOrSendButtonIcon
         {
             get
@@ -37,7 +45,7 @@ namespace Reinhold
             MessageListView.ItemsSource = DataOfApplicationConnector.Messages.Messages;
         }
 
-        private void MicOrSendButton_Clicked(object sender, EventArgs e)
+        private async void MicOrSendButton_Clicked(object sender, EventArgs e)
         {
             if (MessageBox.IsFocused || (MessageBox != null && MessageBox.Text.Length > 0))
             {
@@ -45,7 +53,6 @@ namespace Reinhold
                 MessageListView.ItemsSource = DataOfApplicationConnector.Messages.Messages;
                 MicOrSendButton.Source = MicOrSendButtonIcon;
                 //core action
-                /*
                 string output = "newly created output";
                 AnalysisResult coreResult;
                 if (MessageBox.Text[0] != '|') { coreResult = DataOfApplicationConnector.Core.Process(MessageBox.Text); }
@@ -67,7 +74,7 @@ namespace Reinhold
                     case "mood":
                         output = "Still the same I want to serve my purpose";
                         break; //how are you
-                    case "weather": break;
+                    // ? case "weather": break;
                     case "residence":
                         output = "I live in your phone currently";
                         break; //where do you live
@@ -80,9 +87,51 @@ namespace Reinhold
                     case "approval":
                         output = (new string[] { "ok", "allright", "yes" })[rnd.Next(0, 3)];
                         break; //OK, allright, yes
-                    case "call": break;
+                    case "call":
+                        string number = "";
+                        MatchCollection recievers = phoneNumberRx.Matches(MessageBox.Text);
+                        if (recievers.Count > 0)
+                        {
+                            number = recievers[0].Value;
+                        }
+                        else
+                        {
+                            recievers = nameSearchRx.Matches(MessageBox.Text);
+                            List<string> searchName = new List<string>();
+                            foreach (Match mch in recievers)
+                            {
+                                if (mch.Index > 1) 
+                                {
+                                    searchName.Add(mch.Value); 
+                                }
+                            }
+                            Contact bestMatch = null;
+                            int highestCount = 0;
+                            int count;
+                            foreach (Contact cnt in await Contacts.GetAllAsync())
+                            {
+                                count = 0;
+                                foreach (string name in searchName)
+                                {
+                                    if (cnt.DisplayName.Contains(name)) { count++; }
+                                }
+                                if(count > highestCount)
+                                {
+                                    highestCount = count;
+                                    bestMatch = cnt;
+                                }
+                            }
+                            if(bestMatch != null) { number = bestMatch.Phones[0].PhoneNumber; }
+                        }
+                        if(number != "")
+                        {
+                            PhoneDialer.Open(number);
+                        }
+                        break;
                     case "calendar": break;
-                    case "calendarAdd": break;
+                    case "calendarAdd":
+                        output = "Oh, I see that you want me to add to your callendar an event but unfortunately I am not yet able to do this, sorry.";
+                        break;
                     case "wordSoccer": break;
                     case "ticTacToe": break;
                     case "RPS": break;
@@ -114,7 +163,7 @@ namespace Reinhold
                         break;
                 }
 
-                DataOfApplicationConnector.Messages.Messages.Add(new Message(output, false));*/
+                DataOfApplicationConnector.Messages.Messages.Add(new Message(output, false));
                 MessageBox.Text = "";
                 MessageListView.ItemsSource = DataOfApplicationConnector.Messages.Messages;
                 MicOrSendButton.Source = MicOrSendButtonIcon;

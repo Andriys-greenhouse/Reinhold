@@ -9,13 +9,20 @@ namespace CoreLab
 {
     public class Core
     {
+        [JsonProperty("contexts")]
         List<string> Contexts;
+        [JsonProperty("contextIndex")]
         int curentContextIndex;
+        [JsonProperty("intents")]
         List<string> Intents;
+        [JsonProperty("bow")]
         List<string> BOW = new List<string>();
         static Porter2 stemer = new Porter2();
+        [JsonProperty("context")]
         object Context = new object();
+        [JsonProperty("contextNetwork")]
         VavKavNetwork ContextNetwork;
+        [JsonProperty("intentNetwork")]
         VavKavNetwork IntentNetwork;
         void InitConIntAndBOW(string textForBOWInit)
         {
@@ -42,6 +49,7 @@ namespace CoreLab
             Contexts.Add("quote");
             Contexts.Add("search");
             Contexts.Add("news");
+            Contexts.Add("command");
             //Intents.Add("EEGG"); //Andriy + hidden + get -> eegg
             Intents.Add("indefinite"); //I can't understand
             Intents.Add("about");
@@ -148,7 +156,7 @@ namespace CoreLab
                 for (int i = 0; i < words.Count; i++)
                 {
                     index = BOW.IndexOf(stemer.stem(words[i]));
-                    inputs[Contexts.Count + (index == -1 ? BOW.Count - 1 : index)] = 1f; //last index for unknown words
+                    inputs[Contexts.Count + (index == -1 ? BOW.Count - 1 : index)] += 1f; //last index for unknown words
                 }
                 finalContexts.Add((float[])inputs.Clone(), (float[])contextsOutputs.Clone());
                 finalIntents.Add((float[])inputs.Clone(), (float[])intentsOutputs.Clone());
@@ -175,7 +183,7 @@ namespace CoreLab
             for (int i = 0; i < words.Length; i++)
             {
                 index = BOW.IndexOf(stemer.stem(words[i]));
-                NNinputs[Contexts.Count + (index == -1 ? BOW.Count - 1 : index)] = 1f;
+                NNinputs[Contexts.Count + (index == -1 ? BOW.Count - 1 : index)] += 1f;
             }
 
             cntOutputs = ContextNetwork.Result(NNinputs);

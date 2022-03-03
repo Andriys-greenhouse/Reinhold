@@ -20,7 +20,7 @@
                             <Frame>
                                 <Label Text="{Binding FullName}" Style="{StaticResource Note}"/>
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding TapCommand}" NumberOfTapsRequired="1" CommandParameter="{Binding .}"/>
+                                    <TapGestureRecognizer Tapped="Item_TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
                             </Frame>
                         </StackLayout>

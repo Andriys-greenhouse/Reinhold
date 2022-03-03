@@ -5,6 +5,8 @@ using Xamarin.Forms.Xaml;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Newtonsoft.Json;
+using System.IO;
+using CoreLab;
 
 namespace Reinhold
 {
@@ -28,13 +30,19 @@ namespace Reinhold
 
         protected async override void OnStart()
         {
-            //here shall be first-load and load sequences
+            //first-load and load sequence
             if (!Properties.ContainsKey("FirstStarted"))
             {
-                //LOAD CORE from file
                 Properties.Add("FirstStarted", DateTime.Now);
                 Properties.Add("LastSession", DateTime.Now);
                 DataOfApplication.SetDefaultValues();
+                using (Stream fileStream = await FileSystem.OpenAppPackageFileAsync("Core_0_1.json"))
+                {
+                    using (StreamReader sr = new StreamReader(fileStream))
+                    {
+                        DataOfApplication.Core = JsonConvert.DeserializeObject<Core>(sr.ReadToEnd());
+                    }
+                }
             }
             else
             {
@@ -50,6 +58,7 @@ namespace Reinhold
 
         protected override void OnResume()
         {
+
         }
 
         public async void Save()

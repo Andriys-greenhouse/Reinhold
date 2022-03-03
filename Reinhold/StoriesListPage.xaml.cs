@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Threading.Tasks;
 using System.Threading;
+using Xamarin.Essentials;
 
 namespace Reinhold
 {
@@ -24,6 +25,7 @@ namespace Reinhold
             Story ClickedContent = (sender as ImageButton).CommandParameter as Story;
             if (!await DisplayAlert("Confirmation", $"Are you shure that you want to delete this story?\n({ClickedContent.RepresentingText})", "No", "Yes"))
             {
+                await SecureStorage.SetAsync(ClickedContent.TextID, "");
                 StoriesCopy.Remove(ClickedContent);
             }
         }

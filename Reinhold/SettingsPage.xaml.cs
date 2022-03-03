@@ -45,13 +45,13 @@ namespace Reinhold
                 App.Current.MainPage = new MainPage();
             }
         }
-
+        /*
         private void SearchDeptSlider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SearchDept"));
             DataOfApplicationCopy.SearchDept = (int)Math.Round(SearchDeptSlider.Value);
         }
-
+        */
         private async void ColorSchemePicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             if ((int)DataOfApplicationCopy.ColorScheme != ColorSchemePicker.SelectedIndex && !initialSetting)

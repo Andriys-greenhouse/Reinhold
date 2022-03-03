@@ -13,12 +13,15 @@ namespace CoreLab
 
         float[] InputNeurons { get; set; }
         float[][] Activations { get; set; }
+        [JsonProperty("biases")]
         float[][] Biases { get; set; }
+        [JsonProperty("weights")]
         float[][][] Weights { get; set; }
         float[][] BiasChanges { get; set; }
         float[][][] WeightChanges { get; set; }
         float[][] Deltas { get; set; }
         float[][] Values { get; set; }
+        [JsonProperty("layers")]
         int[] Layers { get; set; }
 
         static Random rnd = new Random();
@@ -193,7 +196,7 @@ namespace CoreLab
                 lastDisplay++;
 
                 //display progress
-                currentString = $"progress: {Iter * 100 / Iterations}%    Cost: {Math.Round(Cost,6)}";
+                currentString = $"progress: {Iter * 100 / Iterations}%    Cost: {Cost}";
                 if (DisplayProgress && lastDisplay % 100 == 0 && currentString != lastDisplayedString) //display after x iterations (500 is best sofar)
                 {
                     lastDisplay = 0;
@@ -292,7 +295,7 @@ namespace CoreLab
                     }
 
                     //check for treshhold
-                    if(Cost < 0.0000005 && Iter > 300) 
+                    if(Cost < 0.000001 && Iter > 300) 
                     { Iter = Iterations; }
                 }
             }
@@ -319,7 +322,7 @@ namespace CoreLab
         public int CompareTo(object obj)
         {
             if (obj == null) { return 1; }
-            Network ntw = obj as Network;
+            VavKavNetwork ntw = obj as VavKavNetwork;
             if (obj == null) { throw new ArgumentException("Object is not a Network instance!"); }
             return ntw.Cost == Cost ? 0 : (ntw.Cost > Cost ? 1 : -1);
         }
