@@ -36,7 +36,7 @@ namespace Reinhold
                 Properties.Add("FirstStarted", DateTime.Now);
                 Properties.Add("LastSession", DateTime.Now);
                 DataOfApplication.SetDefaultValues();
-                using (Stream fileStream = await FileSystem.OpenAppPackageFileAsync("Core_0_1.json"))
+                using (Stream fileStream = await FileSystem.OpenAppPackageFileAsync("Core_0_2.json"))
                 {
                     using (StreamReader sr = new StreamReader(fileStream))
                     {

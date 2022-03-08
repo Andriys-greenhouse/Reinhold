@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\Core_0_1.json" />
+    <AndroidAsset Include="Assets\Core_0_2.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -85,6 +86,14 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CoreLab\CoreLab.csproj">
+      <Project>{8e2497a5-30c5-4d5b-bb23-b59f2c24f1cd}</Project>
+      <Name>CoreLab</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MethodTestSite\MethodTestSite.csproj">
+      <Project>{ba90516b-e67e-4385-ad87-f59b33021b4a}</Project>
+      <Name>MethodTestSite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Reinhold\Reinhold.csproj">
       <Project>{86F727C1-7102-4B35-9D67-74600D99C249}</Project>
       <Name>Reinhold</Name>

@@ -55,7 +55,7 @@ namespace Reinhold
 
         //from https://docs.microsoft.com/cs-cz/xamarin/essentials/text-to-speech
         static CancellationTokenSource cts;
-        public static async void ReadOutLoud(string Message)
+        public static async Task ReadOutLoud(string Message)
         {
             cts = new CancellationTokenSource();
             await TextToSpeech.SpeakAsync(Message, cancelToken: cts.Token);

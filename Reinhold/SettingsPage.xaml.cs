@@ -13,7 +13,7 @@ namespace Reinhold
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public Data DataOfApplicationCopy { get; set; }
-        public double SearchDept { get { return Math.Round(SearchDeptSlider.Value); } }
+        //public double SearchDept { get { return Math.Round(SearchDeptSlider.Value); } }
         bool initialSetting = true;
         public SettingsPage()
         {
@@ -21,9 +21,9 @@ namespace Reinhold
             BindingContext = DataOfApplicationCopy;
             InitializeComponent();
             ColorSchemePicker.BindingContext = new ObservableCollection<string>(Enum.GetNames(typeof(ColorWord)));
-            SearchDeptNumberLabel.BindingContext = this;
+            //SearchDeptNumberLabel.BindingContext = this;
             ColorSchemePicker.SelectedIndex = (int)DataOfApplicationCopy.ColorScheme;
-            SearchDeptSlider.Value = DataOfApplicationCopy.SearchDept;
+            //SearchDeptSlider.Value = DataOfApplicationCopy.SearchDept;
         }
 
         private async void ResetButton_Clicked(object sender, EventArgs e)
@@ -73,7 +73,7 @@ namespace Reinhold
         private void SettingsPage_Disappearing(object sender, EventArgs e)
         {
             (App.Current as App).DataOfApplication.ColorScheme = DataOfApplicationCopy.ColorScheme;
-            (App.Current as App).DataOfApplication.SearchDept = (int)SearchDept;
+            //(App.Current as App).DataOfApplication.SearchDept = (int)SearchDept;
             (App.Current as App).DataOfApplication.DisplayNotifications = DataOfApplicationCopy.DisplayNotifications;
         }
 
@@ -83,9 +83,9 @@ namespace Reinhold
             DataOfApplicationCopy = (App.Current as App).DataOfApplication;
             BindingContext = DataOfApplicationCopy;
             ColorSchemePicker.BindingContext = new ObservableCollection<string>(Enum.GetNames(typeof(ColorWord)));
-            SearchDeptNumberLabel.BindingContext = this;
+            //SearchDeptNumberLabel.BindingContext = this;
             ColorSchemePicker.SelectedIndex = (int)DataOfApplicationCopy.ColorScheme;
-            SearchDeptSlider.Value = DataOfApplicationCopy.SearchDept;
+            //SearchDeptSlider.Value = DataOfApplicationCopy.SearchDept;
             initialSetting = false;
         }
     }

@@ -60,6 +60,7 @@ namespace MethodTestSite
 
             
             //format words
+            /*
             Dictionary<char, List<string>> data = new Dictionary<char, List<string>>();
             string[] lines;
             char last = ' ';
@@ -92,6 +93,7 @@ namespace MethodTestSite
 
                 Console.WriteLine($"{last} written");
             }
+            */
 
             //Word soccer
             WordSoccer wscrGame = WordSoccer.SingleInstance;

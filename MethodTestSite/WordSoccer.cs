@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace MethodTestSite
 {
-    class WordSoccer
+    public class WordSoccer
     {
         static WordSoccer singleInstance;
         public static WordSoccer SingleInstance
