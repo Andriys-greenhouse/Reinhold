@@ -65,6 +65,7 @@
   <ItemGroup>
     <AndroidAsset Include="Assets\Core_0_1.json" />
     <AndroidAsset Include="Assets\Core_0_2.json" />
+    <AndroidAsset Include="Assets\Core_0_3.json" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />

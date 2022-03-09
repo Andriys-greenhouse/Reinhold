@@ -102,6 +102,13 @@ namespace Reinhold
                 MicOrSendButton.Source = MicOrSendButtonIcon;
                 MessageListView.ScrollTo(DataOfApplicationConnector.Messages.Messages[DataOfApplicationConnector.Messages.Messages.Count - 1], ScrollToPosition.End, false);
             }
+            else if (!MessageBox.IsFocused && MessageBox.Text.Length > 0)
+            {
+                DataOfApplicationConnector.Messages.Messages.Add(new Message("Sorry, I can't yet process voice input...", false));
+                MessageListView.ItemsSource = DataOfApplicationConnector.Messages.Messages;
+                MicOrSendButton.Source = MicOrSendButtonIcon;
+                MessageListView.ScrollTo(DataOfApplicationConnector.Messages.Messages[DataOfApplicationConnector.Messages.Messages.Count - 1], ScrollToPosition.End, false);
+            }
         }
 
         private void MessageBox_Focus(object sender, FocusEventArgs e)

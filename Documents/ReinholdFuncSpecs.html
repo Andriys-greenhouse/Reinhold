@@ -1,0 +1,203 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title></title></head><body bgcolor="#1c1c1c" text="#d6d6d6" link="#e0422a" vlink="#e0422a" alink="#e0422a"><p><center> <h1> Reinhold</h1> </center>
+<center> <h2> Function Specification </h2> </center>
+<br/><br/><br/></p>
+
+<p><center> <h4> Version </h4> </center>
+<center> 1.2 </center> 
+<br/></p>
+
+<p><center> <h4> Overview of version</h4> </center>
+<center> This is modified version of the original document <br/> containing description of the final state <br/> of the Reinhold app (version 0.1) before release.</center>
+<br/></p>
+
+<p><center> <h4> Creation date </h4> </center>
+<center> 2022/03/09 </center>
+<br/></p>
+
+<p><center> <h4> Authors </h4> </center>
+<center> Ondřej Samsounek </center></p>
+
+<p><br/><br/><br/><br/></p>
+
+<h3>1. Introduction</h3>
+
+<ol>
+<li><p><strong>Purpose</strong> <br/> 
+This document is intended to describe user interface, workflow and overall structure of Reinhold application.  </p></li>
+<li><p><strong>Document conventions</strong> <br/>
+Final product of development is in this document called product, application or simply app, sometimes even Reinhold (but this name is mostly used for the system interacting with the user). <br/><br/>
+Workflow and GUI elements are described in attached Diagram.
+<br/><br/>
+By user author of this document means man or woman using this app.</p></li>
+<li><p><strong>Intended audience</strong> <br/>
+Reader of this document should have basic experience in using applications on <a href="https://en.wikipedia.org/wiki/Android">Android OS</a> on smartphone and should have a internet connection to look up concepts which he haven&#39;t yet encountered.<br/>
+This document is conceived as a description of functions of Reinhold app which can be red by anyone who is interested in how the app works (developer, user or simply any interested person).</p></li>
+<li><p><strong>Contacts</strong> <br/></p>
+
+<ul>
+<li>Ondřej Samsounek
+
+<ul>
+<li>email: <a href="mailto:samsounek.2018@skola.ssps.cz">samsounek.2018@skola.ssps.cz</a></li>
+<li>tel: +420 XXX XXX XXX</li>
+</ul></li>
+</ul></li>
+<li><p><strong>References to other documents</strong> <br/>
+To this document a Diagram is attached with graphical description of GUI, its elements and workflow.</p></li>
+</ol>
+
+<p><br/></p>
+
+<h3>2. Scenarios</h3>
+
+<ol>
+<li><p><strong>Use cases</strong> <br/> 
+User can use application in following ways:</p>
+
+<ul>
+<li>Personal assistant <br/> If user for some reason prefers Reinhold to other free personal assistants he can use his limited abilities in this field to do things like dial in for a phone call, search web for keyword, get random number and similar actions. <br/> <br/> </li>
+<li>Chatting companion <br/>Reindold have some pre-programmed answers and neural network to decide by which of them to respond, user can experiment with inputs and explore Reinholds capabilities. <br/> <br/> </li>
+<li>Interesting technological toy <br/> User can use Reinhold as toy to explore limits and benefits of my implementation of this technology.<br/> <br/> </li>
+<li>TTS <br/> User can use Reinhold for reading short texts.<br/> <br/> </li>
+<li>Complete usage <br/> Using all of the functionalities mentioned above.<br/> <br/> </li>
+</ul></li>
+<li><p><strong>Personas - types of user roles</strong> <br/> 
+This application won&#39;t have pre-implemented personas, no user will be restricted in using the application in any way.<br/><br/>
+Users of this application might be numerous, students trying to get the concept of conversational AI or of Android apps, teachers demonstrating something on the open-source code, tech enthusiasts who want to explore this application, users, who want to be sure, that conversational AI which they are playing with, is not sending any data about them outside their devices, and many others. </p></li>
+<li><p><strong>Delimitation of the scope</strong> <br/> </p>
+
+<ul>
+<li><strong>Functionality modules</strong> <br/> 
+Application won&#39;t be able to complete any order (concerning performing some action) given by user except pre-defined orders. Order to complete this operation will be recognized by Reinhold in more than one form (it shouldn&#39;t be only a defined command but number of actions which could be performed will be limited by defining them in code - Reinhold won&#39;t be able to complete any command which won&#39;t be pre-defined).<br/>
+These include:<br/><br/>
+
+<ul>
+<li><strong>perform a phone call</strong> - Reinhold will dial in a specified phone number or contact<br/><br/></li>
+<li><strong>play word football</strong> - simple game where (after user will &ldquo;say&rdquo; the first word) players will have to alternately say words which start at the same word with which last word ended (every word can be used only once), when one of players won&#39;t be able to think of any more word which match conditions, he looses<br/><br/></li>
+<li><strong>play rock paper scissors</strong> - after user will input his answer Reinhold will compare it with a randomly drawn answer of his<br/><br/></li>
+<li><strong>play guess a number from 1 to 10</strong> - compared with randomly drawn number<br/><br/></li>
+<li><strong>pick random number from &hellip; to &hellip;</strong> - returns a random number from the range specified by the user<br/><br/></li>
+<li><strong>book quote</strong> - Reinhold will return user&#39;s favorite quote from this book or will search for some on the internet<br/><br/></li>
+<li><strong>random story</strong> - return random story<br/><br/></li>
+<li><strong>battery percentage left</strong><br/><br/></li>
+<li><strong>current time</strong><br/><br/></li>
+<li><strong>info about Reinhold</strong> - pre-defined answer on some questions concerning Reinhold himself<br/><br/></li>
+<li><strong>search on web</strong> - Reinhold will write out few results from the google web sear API<br/><br/></li>
+<li><strong>news</strong> - returns some actual news articles<br/><br/></li>
+<li><strong>read out loud</strong> - Reinhold will use his TTS to read users input<br/><br/></li>
+</ul></li>
+<li><strong>TTS</strong><br/>
+TTS will be implemented using Xamarin.Essentials.<br/><br/></li>
+<li><strong>Data saving</strong><br/>
+Data needed for operation of the app (information about user, his acquaintances, his books, his stories, information about when were the app started and so on) are stored as serialized Json strings in <a href="https://docs.microsoft.com/en-us/xamarin/essentials/secure-storage?tabs=android">SecureStorage</a> (part of Xamarin.Essentials) and Properties of application. Some data which is expected to be larger (texts of stories, quotes,&hellip;) are going to be stored separatly. <br/>
+Safety of the data shall be ensured by use of <a href="https://docs.microsoft.com/en-us/xamarin/essentials/secure-storage?tabs=android">SecureStorage</a> from Xamarin.Essentials as means to store this data.
+<br/><br/></li>
+<li><strong>Use of third party content</strong><br/>
+For the development of this app, third-party content will be used. Separate document concerning used resources will be written and submitted along with final product. For example icons are going to be drawn from the web. Similarly, other used resources and software are going to be mentioned as well.<br/><br/></li>
+<li><strong>Reinhold&#39;s responses</strong><br/>
+Responses of the Reinhold shall be pre-defined. Sometimes there will be randomly selected from possible answers but Reinhold won&#39;t &ldquo;make up hi own answers&rdquo;.<br/><br/></li>
+<li><strong>Color scheme</strong><br/>
+There are going to be three color schemes red, green, and blue. Color scheme will effect color of most icons, color of message &ldquo;bubbles&rdquo; and of headers.<br/><br/></li>
+<li><strong>Accessibility</strong><br/>
+This software won&#39;t be published on Google Play or similar big stores but potential users will be able to download complete project from <a href="https://github.com/Andriys-greenhouse">GitHub</a> and compile it themselves.<br/><br/></li>
+<li><strong>Feedback</strong><br/>
+No feedback feature of the application shall be implemented. Users will have to submit their feedback onto a <a href="https://github.com/Andriys-greenhouse">GitHub</a>.</li>
+</ul></li>
+<li><p><strong>Areas with low emphasis</strong> <br/> </p>
+
+<ul>
+<li><strong>Login</strong> <br/> 
+This app won&#39;t include any method of confirming the user&#39;s identity. User will have to realize his own security precautions to prevent abuse of the app by unauthorised person (for example install app which enables him to secure launching of specified app by applying necessity to input password). <br/><br/></li>
+<li><strong>Backup</strong> <br/>
+No backup system will be implemented. Once user will delete or overwrite his data, there will be no way of getting it back. User will be notified about this before he will confirm any big modification of data.<br/>
+Data will be saved every time when user will leave the application.<br/><br/></li>
+<li><strong>Responsibility</strong> <br/>
+Author bears no responsibility for any modification or lose of data to which user will give app access to (calendar, contacts,&hellip;).<br/><br/></li>
+<li><strong>Performance</strong> <br/>
+No more than necessary amount of emphasis will be put on applications smooth run (app will be implemented with basic requirements of async programming but minimal requirements won&#39;t be a priority). <br/><br/></li>
+<li><strong>Game intelligence</strong><br/>
+Reinhold will play pre-defined games with no AI involved. (defined behavior with randomness involved)<br/><br/></li>
+<li><strong>Help</strong><br/>
+No help shall be build in. If user will want to look up something concerning this app, he can do so in this document.</li>
+</ul></li>
+</ol>
+
+<p><br/></p>
+
+<h3>3. Rough overall architecture</h3>
+
+<ol>
+<li><p><strong>Workflow</strong> <br/> 
+Described in attached Diagram.</p></li>
+<li><p><strong>Pages and their details</strong> <br/> 
+Graphic design is shown in Diagram.</p>
+
+<ul>
+<li><strong>Flyout menu</strong><br/>
+From the Flyout menu user can access Chat page, Data management page and Settings page. Flyout menu will be accessed by pressing icon depicting three lines on the top left of every of main pages.<br/><br/>
+
+<ul>
+<li><strong>Main components:</strong><br/><br/>
+<strong>Header</strong> - displays information about version of the application and about the version of the core.<br/><br/>
+<strong>Bottom screen menu</strong> - Although it isn&#39;t part of the menu itself, it will enable the user to switch between pages in an easier way.<br/><br/></li>
+</ul></li>
+<li><strong>Chat page</strong> <br/>
+In Chat page, user will be able to interact with Reinhold by writing messages as keyboard inputs. <br/><br/>
+
+<ul>
+<li><strong>Main components:</strong><br/><br/>
+<strong>Messages</strong> - Every message will contain information about date and time when it were added.<br/><br/>
+<strong>Input text field</strong> - Place where user will be able to write his messages to. <br/><br/>
+<strong>Microphone/send button</strong> - If there is text in the Input text field this button will submit the message to the app.<br/><br/> </li>
+</ul></li>
+<li><strong>Settings page<br/></strong>This page will enable the user to set some basic values.<br/><br/>
+
+<ul>
+<li><strong>Main components:</strong><br/><br/>
+<strong>Reset button</strong> - This button will reset all settings to default and it will delete all of user&#39;s data. User will be warned about function of this button after pressing it and he will have to confirm his choice.<br/><br/></li>
+<li><strong>Settable values:</strong><br/><br/>
+<strong>Color scheme</strong> - User can pick from tree colors (more about this in Delimitation of the scope).<br/><br/>
+<strong>Display notifications</strong> - Either the user will get notification about Reinhold&#39;s new Automatic question (this feature might be added in future versions) or not.<br/><br/></li>
+</ul></li>
+<li><strong>Data management page</strong><br/>
+From this page user will be able to get to other pages to edit data stored about him. <br/><br/>
+
+<ul>
+<li><strong>Main components:</strong><br/><br/>
+<strong>Manage existing data buttons</strong> - Four buttons enabling the user to go to the Create/edit person page (with users data), List of stories page, List of books page and List of acquaintances page.<br/><br/>
+<strong>Add data buttons</strong> - This way user can be redirected to empty Create/edit story page, Create/edit book page or Create/edit person page.<br/><br/></li>
+</ul></li>
+<li><strong>List of books page &amp; List of stories page &amp; List of acquaintance page</strong><br/>
+This page will contain list of registered objects with possibility to add new ones. <br/><br/>
+
+<ul>
+<li><strong>Main components:</strong><br/><br/>
+<strong>Existing XXX elements</strong> - In list view every book will be represented by its title, acquaintance by it&#39;s full name and story by few of its initial words. When element is clicked, user will be redirected to Edit/create book page, Edit/create person page or to Edit/create story page where user can edit element from the line on which he clicked on. Bin button on the right will enable user to delete record about element in the line.<br/><br/>
+<strong>Add XXX</strong> - User will be redirected to Edit/create book page, Edit/create person page or to Edit/create story page with no data filled in (if he will fill some data in, after clicking add button new object will be added to the memory).<br/><br/></li>
+</ul></li>
+<li><strong>Edit/create book page &amp; Edit/create person page &amp; Edit/create story page</strong><br/>
+In this page user will be able to modify data about existing object or to add data about new ones. <br/><br/>
+
+<ul>
+<li><strong>Main components:</strong><br/><br/>
+<strong>Done button</strong> - Firstly validity of entered contacts (at editing person) is going to be checked (if the contact will be invalid a notice about what is wrong shall appear). Than if contacts are going to pass validation, new object can be created. <br/><br/></li>
+</ul></li>
+</ul></li>
+<li><p><strong>Core description</strong><br/></br>
+<strong>Simple description</strong></br>
+The core composes of two neural networks. These have been trained by inputs which were supposed to simulate user-given input and they are stored in a .json file in Assets of application.
+</br>
+One of networks is responsible for recognizing context in which given input is directing a conversation and the other one should recognize &ldquo;what the user wants&rdquo; (intent).</br>
+Input of networks consists of current context and of <a href="https://victorzhou.com/blog/bag-of-words/">bag of words</a> of input.</br>
+After core &ldquo;analyzes&rdquo; input, required data is extracted from user-given input to serve as an input for methods (dates, phone numbers and similar) to complete the order.</p>
+
+<ul>
+<li><strong>Ideas</strong>
+
+<ul>
+<li><a href="https://towardsdatascience.com/building-a-neural-network-framework-in-c-16ef56ce1fef">Principles of functioning of neural network</a><br/></li>
+<li><a href="https://www.youtube.com/watch?v=wypVcNIH6D4&amp;list=PLzMcBGfZo4-ndH9FoC4YWHGXG5RZekt-Q">Principles of simple chatbots</a><br/><br/></li>
+</ul></li>
+</ul></li>
+</ol>
+</body></html>
