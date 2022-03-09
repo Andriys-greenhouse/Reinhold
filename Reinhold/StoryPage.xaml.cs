@@ -66,7 +66,7 @@ namespace Reinhold
             };
             await Navigation.PushAsync(current);
             await Task.Run(() => waitHandle.WaitOne());
-            if (current.Selected != null) { Displayed.People.Add(current.Selected); }
+            if (current.Selected != null && !Displayed.People.Contains(current.Selected)) { Displayed.People.Add(current.Selected); }
             //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
             BindingContext = Displayed;
         }

@@ -12,7 +12,7 @@ namespace Reinhold
 {
     public partial class App : Application
     {
-        Data dataOfApplication;
+        Data dataOfApplication = new Data();
         public Data DataOfApplication 
         {
             get { return dataOfApplication; }
@@ -48,6 +48,13 @@ namespace Reinhold
             {
                 string sth = await SecureStorage.GetAsync("Data");
                 JsonConvert.DeserializeObject<Data>(sth).CopyTo(ref dataOfApplication);
+                using (Stream fileStream = await FileSystem.OpenAppPackageFileAsync("Core_0_2.json"))
+                {
+                    using (StreamReader sr = new StreamReader(fileStream))
+                    {
+                        DataOfApplication.Core = JsonConvert.DeserializeObject<Core>(sr.ReadToEnd());
+                    }
+                }
             }
         }
 

@@ -36,7 +36,7 @@ namespace Reinhold
 
         private async void Item_TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Selected = (sender as TapGestureRecognizer).CommandParameter as Acquaintance;
+            Selected = (e as TappedEventArgs).Parameter as Acquaintance;
             await Navigation.PopAsync();
         }
 

@@ -16,6 +16,7 @@ namespace Reinhold
 
     public class Data
     {
+        [JsonIgnore]
         public Core Core { get; set; }
 
         public DateTime FirstStart { get; set; }
@@ -51,7 +52,7 @@ namespace Reinhold
         [JsonIgnore]
         public string Version { get { return "Version: 0.1"; } }
         [JsonIgnore]
-        public string CoreVersion { get { return "Core vrsion: 0.0"; } }
+        public string CoreVersion { get { return "Core version: 0.3"; } }
 
         [JsonIgnore]
         public string ChatIcon { get { return $"{ColorScheme.ToString().ToLower()}Chat.png"; } }

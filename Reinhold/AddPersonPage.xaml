@@ -17,7 +17,7 @@
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal">
-                            <Frame>
+                            <Frame Margin="10,5" BackgroundColor="#2c2c2c">
                                 <Label Text="{Binding FullName}" Style="{StaticResource Note}"/>
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="Item_TapGestureRecognizer_Tapped" NumberOfTapsRequired="1" CommandParameter="{Binding .}"/>
