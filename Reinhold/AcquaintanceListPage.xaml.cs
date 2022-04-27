@@ -31,13 +31,7 @@ namespace Reinhold
         private async void AcquaintancesListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             AcquaintanceDataPage current = new AcquaintanceDataPage((Acquaintance)AcquaintancesListView.SelectedItem);
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.HandedIn)
             {
                 AcquaintancesCopy.Remove((Acquaintance)AcquaintancesListView.SelectedItem);
@@ -50,13 +44,7 @@ namespace Reinhold
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
             AcquaintanceDataPage current = new AcquaintanceDataPage(new Acquaintance());
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.HandedIn)
             {
                 AcquaintancesCopy.Add(current.Displayed);

@@ -5,6 +5,7 @@
              BackgroundColor="#1c1c1c"
              Title="Chat"
              Appearing="ChatPage_Appearing">
+
     <ContentPage.Content>
         <StackLayout>
             <ScrollView VerticalOptions="FillAndExpand">
@@ -28,7 +29,7 @@
                 </ListView>
             </ScrollView>
             <StackLayout Orientation="Horizontal">
-                <Entry x:Name="MessageBox" HorizontalOptions="FillAndExpand" Focused="MessageBox_Focus" Unfocused="MessageBox_Focus"/>
+                <Entry x:Name="MessageBox" HorizontalOptions="FillAndExpand" Text="{Binding MsgBxText}" Focused="MessageBox_Focus" Unfocused="MessageBox_Focus"/>
                 <ImageButton BackgroundColor="Transparent" Source="{Binding MicOrSendButtonIcon}" Aspect="AspectFill" x:Name="MicOrSendButton" Clicked="MicOrSendButton_Clicked" WidthRequest="80" HeightRequest="80"/>
             </StackLayout>
         </StackLayout>

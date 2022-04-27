@@ -33,13 +33,7 @@ namespace Reinhold
         private async void BooksListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             BookPage current = new BookPage((Book)BooksListView.SelectedItem);
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.HandedIn)
             {
                 BooksCopy.Remove((Book)BooksListView.SelectedItem);
@@ -52,13 +46,7 @@ namespace Reinhold
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
             BookPage current = new BookPage(new Book());
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.HandedIn)
             {
                 BooksCopy.Add(current.Displayed);

@@ -49,13 +49,7 @@ namespace Reinhold
         private async void StoryButton_Clicked(object sender, EventArgs e)
         {
             StoryPage current = new StoryPage(new Story());
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.HandedIn)
             {
                 (App.Current as App).DataOfApplication.Stories.Add(current.Displayed);
@@ -65,13 +59,7 @@ namespace Reinhold
         private async void PersonButton_Clicked(object sender, EventArgs e)
         {
             AcquaintanceDataPage current = new AcquaintanceDataPage(new Acquaintance());
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.HandedIn)
             {
                 (App.Current as App).DataOfApplication.Acquaintances.Add(current.Displayed);
@@ -81,13 +69,7 @@ namespace Reinhold
         private async void BookButton_Clicked(object sender, EventArgs e)
         {
             BookPage current = new BookPage(new Book());
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.HandedIn)
             {
                 (App.Current as App).DataOfApplication.Books.Add(current.Displayed);

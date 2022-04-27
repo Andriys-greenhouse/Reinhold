@@ -33,15 +33,7 @@ namespace Reinhold
         private async void StoriesListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             StoryPage current = new StoryPage((Story)StoriesListView.SelectedItem);
-
-            //from https://stackoverflow.com/questions/39652909/await-for-a-pushmodalasync-form-to-closed-in-xamarin-forms
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.HandedIn)
             {
                 StoriesCopy.Remove((Story)StoriesListView.SelectedItem);
@@ -54,13 +46,7 @@ namespace Reinhold
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
             StoryPage current = new StoryPage(new Story());
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.HandedIn)
             {
                 StoriesCopy.Add(current.Displayed);

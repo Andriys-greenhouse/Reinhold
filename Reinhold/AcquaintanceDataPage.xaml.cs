@@ -53,14 +53,8 @@ namespace Reinhold
 
         private async void AddHobbyButton_Clicked(object sender, EventArgs e)
         {
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             AddHobbyPage current = new AddHobbyPage();
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.Submitted && current.Hobby.Length > 0) { Displayed.Hobbys.Add(new Hobby(current.Hobby == null ? "" : current.Hobby)); }
             BindingContext = Displayed;
         }

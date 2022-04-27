@@ -58,14 +58,8 @@ namespace Reinhold
 
         private async void AddPeopleButton_Clicked(object sender, EventArgs e)
         {
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
             AddPersonPage current = new AddPersonPage((App.Current as App).DataOfApplication.Acquaintances);
-            current.Disappearing += (sender2, e2) =>
-            {
-                waitHandle.Set();
-            };
-            await Navigation.PushAsync(current);
-            await Task.Run(() => waitHandle.WaitOne());
+            Navigation.PushAsync(current);
             if (current.Selected != null && !Displayed.People.Contains(current.Selected)) { Displayed.People.Add(current.Selected); }
             //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
             BindingContext = Displayed;
