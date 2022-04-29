@@ -56,8 +56,8 @@
                     </StackLayout>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="This is an acurate date &#x0a;(acurate date is not required)" Style="{StaticResource Note}"/>
-                    <CheckBox x:Name="AcurateDateCheckBox" IsChecked="{Binding DateIsAcurate}"/>
+                    <Label Text="This is an accurate date &#x0a;(accurate date is not required)" Style="{StaticResource Note}"/>
+                    <CheckBox x:Name="accurateDateCheckBox" IsChecked="{Binding DateIsaccurate}"/>
                 </StackLayout>
 
                 <Label Text="Personal info" Style="{StaticResource Headline}"/>

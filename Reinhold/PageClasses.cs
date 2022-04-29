@@ -124,7 +124,7 @@ namespace Reinhold
             friend.FirstName = "Roald";
             friend.FullName = "Hamundson";
             friend.BirthDate = new DateTime(2002, 3, 16);
-            friend.DateIsAcurate = true;
+            friend.DateIsaccurate = true;
             friend.PlaceOfResidence = new Place("České Budějovice");
             friend.Appearance = "Tall and haves gray hare.";
             friend.Hobbys.Add(new Hobby("Sailing"));
@@ -191,7 +191,7 @@ namespace Reinhold
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
-        public bool DateIsAcurate { get; set; }
+        public bool DateIsaccurate { get; set; }
         public Place LastLocation { get; set; }
         public Place PlaceOfResidence { get; set; }
         public string Appearance { get; set; }
@@ -238,7 +238,7 @@ namespace Reinhold
             LastName = "";
             FirstName = "";
             BirthDate = new DateTime();
-            DateIsAcurate = false;
+            DateIsaccurate = false;
             PlaceOfResidence = new Place("");
             LastLocation = new Place("");
             Appearance = "";

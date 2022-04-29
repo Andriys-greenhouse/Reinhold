@@ -35,7 +35,7 @@
                     <Label Text="(notif. with Reinholds questions for you while you are away)" Style="{StaticResource Note}"/>
                 </StackLayout>
                 <Label Text="Reset application to default" Style="{StaticResource Headline}"/>
-                <Label Text="Resets settings and deletes all the data." Style="{StaticResource Note}"/>
+                <Label Text="Resets settings and deletes all data." Style="{StaticResource Note}"/>
                 <Button x:Name="ResetButton" Text="Reset" Clicked="ResetButton_Clicked" HorizontalOptions="Center" Margin="0,30,0,0"/>
             </StackLayout>
         </ScrollView>
