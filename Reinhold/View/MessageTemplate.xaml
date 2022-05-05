@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataTemplate xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Reinhold.View.MessageTemplate">
+    <ViewCell>
+        <ViewCell.View>
+            <Frame HorizontalOptions="{Binding Side}" BackgroundColor="{Binding Color}" CornerRadius="15" Padding="10,3" Margin="0,0,0,5">
+                <Frame.Content>
+                    <StackLayout>
+                        <Label Text="{Binding Text}"/>
+                        <Label Text="{Binding DateToDisplay}" HorizontalOptions="End" VerticalOptions="End" FontSize="Small"/>
+                    </StackLayout>
+                </Frame.Content>
+            </Frame>
+        </ViewCell.View>
+    </ViewCell>
+</DataTemplate>

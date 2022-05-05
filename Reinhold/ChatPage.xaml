@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Reinhold.ChatPage"
+             xmlns:views="clr-namespace:Reinhold.ViewModels"
              BackgroundColor="#1c1c1c"
              Title="Chat"
              Appearing="ChatPage_Appearing">
@@ -11,7 +12,8 @@
             <ScrollView VerticalOptions="FillAndExpand">
                 <ListView x:Name="MessageListView" HasUnevenRows="True">
                     <ListView.ItemTemplate>
-                        <DataTemplate>
+                        <views:ChatElementTemplateSelector/>
+                        <!--<DataTemplate>
                             <ViewCell>
                                 <ViewCell.View>
                                     <Frame HorizontalOptions="{Binding Side}" BackgroundColor="{Binding Color}" CornerRadius="15" Padding="10,3" Margin="0,0,0,5">
@@ -24,7 +26,7 @@
                                     </Frame>
                                 </ViewCell.View>
                             </ViewCell>
-                        </DataTemplate>
+                        </DataTemplate>-->
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollView>

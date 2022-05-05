@@ -73,7 +73,7 @@ namespace Reinhold.ViewModels
             Methods.StopReading();
             if (MsgBxText != null && MsgBxText.Length > 0)
             {
-                DataOfApplicationConnector.Messages.Messages.Add(new Message(MsgBxText, true));
+                DataOfApplicationConnector.Messages.Add(new Message(MsgBxText, true));
 
                 //core action
                 string output = "newly created output";
@@ -83,11 +83,11 @@ namespace Reinhold.ViewModels
 
                 output = ActionOnInput(coreResult, MsgBxText).Result;
 
-                DataOfApplicationConnector.Messages.Messages.Add(new Message(output, false));
+                DataOfApplicationConnector.Messages.Add(new Message(output, false));
             }
             else //if (!MessageBox.IsFocused && (MessageBox.Text.Length == 0 || == null))
             {
-                DataOfApplicationConnector.Messages.Messages.Add(new Message("Sorry, I can't yet process voice input...", false));
+                DataOfApplicationConnector.Messages.Add(new Message("Sorry, I can't yet process voice input...", false));
             }
         }
 

@@ -49,8 +49,16 @@ namespace Reinhold
             {
                 ViewModel.UpdateIcon.Execute(null);
             }*/
+            if (e.VisualElement != MessageBox) 
+            {
+                ViewModel.MsgBxFocused = !e.VisualElement.IsFocused;
+            } 
+            else
+            {
+                ViewModel.MsgBxFocused = e.VisualElement.IsFocused;
+            }
+
             MicOrSendButton.Source = ViewModel.MicOrSendButtonIcon;
-            ViewModel.MsgBxFocused = !MessageBox.IsFocused;
         }
 
         private void ChatPage_Appearing(object sender, EventArgs e)
@@ -63,6 +71,8 @@ namespace Reinhold
             MicOrSendButton.Source = MicOrSendButtonIcon;
             MessageListView.ItemsSource = DataOfApplicationConnector.Messages.Messages;
             */
+            MessageListView.ItemsSource = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
+            //MessageBox_Focus(this, new FocusEventArgs(MessageBox, MessageBox.IsFocused));
         }
 
 

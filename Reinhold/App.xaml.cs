@@ -47,12 +47,19 @@ namespace Reinhold
             else
             {
                 string sth = await SecureStorage.GetAsync("Data");
-                JsonConvert.DeserializeObject<Data>(sth).CopyTo(ref dataOfApplication);
-                using (Stream fileStream = await FileSystem.OpenAppPackageFileAsync("Core_0_3.json"))
+                if (sth != null) 
+                { 
+                    JsonConvert.DeserializeObject<Data>(sth).CopyTo(ref dataOfApplication);
+                    dataOfApplication.Messages.InitializeMessages();
+                }
+                if (DataOfApplication.Core == null)
                 {
-                    using (StreamReader sr = new StreamReader(fileStream))
+                    using (Stream fileStream = await FileSystem.OpenAppPackageFileAsync("Core_0_3.json"))
                     {
-                        DataOfApplication.Core = JsonConvert.DeserializeObject<Core>(sr.ReadToEnd());
+                        using (StreamReader sr = new StreamReader(fileStream))
+                        {
+                            DataOfApplication.Core = JsonConvert.DeserializeObject<Core>(sr.ReadToEnd());
+                        }
                     }
                 }
             }
@@ -60,7 +67,7 @@ namespace Reinhold
 
         protected async override void OnSleep()
         {
-            Save();
+            await Save();
         }
 
         protected override void OnResume()
@@ -68,7 +75,7 @@ namespace Reinhold
 
         }
 
-        public async void Save()
+        public async Task Save()
         {
             Properties["LastSession"] = DateTime.Now;
             if (!Properties.ContainsKey("FirstStarted"))

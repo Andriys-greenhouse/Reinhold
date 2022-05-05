@@ -421,10 +421,23 @@ namespace Reinhold
         }
     }
 
-    public class Message
+    public abstract class ChatElement
+    {
+        public string DateToDisplay { get; set; }
+    }
+
+    public class DateElement : ChatElement
+    {
+        public DateElement(DateTime date)
+        {
+            DateToDisplay = date.ToString("yyyy/MM/dd");
+        }
+    }
+
+    public class Message : ChatElement
     {
         public string Text { get; set; }
-        public string DateToDisplay
+        new public string DateToDisplay
         {
             get { return Date.ToString("yyyy/MM/dd HH:mm"); }
         }
@@ -447,6 +460,8 @@ namespace Reinhold
         public ObservableCollection<Message> Messages { get; set; }
         public DayOfMessages(IEnumerable<Message> aMessages)
         {
+            Messages = new ObservableCollection<Message>();
+
             bool first = true;
             foreach (Message item in aMessages)
             {
@@ -468,23 +483,40 @@ namespace Reinhold
 
     public class MessageManager
     {
-        //public ObservableCollection<DayOfMessages> IndividualDays { get; set; }
-        public ObservableCollection<Message> Messages { get; set; }
+        ObservableCollection<DayOfMessages> IndividualDays { get; set; }
+        [JsonIgnore]
+        public ObservableCollection<ChatElement> Messages { get; set; }
         public MessageManager()
         {
-            Messages = new ObservableCollection<Message>();
+            IndividualDays = new ObservableCollection<DayOfMessages>();
+            InitializeMessages();
         }
         public void Add(Message aMessage)
         {
-            /*
             DateTime Date = IndividualDays.Count == 0 ? new DateTime() : IndividualDays[IndividualDays.Count - 1].Date;
             if (Date.Year != aMessage.Date.Year || Date.Month != aMessage.Date.Month || Date.Day != aMessage.Date.Day)
             {
                 IndividualDays.Add(new DayOfMessages(new Message[] { aMessage }));
+                Messages.Add(new DateElement(aMessage.Date));
             }
             else { IndividualDays[IndividualDays.Count - 1].Messages.Add(aMessage); }
-            */
             Messages.Add(aMessage);
+        }
+        void LoadDay(DayOfMessages aDayOfMessages)
+        {
+            Messages.Add(new DateElement(aDayOfMessages.Messages[0].Date));
+            foreach (Message msg in aDayOfMessages.Messages)
+            {
+                Messages.Add(msg);
+            }
+        }
+        public void InitializeMessages()
+        {
+            Messages = new ObservableCollection<ChatElement>();
+            foreach (DayOfMessages day in IndividualDays)
+            {
+                LoadDay(day);
+            }
         }
     }
 
