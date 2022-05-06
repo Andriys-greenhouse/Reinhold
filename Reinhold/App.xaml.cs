@@ -82,7 +82,8 @@ namespace Reinhold
             {
                 Properties.Add("FirstStarted", DateTime.Now);
             }
-            await SecureStorage.SetAsync("Data", JsonConvert.SerializeObject(DataOfApplication));
+            string s = JsonConvert.SerializeObject(DataOfApplication);
+            await SecureStorage.SetAsync("Data", s);
         }
     }
 }

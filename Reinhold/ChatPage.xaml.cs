@@ -1,6 +1,7 @@
 ﻿using Reinhold.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,7 +18,8 @@ namespace Reinhold
         {
             InitializeComponent();
             MicOrSendButton.BindingContext = this;
-            MessageListView.ItemsSource = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
+            MessageStackLayout.BindingContext = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
+            //MessageListView.ItemsSource = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
             BindingContext = ViewModel;
             MicOrSendButton.Source = ViewModel.MicOrSendButtonIcon;
         }
@@ -34,13 +36,16 @@ namespace Reinhold
             //else { throw new Exception("This was not supposed to happen, for some reason the ButtonClick command can't be executed..."); }
 
             MessageBox.Text = "";
-            MessageListView.ItemsSource = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
+            //MessageListView.ItemsSource = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
+            MessageStackLayout.BindingContext = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
             /*if (ViewModel.UpdateIcon.CanExecute(null))
             {
                 ViewModel.UpdateIcon.Execute(null);
             }*/
             MicOrSendButton.Source = ViewModel.MicOrSendButtonIcon;
-            MessageListView.ScrollTo(ChatPageViewModel.DataOfApplicationConnector.Messages.Messages[ChatPageViewModel.DataOfApplicationConnector.Messages.Messages.Count - 1], ScrollToPosition.End, false);
+            //MessageListView.ScrollTo(ChatPageViewModel.DataOfApplicationConnector.Messages.Messages[ChatPageViewModel.DataOfApplicationConnector.Messages.Messages.Count - 1], ScrollToPosition.End, false);
+            var lastChild = MessageScrollView.Children.LastOrDefault();
+            if (lastChild != null) { MessageScrollView.ScrollToAsync(lastChild, ScrollToPosition.End, true); }
         }
 
         private void MessageBox_Focus(object sender, FocusEventArgs e)
@@ -71,7 +76,8 @@ namespace Reinhold
             MicOrSendButton.Source = MicOrSendButtonIcon;
             MessageListView.ItemsSource = DataOfApplicationConnector.Messages.Messages;
             */
-            MessageListView.ItemsSource = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
+            MessageStackLayout.BindingContext = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
+            //MessageListView.ItemsSource = ChatPageViewModel.DataOfApplicationConnector.Messages.Messages;
             //MessageBox_Focus(this, new FocusEventArgs(MessageBox, MessageBox.IsFocused));
         }
 

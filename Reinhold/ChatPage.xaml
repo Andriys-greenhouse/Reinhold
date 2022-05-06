@@ -9,11 +9,12 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <ScrollView VerticalOptions="FillAndExpand">
-                <ListView x:Name="MessageListView" HasUnevenRows="True">
+            <ScrollView x:Name="MessageScrollView" VerticalOptions="FillAndExpand">
+                <!--<ListView x:Name="MessageListView" HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <views:ChatElementTemplateSelector/>
-                        <!--<DataTemplate>
+                        
+                        <DataTemplate>
                             <ViewCell>
                                 <ViewCell.View>
                                     <Frame HorizontalOptions="{Binding Side}" BackgroundColor="{Binding Color}" CornerRadius="15" Padding="10,3" Margin="0,0,0,5">
@@ -26,9 +27,15 @@
                                     </Frame>
                                 </ViewCell.View>
                             </ViewCell>
-                        </DataTemplate>-->
+                        </DataTemplate>
+                        
                     </ListView.ItemTemplate>
-                </ListView>
+                </ListView>-->
+                <StackLayout x:Name="MessageStackLayout" BindableLayout.ItemsSource="{Binding .}">
+                    <BindableLayout.ItemTemplateSelector>
+                        <views:ChatElementTemplateSelector/>
+                    </BindableLayout.ItemTemplateSelector>
+                </StackLayout>
             </ScrollView>
             <StackLayout Orientation="Horizontal">
                 <Entry x:Name="MessageBox" HorizontalOptions="FillAndExpand" Text="{Binding MsgBxText}" Focused="MessageBox_Focus" Unfocused="MessageBox_Focus"/>

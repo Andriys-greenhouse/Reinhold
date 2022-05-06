@@ -439,7 +439,7 @@ namespace Reinhold
         public string Text { get; set; }
         new public string DateToDisplay
         {
-            get { return Date.ToString("yyyy/MM/dd HH:mm"); }
+            get { return Date.ToString("HH:mm"); }
         }
         public LayoutOptions Side { get { return SendByUser ? LayoutOptions.End : LayoutOptions.Start; } }
         public Color Color { get { return SendByUser ? (App.Current as App).DataOfApplication.ColorSchemeInColor : Color.FromRgb(56, 54, 49); } }
@@ -456,33 +456,49 @@ namespace Reinhold
 
     public class DayOfMessages
     {
-        public DateTime Date { get; set; }
+        DateTime date;
+        public DateTime Date 
+        { 
+            get
+            {
+                if(date == null)
+                {
+                    date = Messages.Count > 0 ? Messages[0].Date : DateTime.Now;
+                }
+                return date;
+            }
+            set { date = value; } 
+        }
         public ObservableCollection<Message> Messages { get; set; }
         public DayOfMessages(IEnumerable<Message> aMessages)
         {
             Messages = new ObservableCollection<Message>();
 
-            bool first = true;
-            foreach (Message item in aMessages)
+            if(aMessages != null)
             {
-                if (first)
+                bool first = true;
+                foreach (Message item in aMessages)
                 {
-                    first = false;
-                    Date = item.Date;
-                }
+                    if (first)
+                    {
+                        first = false;
+                        Date = item.Date;
+                    }
 
-                if (Date.Year != item.Date.Year || Date.Month != item.Date.Month || Date.Day != item.Date.Day)
-                {
-                    throw new ArgumentException("Not all messages are from the same day!");
-                }
+                    if (Date.Year != item.Date.Year || Date.Month != item.Date.Month || Date.Day != item.Date.Day)
+                    {
+                        throw new ArgumentException("Not all messages are from the same day!");
+                    }
 
-                Messages.Add(item);
+                    Messages.Add(item);
+                }
             }
         }
     }
 
     public class MessageManager
     {
+        [JsonProperty]
         ObservableCollection<DayOfMessages> IndividualDays { get; set; }
         [JsonIgnore]
         public ObservableCollection<ChatElement> Messages { get; set; }
