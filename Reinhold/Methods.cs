@@ -57,8 +57,9 @@ namespace Reinhold
         static CancellationTokenSource cts;
         public static async Task ReadOutLoud(string Message)
         {
+            StopReading();
             cts = new CancellationTokenSource();
-            await TextToSpeech.SpeakAsync(Message, cancelToken: cts.Token);
+            TextToSpeech.SpeakAsync(Message, cancelToken: cts.Token);
         }
         public static void StopReading()
         {

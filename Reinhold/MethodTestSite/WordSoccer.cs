@@ -21,7 +21,7 @@ namespace MethodTestSite
             return singleInstance;
         }
 
-        Dictionary<char, List<string>> Vocabrulary { get; set; }
+        static Dictionary<char, List<string>> Vocabrulary { get; set; }
         static Random rnd = new Random();
         List<string> UsedWords;
         static string alphabet { get { return "abcdefghijklmnopqrstuvwxyz"; } }
@@ -31,15 +31,10 @@ namespace MethodTestSite
 
         private WordSoccer(Stream wordsFile)
         {
-            NewGame(wordsFile);
-        }
+            NewGame();
 
-        public async void NewGame(Stream wordsFile)
-        {
-            gameRuning = true;
-            UsedWords = new List<string>();
+
             Vocabrulary = new Dictionary<char, List<string>>();
-
             string[] lines;
             char last = ' ';
 
@@ -58,6 +53,12 @@ namespace MethodTestSite
                 }
                 Vocabrulary[last].Add(lines[i]);
             }
+        }
+
+        public async void NewGame()
+        {
+            gameRuning = true;
+            UsedWords = new List<string>();
         }
 
         public string MakeMove(string word = "")//leave "" for starting move

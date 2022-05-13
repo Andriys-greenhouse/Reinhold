@@ -189,20 +189,25 @@ namespace Reinhold.ViewModels
                             //output = //použít callendar
                             output = $"Oh, I see, you want me to display events for {date.ToString("yyyy/MM/dd")} but unfortunately I am not yet able to do that.";
                         }
+                        if (date != new DateTime())
+                        {
+                            output = $"Oh, I see, you want me to display events for {date.ToString("yyyy/MM/dd")} but unfortunately I am not yet able to do that.";
+                        }
                         else { output = "Hmm, I can't find a date to search in the callendar (format yyyy/MM/dd)."; }
                         break;
                     case "calendarAdd":
                         output = "Oh, I see, you want me to add to your callendar an event but unfortunately I am not yet able to do this, sorry.";
                         break;
                     case "wordSoccer":
-                        if (coreResult.PastContext != "wordSoccer")
+                        if (coreResult.PastContext != "wordSoccer" || message == "new game" || message == "again")
                         {
                             output = "Before we start playing word soccer, I would like to point out, that I can't recognize, weather what you inputs are going to be meaningfull words or just set of characters but I will beleave you, that you won't play unfair...\nOk, go ahead you start.";
-                            wscrGame.NewGame(wordList);
+                            wscrGame.NewGame();
                         }
                         else
                         {
                             output = wscrGame.MakeMove(message);
+                            if (output == null) { output = "Hmm, I can't think of any other... you win."; }
                         }
                         break;
                     case "ticTacToe":
