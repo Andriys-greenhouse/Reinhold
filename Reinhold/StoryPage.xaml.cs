@@ -10,15 +10,42 @@ namespace Reinhold
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StoryPage : ContentPage
     {
-        public Story Displayed { get; set; }
-        public bool HandedIn = false;
+        Story displayed;
+        public Story Displayed 
+        { 
+            get { return displayed; }
+            set { displayed = value; }
+        }
+        bool HandedIn = false;
+        bool Editing = false;
+        Story Original;
         public Color ColorSchmeInColor { get { return (App.Current as App).DataOfApplication.ColorSchemeInColor; } }
 
         int last, yearValue, monthValue, dayValue;
 
         public StoryPage(Story aStory)
         {
+            if (aStory == new Story()) { throw new ArgumentException("This constructor is must be used for editing not for adding new Stories."); }
+            Original = aStory.GetCopy();
+            Editing = true;
             Displayed = aStory;
+            BindingContext = Displayed;
+            InitializeComponent();
+            PlaceEntry.BindingContext = Displayed.Place;
+            HeadingFrame.BindingContext = this;
+            //PeopleListView.ItemsSource = Displayed.People;
+
+            yearValue = Displayed.Date.Year;
+            monthValue = Displayed.Date.Month;
+            dayValue = Displayed.Date.Day;
+            YearEntry.Text = yearValue.ToString();
+            MonthEntry.Text = monthValue.ToString();
+            DayEntry.Text = dayValue.ToString();
+        }
+
+        public StoryPage()
+        {
+            Displayed = new Story();
             BindingContext = Displayed;
             InitializeComponent();
             PlaceEntry.BindingContext = Displayed.Place;
@@ -47,6 +74,10 @@ namespace Reinhold
 
             if (promt == "")
             {
+                if (Displayed != new Story() && !Editing)
+                {
+                    (App.Current as App).DataOfApplication.Stories.Add(Displayed);
+                }
                 HandedIn = true;
                 await Navigation.PopAsync();
             }
@@ -58,9 +89,8 @@ namespace Reinhold
 
         private async void AddPeopleButton_Clicked(object sender, EventArgs e)
         {
-            AddPersonPage current = new AddPersonPage((App.Current as App).DataOfApplication.Acquaintances);
-            Navigation.PushAsync(current);
-            if (current.Selected != null && !Displayed.People.Contains(current.Selected)) { Displayed.People.Add(current.Selected); }
+            Navigation.PushAsync(new AddPersonPage(ref displayed));
+            //if (current.Selected != null && !Displayed.People.Contains(current.Selected)) { Displayed.People.Add(current.Selected); }
             //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
             BindingContext = Displayed;
         }
@@ -121,7 +151,6 @@ namespace Reinhold
             MonthEntry.Text = monthValue.ToString();
         }
 
-
         private void DayEntry_Unfocused(object sender, FocusEventArgs e)
         {
             last = dayValue;
@@ -144,6 +173,14 @@ namespace Reinhold
         {
             if (dayValue < 31) { dayValue++; }
             DayEntry.Text = dayValue.ToString();
+        }
+
+        private void ContentPage_Disappearing(object sender, EventArgs e)
+        {
+            if (!HandedIn && Editing && Displayed != Original && Displayed != new Story())
+            {
+                Displayed = Original;
+            }
         }
     }
 }

@@ -24,8 +24,7 @@ namespace Reinhold
 
         private async void Personal_TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            PersonalDataPage current = new PersonalDataPage(DataOfApplicationConnector.User);
-            await Navigation.PushAsync(current);
+            await Navigation.PushAsync(new PersonalDataPage(DataOfApplicationConnector.User));
         }
 
         private async void Acquaintances_TapGestureRecognizer_Tapped(object sender, EventArgs e)
@@ -48,32 +47,17 @@ namespace Reinhold
 
         private async void StoryButton_Clicked(object sender, EventArgs e)
         {
-            StoryPage current = new StoryPage(new Story());
-            Navigation.PushAsync(current);
-            if (current.HandedIn)
-            {
-                (App.Current as App).DataOfApplication.Stories.Add(current.Displayed);
-            }
+            Navigation.PushAsync(new StoryPage());
         }
 
         private async void PersonButton_Clicked(object sender, EventArgs e)
         {
-            AcquaintanceDataPage current = new AcquaintanceDataPage(new Acquaintance());
-            Navigation.PushAsync(current);
-            if (current.HandedIn)
-            {
-                (App.Current as App).DataOfApplication.Acquaintances.Add(current.Displayed);
-            }
+            Navigation.PushAsync(new AcquaintanceDataPage());
         }
 
         private async void BookButton_Clicked(object sender, EventArgs e)
         {
-            BookPage current = new BookPage(new Book());
-            Navigation.PushAsync(current);
-            if (current.HandedIn)
-            {
-                (App.Current as App).DataOfApplication.Books.Add(current.Displayed);
-            }
+            await Navigation.PushAsync(new BookPage());
         }
 
         private void DataManagementPage_Appearing(object sender, EventArgs e)

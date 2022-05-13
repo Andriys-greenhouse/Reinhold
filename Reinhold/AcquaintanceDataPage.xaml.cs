@@ -17,8 +17,15 @@ namespace Reinhold
     public partial class AcquaintanceDataPage : ContentPage, INotifyPropertyChanged
     {
         public Color ColorSchmeInColor { get { return (App.Current as App).DataOfApplication.ColorSchemeInColor; } }
-        public Acquaintance Displayed { get; set; }
-        public bool HandedIn = false;
+        Acquaintance displayed;
+        public Acquaintance Displayed
+        {
+            get { return displayed; }
+            set { displayed = value; }
+        }
+        bool Editing = false;
+        bool HandedIn = false;
+        Acquaintance Original;
         public double LevelOfAcq { get { return Math.Round(LevelOfAcqSlider.Value); } }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -26,7 +33,32 @@ namespace Reinhold
 
         public AcquaintanceDataPage(Acquaintance aAcquaintence)
         {
+            if (aAcquaintence == new Acquaintance()) { throw new ArgumentException("This constructor is must be used for editing not for adding new Acquaintances."); }
             Displayed = aAcquaintence;
+            Original = aAcquaintence.GetCopy();
+            Editing = true;
+            BindingContext = Displayed;
+            InitializeComponent();
+            HeadingFrame.BindingContext = this;
+            PhoneEntry.Text = Displayed.PhoneNumber;
+            EmailEntry.Text = Displayed.Email;
+            RelationPicker.BindingContext = new ObservableCollection<string>(Enum.GetNames(typeof(Relation)));
+            RelationPicker.SelectedIndex = (int)Displayed.Relation;
+            LevelOfRelationPicker.BindingContext = new ObservableCollection<string>(Enum.GetNames(typeof(LevelOfLiking)));
+            LevelOfRelationPicker.SelectedIndex = (int)Displayed.LevelOfRelarion;
+            LevelOfAcqLabel.BindingContext = this;
+
+            yearValue = Displayed.BirthDate.Year;
+            monthValue = Displayed.BirthDate.Month;
+            dayValue = Displayed.BirthDate.Day;
+            YearEntry.Text = yearValue.ToString();
+            MonthEntry.Text = monthValue.ToString();
+            DayEntry.Text = dayValue.ToString();
+        }
+
+        public AcquaintanceDataPage()
+        {
+            Displayed = new Acquaintance();
             BindingContext = Displayed;
             InitializeComponent();
             HeadingFrame.BindingContext = this;
@@ -53,9 +85,9 @@ namespace Reinhold
 
         private async void AddHobbyButton_Clicked(object sender, EventArgs e)
         {
-            AddHobbyPage current = new AddHobbyPage();
+            AddHobbyPage current = new AddHobbyPage(ref displayed);
             Navigation.PushAsync(current);
-            if (current.Submitted && current.Hobby.Length > 0) { Displayed.Hobbys.Add(new Hobby(current.Hobby == null ? "" : current.Hobby)); }
+            //if (current.Submitted && current.Hobby.Length > 0) { Displayed.Hobbys.Add(new Hobby(current.Hobby == null ? "" : current.Hobby)); }
             BindingContext = Displayed;
         }
 
@@ -89,6 +121,10 @@ namespace Reinhold
 
             if (promt == "")
             {
+                if (Displayed != new Acquaintance() && !Editing)
+                {
+                    (App.Current as App).DataOfApplication.Acquaintances.Add(Displayed);
+                }
                 HandedIn = true;
                 await Navigation.PopAsync();
             }
@@ -164,7 +200,6 @@ namespace Reinhold
             MonthEntry.Text = monthValue.ToString();
         }
 
-
         private void DayEntry_Unfocused(object sender, FocusEventArgs e)
         {
             last = dayValue;
@@ -187,6 +222,14 @@ namespace Reinhold
         {
             if (dayValue < 31) { dayValue++; }
             DayEntry.Text = dayValue.ToString();
+        }
+
+        private void ContentPage_Disappearing(object sender, EventArgs e)
+        {
+            if (!HandedIn && Editing && Displayed != Original && Displayed != new Acquaintance())
+            {
+                Displayed = Original;
+            }
         }
     }
 }

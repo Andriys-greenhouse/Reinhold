@@ -14,7 +14,12 @@ namespace Reinhold
     public partial class PersonalDataPage : ContentPage
     {
         public Color ColorSchmeInColor { get { return (App.Current as App).DataOfApplication.ColorSchemeInColor; } }
-        public Person Displayed { get; set; }
+        Person displayed;
+        public Person Displayed 
+        { 
+            get { return displayed; }
+            set { displayed = value; }
+        }
 
         int last, yearValue, monthValue, dayValue;
 
@@ -44,9 +49,8 @@ namespace Reinhold
 
         private async void AddHobbyButton_Clicked(object sender, EventArgs e)
         {
-            AddHobbyPage current = new AddHobbyPage();
+            AddHobbyPage current = new AddHobbyPage(ref displayed);
             Navigation.PushAsync(current);
-            if(current.Submitted && current.Hobby.Length > 0) { Displayed.Hobbys.Add(new Hobby(current.Hobby == null ? "" : current.Hobby)); }
             //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
             BindingContext = Displayed;
         }

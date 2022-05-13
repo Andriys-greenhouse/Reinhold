@@ -15,14 +15,15 @@ namespace Reinhold
     public partial class AddPersonPage : ContentPage
     {
         public ObservableCollection<Acquaintance> people { get; set; }
-        public Acquaintance Selected = null;
         //I'll got to make an object, which keeps fields for displaying as well as click command and than picks a right Acquaintance
+        Story Owner;
         ICommand tapCommand;
         public ICommand TapCommand { get { return tapCommand; } }
 
-        public AddPersonPage(ObservableCollection<Acquaintance> aPeople)
+        public AddPersonPage(ref Story aOwner)
         {
-            people = aPeople;
+            Owner = aOwner;
+            people = (App.Current as App).DataOfApplication.Acquaintances;
             tapCommand = new Command(OnTap);
             BindingContext = this;
             InitializeComponent();
@@ -36,13 +37,15 @@ namespace Reinhold
 
         private async void Item_TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Selected = (e as TappedEventArgs).Parameter as Acquaintance;
+            Acquaintance Selected = (e as TappedEventArgs).Parameter as Acquaintance;
+            if (!Owner.People.Contains(Selected)) { Owner.People.Add(Selected); }
             await Navigation.PopAsync();
         }
 
         async void OnTap(object s)
         {
-            Selected = (s as TapGestureRecognizer).CommandParameter as Acquaintance;
+            Acquaintance Selected = (s as TapGestureRecognizer).CommandParameter as Acquaintance;
+            if (!Owner.People.Contains(Selected)) { Owner.People.Add(Selected); }
             await Navigation.PopAsync();
         }
     }

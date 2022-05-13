@@ -13,7 +13,7 @@ namespace MethodTestSite
         static void Main(string[] args)
         {
             //random number
-            double max = 10.9;
+            /*double max = 10.9;
             bool whole = false;
             double min = -10;
 
@@ -46,7 +46,7 @@ namespace MethodTestSite
                     Console.WriteLine(e.Message);
                 }
             }
-            Console.WriteLine("\n\n\n");
+            Console.WriteLine("\n\n\n");*/
 
             //Google web search
             string keyWord = "Andrew";
@@ -58,7 +58,7 @@ namespace MethodTestSite
             }
             Console.WriteLine("\n\n\n");
 
-            
+
             //format words
             /*
             Dictionary<char, List<string>> data = new Dictionary<char, List<string>>();
@@ -93,7 +93,6 @@ namespace MethodTestSite
 
                 Console.WriteLine($"{last} written");
             }
-            */
 
             //Word soccer
             WordSoccer wscrGame = WordSoccer.SingleInstance;
@@ -111,6 +110,7 @@ namespace MethodTestSite
 
             //News
             Console.WriteLine(WebModule.News("Czech").Result);
+            */
 
             Console.ReadLine();
         }

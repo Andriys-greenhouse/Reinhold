@@ -2,6 +2,7 @@
 using MethodTestSite;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -9,7 +10,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using System.ComponentModel;
 
 namespace Reinhold.ViewModels
 {
@@ -291,7 +291,7 @@ namespace Reinhold.ViewModels
                         {
                             search = search.Replace(word, "");
                         }
-                        if (search.Length > 2)
+                        if (search.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length > 0)
                         {
                             output = await Methods.RandomBookQuote(search, DataOfApplicationConnector.Books);
                         }
@@ -318,33 +318,40 @@ namespace Reinhold.ViewModels
                         break;
                     case "search":
                         search = message;
-                        toRemove = new List<string> { };
+                        toRemove = new List<string> { "search" };
                         foreach (string word in toRemove)
                         {
                             search = search.Replace(word, "");
                         }
-                        if (search.Length > 2)
+                        if (Connectivity.NetworkAccess == NetworkAccess.Internet)
                         {
-                            sb.Clear();
-                            sb.Append($"Searching for: {search}\n\n");
-                            List<MyWebSearchResult> res = WebModule.GoogleWebSearchResultConvert(await WebModule.WebSearch(search));
-                            for (int i = 0; i < res.Count; i++)
+                            if (search.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length > 0)
                             {
-                                sb.Append(res[i].OutputText(i + 1));
-                                sb.Append("\n");
-                            }
-                            output = sb.ToString();
-                        }
-                        else
-                        {
-                            if (coreResult.PastContext == "search")
-                            {
-                                output = "Hmm, I haven't found any valid input to search for.";
+                                sb.Clear();
+                                sb.Append($"Searching for: {search}\n\n");
+                                List<MyWebSearchResult> res = WebModule.GoogleWebSearchResultConvert(await WebModule.WebSearch(search));
+                                for (int i = 0; i < res.Count; i++)
+                                {
+                                    sb.Append(res[i].OutputText(i + 1));
+                                    sb.Append("\n");
+                                }
+                                output = sb.ToString();
                             }
                             else
                             {
-                                output = "Ok, please input keyword to be searched.";
+                                if (coreResult.PastContext == "search")
+                                {
+                                    output = "Hmm, I haven't found any valid input to search for.";
+                                }
+                                else
+                                {
+                                    output = "Ok, please input keyword to be searched.";
+                                }
                             }
+                        }
+                        else
+                        {
+                            output = "I can't connect to the internet to perform a search :-(";
                         }
                         break;
                     case "news":

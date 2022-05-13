@@ -12,19 +12,24 @@ namespace Reinhold
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddHobbyPage : ContentPage
     {
-        public bool Submitted;
-        public string Hobby { get; set; }
-        public AddHobbyPage()
+        Person Owner;
+        public AddHobbyPage(ref Person aOwner)
         {
-            Submitted = false;
+            Owner = aOwner;
+            BindingContext = this;
+            InitializeComponent();
+        }
+
+        public AddHobbyPage(ref Acquaintance aOwner)
+        {
+            Owner = aOwner;
             BindingContext = this;
             InitializeComponent();
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            Submitted = true;
-            Hobby = HobbyEntry.Text;
+            if (HobbyEntry.Text != null && HobbyEntry.Text.Length > 0) { Owner.Hobbys.Add(new Hobby(HobbyEntry.Text)); }
             await Navigation.PopAsync();
         }
     }

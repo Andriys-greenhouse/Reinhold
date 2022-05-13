@@ -274,6 +274,11 @@ namespace Reinhold
             LevelOfRelarion = LevelOfLiking.Neutral;
             LevelOfAcquaintance = 50;
         }
+
+        public Acquaintance GetCopy()
+        {
+            return (Acquaintance)MemberwiseClone();
+        }
     }
 
     public class Story
@@ -315,6 +320,11 @@ namespace Reinhold
             Date = DateTime.Now;
             People = new ObservableCollection<Acquaintance>();
             Text = "";
+        }
+
+        public Story GetCopy()
+        {
+            return (Story)MemberwiseClone();
         }
 
         async Task<string> FetchText()
@@ -381,6 +391,11 @@ namespace Reinhold
             Title = "";
             LevelOfLiking = 50;
             favouriteQuote = "";
+        }
+
+        public Book GetCopy()
+        {
+            return (Book)MemberwiseClone();
         }
 
         async Task<string> FetchQuote()

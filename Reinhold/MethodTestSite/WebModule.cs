@@ -16,7 +16,7 @@ namespace MethodTestSite
             using (HttpClient client = new HttpClient())
             {
                 string searchTerm = KeyWord.Replace(" ", "+");
-                HttpResponseMessage response = await client.GetAsync("https://www.googleapis.com/customsearch/v1?key=AIzaSyD1zMkt3fkpb5-AArVhyLTEX4vQzgM_zl4&cx=f0aa652047963924f&q=" + searchTerm);
+                HttpResponseMessage response = client.GetAsync("https://www.googleapis.com/customsearch/v1?key=AIzaSyD1zMkt3fkpb5-AArVhyLTEX4vQzgM_zl4&cx=f0aa652047963924f&q=" + searchTerm).Result;
                 return await response.Content.ReadAsStringAsync();
             }
         }
@@ -45,7 +45,7 @@ namespace MethodTestSite
             StringBuilder sb = new StringBuilder("Articles found:");
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(@"https://newsapi.org/v2/everything?apiKey=63b3a441735f47609eb041ac16104b8b&language=en&sortBy-popularity&q=" + KeyWord.Replace(" ", "+"));
+                HttpResponseMessage response = client.GetAsync(@"https://newsapi.org/v2/everything?apiKey=63b3a441735f47609eb041ac16104b8b&language=en&sortBy-popularity&q=" + KeyWord.Replace(" ", "+")).Result;
                 data = JsonConvert.DeserializeObject<News>(await response.Content.ReadAsStringAsync());
             }
             for (int i = 0; i < 5; i++)
@@ -79,7 +79,7 @@ namespace MethodTestSite
                             {
                                 try
                                 {
-                                    HttpResponseMessage response = await client.GetAsync(result.Link);
+                                    HttpResponseMessage response = client.GetAsync(result.Link).Result;
                                     content = await response.Content.ReadAsStringAsync();
                                     result.Code = content;
                                     foreach (Match match in rxSublinks.Matches(content))
@@ -194,3 +194,4 @@ namespace MethodTestSite
         }
     }
 }
+//https://social.msdn.microsoft.com/Forums/en-US/814644b1-ebe1-4941-a007-2ec0f52f2673/why-postasync-doesnt-work-in-xamarinandroid?forum=xamarinandroid

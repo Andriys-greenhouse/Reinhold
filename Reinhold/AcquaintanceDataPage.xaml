@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Reinhold.AcquaintanceDataPage"
              BackgroundColor="#1c1c1c"
-             Title="Data management">
+             Title="Data management"
+             Disappearing="ContentPage_Disappearing">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>

@@ -30,32 +30,21 @@ namespace Reinhold
 
         private async void AcquaintancesListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            AcquaintanceDataPage current = new AcquaintanceDataPage((Acquaintance)AcquaintancesListView.SelectedItem);
-            Navigation.PushAsync(current);
-            if (current.HandedIn)
-            {
-                AcquaintancesCopy.Remove((Acquaintance)AcquaintancesListView.SelectedItem);
-                AcquaintancesCopy.Add(current.Displayed);
-                AcquaintancesListView.ItemsSource = AcquaintancesCopy;
-            }
+            await Navigation.PushAsync(new AcquaintanceDataPage((Acquaintance)AcquaintancesListView.SelectedItem));
+            AcquaintancesListView.ItemsSource = AcquaintancesCopy;
             BindingContext = this;
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            AcquaintanceDataPage current = new AcquaintanceDataPage(new Acquaintance());
-            Navigation.PushAsync(current);
-            if (current.HandedIn)
-            {
-                AcquaintancesCopy.Add(current.Displayed);
-                AcquaintancesListView.ItemsSource = AcquaintancesCopy;
-            }
+            await Navigation.PushAsync(new AcquaintanceDataPage());
+            AcquaintancesListView.ItemsSource = AcquaintancesCopy;
             BindingContext = this;
         }
 
         private void AcquaintanceListPage_Disappearing(object sender, EventArgs e)
         {
-            (App.Current as App).DataOfApplication.Acquaintances = AcquaintancesCopy;
+            //(App.Current as App).DataOfApplication.Acquaintances = AcquaintancesCopy;
         }
     }
 }

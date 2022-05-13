@@ -23,7 +23,7 @@ namespace Reinhold
         private async void DeleteButton_Clicked(object sender, EventArgs e)
         {
             Book ClickedContent = (sender as ImageButton).CommandParameter as Book;
-            if (!await DisplayAlert("Confirmation", $"Are you shure that you want to delete this Book?\n({ClickedContent.RepresentingText})", "No", "Yes"))
+            if (!await DisplayAlert("Confirmation", $"Are you shure that you want to delete this Book?\n({ClickedContent.Title})", "No", "Yes"))
             {
                 await SecureStorage.SetAsync(ClickedContent.QuotesID, "");
                 BooksCopy.Remove(ClickedContent);
@@ -32,27 +32,22 @@ namespace Reinhold
 
         private async void BooksListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            BookPage current = new BookPage((Book)BooksListView.SelectedItem);
-            Navigation.PushAsync(current);
-            if (current.HandedIn)
-            {
-                BooksCopy.Remove((Book)BooksListView.SelectedItem);
-                BooksCopy.Add(current.Displayed);
-                BooksListView.ItemsSource = BooksCopy;
-            }
+            await Navigation.PushAsync(new BookPage((Book)BooksListView.SelectedItem));
+            BooksListView.ItemsSource = BooksCopy;
             BindingContext = this;
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            BookPage current = new BookPage(new Book());
-            Navigation.PushAsync(current);
+            await Navigation.PushAsync(new BookPage());
+                /*
             if (current.HandedIn)
             {
                 BooksCopy.Add(current.Displayed);
                 BooksListView.ItemsSource = BooksCopy;
                 //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
-            }
+            }*/
+            BooksListView.ItemsSource = BooksCopy;
             BindingContext = this;
         }
 

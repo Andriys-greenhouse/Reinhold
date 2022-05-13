@@ -68,18 +68,18 @@ namespace Reinhold
         }
 
         static Random rnd = new Random();
-        public static async Task<string> RandomBookQuote(string BookTitle, ObservableCollection<Book> availableBooks) //if local search isn't wanted pass as argument empty ObservableCollection
+        public static async Task<string> RandomBookQuote(string searchTerm, ObservableCollection<Book> availableBooks) //if local search isn't wanted pass as argument empty ObservableCollection
         {
             foreach (Book bk in availableBooks)
             {
-                if (bk.Title.Contains(BookTitle)) { return $"(from local data)\n{bk.FavouriteQuote}"; }
+                if (bk.Title.Contains(searchTerm) || bk.AuthorsCompleteName.Contains(searchTerm)) { return $"(from local data)\n{bk.FavouriteQuote}"; }
             }
 
             Regex rx = new Regex(@"&ldquo;(?<Quote>.*)&rdquo;");
             MatchCollection mc;
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync("https://www.goodreads.com/quotes/search?utf8=%E2%9C%93&commit=Search&q=" + BookTitle.Replace(" ", "+"));
+                HttpResponseMessage response = client.GetAsync("https://www.goodreads.com/quotes/search?utf8=%E2%9C%93&commit=Search&q=" + searchTerm.Replace(" ", "+")).Result;
                 mc = rx.Matches(await response.Content.ReadAsStringAsync());
             }
             if (mc.Count == 0) { return "Sorry I can't find any quotes for this book..."; }

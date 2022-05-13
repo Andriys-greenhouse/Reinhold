@@ -32,26 +32,15 @@ namespace Reinhold
 
         private async void StoriesListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            StoryPage current = new StoryPage((Story)StoriesListView.SelectedItem);
-            Navigation.PushAsync(current);
-            if (current.HandedIn)
-            {
-                StoriesCopy.Remove((Story)StoriesListView.SelectedItem);
-                StoriesCopy.Add(current.Displayed);
-                StoriesListView.ItemsSource = StoriesCopy;
-            }
+            Navigation.PushAsync(new StoryPage((Story)StoriesListView.SelectedItem));
+            StoriesListView.ItemsSource = StoriesCopy;
             BindingContext = this;
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
-            StoryPage current = new StoryPage(new Story());
-            Navigation.PushAsync(current);
-            if (current.HandedIn)
-            {
-                StoriesCopy.Add(current.Displayed);
-                StoriesListView.ItemsSource = StoriesCopy;
-            }
+            Navigation.PushAsync(new StoryPage());
+            StoriesListView.ItemsSource = StoriesCopy;
             //HobbyListView.HeightRequest = 1 + HobbyListView.RowHeight * Displayed.Hobbys.Count;
             BindingContext = this;
         }
