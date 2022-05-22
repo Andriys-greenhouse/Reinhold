@@ -367,7 +367,7 @@ namespace CoreLab
                 }
 
                 //check for treshhold
-                if (Cost < 0.0001 && Iter > 30) //0.000001  Iter > 300
+                if (Cost < 0.0001 && Iter > 6) //0.000001  Iter > 300
                 { Iter = Iterations; }
             }
         }

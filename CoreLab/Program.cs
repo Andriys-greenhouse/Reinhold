@@ -17,7 +17,7 @@ namespace CoreLab
             {
                 insides = sr.ReadToEnd();
             }
-            /*
+            /* CORE TEST
             Core cr = new Core();
             bool needTraining = true;
             while (needTraining)
@@ -50,6 +50,7 @@ namespace CoreLab
             }
             */
 
+            /* EMBEDDER TEST
             Embedder em = new Embedder(insides);
             bool needTraining = true;
             while (needTraining)
@@ -65,6 +66,39 @@ namespace CoreLab
                     needTraining = true;
                 }
             }
+            */
+
+            EmbeddedCore cr = new EmbeddedCore();
+            bool needTraining = true;
+            while (needTraining)
+            {
+                try
+                {
+                    cr.Train("embedding.json", insides, new int[] { 32, 32 }, new int[] { 64, 64 }, 50000);
+                    needTraining = false;
+                }
+                catch (Exception e)
+                {
+                    cr = new EmbeddedCore();
+                    needTraining = true;
+                }
+            }
+
+            using (StreamWriter sw = new StreamWriter("output.json"))
+            {
+                string json = JsonConvert.SerializeObject(cr);
+                sw.Write(json);
+            }
+
+            Console.WriteLine("Training complete");
+            AnalysisResult response;
+            while (true)
+            {
+                Console.Write("You: ");
+                response = cr.Process(Console.ReadLine());
+                Console.WriteLine($"Bot:    Past context: {response.PastContext}    Intent: {response.Intent}    Context: {response.Context}");
+            }
+
             Console.ReadLine();
         }
         static void VavKavTest()
