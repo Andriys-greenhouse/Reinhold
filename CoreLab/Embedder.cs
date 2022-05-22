@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using System.Text.RegularExpressions;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CoreLab
 
@@ -14,7 +12,7 @@ namespace CoreLab
     {
         string[] SplittedText;
         static string savingName = "embedding.json";
-        static int numberOfDimensions = 300; // > 0
+        static int numberOfDimensions = 75; // > 0
         static int contextSize = 4; //must be an even number && > 2
         static int iterations = 10_000;
         EmbeddingNetwork NeuNet;
@@ -76,7 +74,7 @@ namespace CoreLab
             NeuNet.Train(TrainingData, iterations, true);
 
             Dictionary<string, float[]> vectors = new Dictionary<string, float[]>();
-            float[][] embedings = NeuNet.GetWeights(2);
+            float[][] embedings = NeuNet.GetWeights(1);
 
             for (int i = 0; i < Vocabulary.Count; i++)
             {
@@ -91,9 +89,13 @@ namespace CoreLab
             Console.WriteLine("Vectors successfully saved");
         }
     }
+
+
+
     class EmbeddingNetwork
     {
         static float LearningRate = 0.005f; //0.001f best sofar
+        static int randomNeeded = 150;
 
         float[] InputNeurons { get; set; }
         float[][] Activations { get; set; }
@@ -246,22 +248,6 @@ namespace CoreLab
             }
             if (Iterations < 1) { throw new ArgumentException("At least one iteration is required!"); }
 
-            //devide into batches
-            List<List<(float[], float[])>> batches = new List<List<(float[], float[])>>();
-            /*int num = 0;
-            batches.Add(new Dictionary<float[], float[]>());
-            foreach (KeyValuePair<float[], float[]> pair in Inputs)
-            {
-                if (num == 100) //limit for batch population
-                {
-                    num = 0;
-                    batches.Add(new Dictionary<float[], float[]>());
-                }
-                batches[batches.Count - 1].Add(pair.Key, pair.Value);
-                num++;
-            }
-            */
-            batches.Add(Inputs);
 
             //training itself
             int lastDisplay = 0;
@@ -281,7 +267,7 @@ namespace CoreLab
 
                 //display progress
                 currentString = $"progress: {Iter * 100 / Iterations}%    Cost: {Cost}";
-                if (DisplayProgress && lastDisplay % 100 == 0 && currentString != lastDisplayedString) //display after x iterations (500 is best sofar)
+                if (DisplayProgress && lastDisplay % 2 == 0 && currentString != lastDisplayedString) //display after x iterations (500 is best sofar)
                 {
                     lastDisplay = 0;
                     //Console.Clear();
@@ -301,87 +287,88 @@ namespace CoreLab
                 }
                 else { suspectCount = -1; }
 
-                foreach (List<(float[], float[])> batch in batches)
+
+                //set changes to zeros
+                for (int i = 0; i < Activations.Length; i++)
                 {
-                    //set changes to zeros
+                    for (int j = 0; j < Activations[i].Length; j++)
+                    {
+                        BiasChanges[i][j] = 0;
+                        for (int k = 0; k < WeightChanges[i][j].Length; k++)
+                        {
+                            WeightChanges[i][j][k] = 0;
+                        }
+                    }
+                }
+
+                (float[], float[]) pair;
+                for (int IRnd = 0; IRnd < randomNeeded; IRnd++)
+                {
+                    pair = Inputs[rnd.Next(Inputs.Count)];
+
+                    //set Deltas to zeros
                     for (int i = 0; i < Activations.Length; i++)
                     {
                         for (int j = 0; j < Activations[i].Length; j++)
                         {
-                            BiasChanges[i][j] = 0;
-                            for (int k = 0; k < WeightChanges[i][j].Length; k++)
-                            {
-                                WeightChanges[i][j][k] = 0;
-                            }
+                            Deltas[i][j] = 0;
                         }
                     }
 
-                    foreach ((float[], float[]) pair in batch)
+                    Result(pair.Item1); //update values
+
+                    costOfCurentRun = 0;
+                    for (int i = 0; i < Activations[Activations.Length - 1].Length; i++) //for neurons in last layer
                     {
-                        //set Deltas to zeros
-                        for (int i = 0; i < Activations.Length; i++)
-                        {
-                            for (int j = 0; j < Activations[i].Length; j++)
-                            {
-                                Deltas[i][j] = 0;
-                            }
-                        }
-
-                        Result(pair.Item1); //update values
-
-                        costOfCurentRun = 0;
-                        for (int i = 0; i < Activations[Activations.Length - 1].Length; i++) //for neurons in last layer
-                        {
-                            costOfCurentRun += (Activations[Activations.Length - 1][i] - pair.Item2[i]) * (Activations[Activations.Length - 1][i] - pair.Item2[i]);
-                            Deltas[Deltas.Length - 1][i] = 2 * (Activations[Activations.Length - 1][i] - pair.Item2[i]) * DerivativeSigmoid(Values[Values.Length - 1][i]);
-                        }
-                        Cost = (costOfCurentRun + Cost) / 2; //average last and curent cost
-
-                        for (int i = Activations.Length - 2; i >= 0; i--) //starting from pre-last layer and going backwards
-                        {
-                            float newDelta;
-                            for (int j = 0; j < Activations[i].Length; j++) //neuron in layer
-                            {
-                                newDelta = 0;
-
-                                for (int k = 0; k < Activations[i + 1].Length; k++)//neurons from last layer
-                                {
-                                    newDelta += Deltas[i + 1][k] * Weights[i + 1][k][j];
-                                }
-                                Deltas[i][j] = newDelta * DerivativeReLU(Values[i][j]);
-                            }
-                        }
-
-                        for (int i = 0; i < Biases.Length; i++)//layer
-                        {
-                            for (int j = 0; j < Biases[i].Length; j++)//neuron
-                            {
-                                BiasChanges[i][j] -= LearningRate * Deltas[i][j];
-                                for (int k = 0; k < Weights[i][j].Length; k++)//weight
-                                {
-                                    WeightChanges[i][j][k] -= LearningRate * Deltas[i][j] * (i == 0 ? InputNeurons[k] : Activations[i - 1][k]);
-                                }
-                            }
-                        }
+                        costOfCurentRun += (Activations[Activations.Length - 1][i] - pair.Item2[i]) * (Activations[Activations.Length - 1][i] - pair.Item2[i]);
+                        Deltas[Deltas.Length - 1][i] = 2 * (Activations[Activations.Length - 1][i] - pair.Item2[i]) * DerivativeSigmoid(Values[Values.Length - 1][i]);
                     }
+                    Cost = (costOfCurentRun + Cost) / 2; //average last and curent cost
 
-                    //apply changes
-                    for (int i = 0; i < Biases.Length; i++)
+                    for (int i = Activations.Length - 2; i >= 0; i--) //starting from pre-last layer and going backwards
                     {
-                        for (int j = 0; j < Biases[i].Length; j++)
+                        float newDelta;
+                        for (int j = 0; j < Activations[i].Length; j++) //neuron in layer
                         {
-                            Biases[i][j] += BiasChanges[i][j]; //averaging it
-                            for (int k = 0; k < Weights[i][j].Length; k++)
+                            newDelta = 0;
+
+                            for (int k = 0; k < Activations[i + 1].Length; k++)//neurons from last layer
                             {
-                                Weights[i][j][k] += WeightChanges[i][j][k];
+                                newDelta += Deltas[i + 1][k] * Weights[i + 1][k][j];
                             }
+                            Deltas[i][j] = newDelta * DerivativeReLU(Values[i][j]);
                         }
                     }
 
-                    //check for treshhold
-                    if (Cost < 0.000001 && Iter > 300)
-                    { Iter = Iterations; }
+                    for (int i = 0; i < Biases.Length; i++)//layer
+                    {
+                        for (int j = 0; j < Biases[i].Length; j++)//neuron
+                        {
+                            BiasChanges[i][j] -= LearningRate * Deltas[i][j];
+                            for (int k = 0; k < Weights[i][j].Length; k++)//weight
+                            {
+                                WeightChanges[i][j][k] -= LearningRate * Deltas[i][j] * ((i == 0 ? InputNeurons[k] : Activations[i - 1][k]));
+                            }
+                        }
+                    }
                 }
+
+                //apply changes
+                for (int i = 0; i < Biases.Length; i++)
+                {
+                    for (int j = 0; j < Biases[i].Length; j++)
+                    {
+                        Biases[i][j] += BiasChanges[i][j]; //averaging it
+                        for (int k = 0; k < Weights[i][j].Length; k++)
+                        {
+                            Weights[i][j][k] += WeightChanges[i][j][k];
+                        }
+                    }
+                }
+
+                //check for treshhold
+                if (Cost < 0.0001 && Iter > 30) //0.000001  Iter > 300
+                { Iter = Iterations; }
             }
         }
 
