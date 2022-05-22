@@ -17,7 +17,7 @@ namespace CoreLab
             {
                 insides = sr.ReadToEnd();
             }
-        
+            /*
             Core cr = new Core();
             bool needTraining = true;
             while (needTraining)
@@ -48,8 +48,24 @@ namespace CoreLab
                 response = cr.Process(Console.ReadLine());
                 Console.WriteLine($"Bot:    Past context: {response.PastContext}    Intent: {response.Intent}    Context: {response.Context}");
             }
+            */
 
-
+            Embedder em = new Embedder(insides);
+            bool needTraining = true;
+            while (needTraining)
+            {
+                try
+                {
+                    em.Train();
+                    needTraining = false;
+                }
+                catch (Exception e)
+                {
+                    em = new Embedder(insides);
+                    needTraining = true;
+                }
+            }
+            Console.ReadLine();
         }
         static void VavKavTest()
         {

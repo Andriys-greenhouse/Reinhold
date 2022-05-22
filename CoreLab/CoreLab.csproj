@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Embedder.cs" />
     <Compile Include="Stemer.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="Neuron.cs" />
